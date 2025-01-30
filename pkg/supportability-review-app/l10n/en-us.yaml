@@ -1,0 +1,34 @@
+product:
+  sr: Supportability Review
+  description: |
+    Supportability Review is a feature entitlement of Rancher Prime.
+    It provides proactive support to customers with the reassurance that their system design/solution is based on a sound foundation, is supportable in principle and complies with SUSE’s current recommended practice.
+  notInstalledOrNoSchema: Either the user doesn't have enough permissions to run the Supportability Review extension or the Operator (rancher-supportability-review) is not installed (required to run the Supportability Review extension). <br><br> For user permissions, check with your Rancher administrator if the correct role is assigned. To install Supportabiliyt Review Operator please click the button below.
+  notInstalledHasSchema: The Supportability Review Operator is required to run the Supportability Review extension. To install it please follow the instructions on the official documentation.
+
+nav:
+  group:
+    sr.cattle.io: Supportability Review
+
+sr:
+  appInstall:
+    button: Install Supportability Review Operator
+    reload: Unable to fetch Supportability Review Operator Helm chart - reload required
+  versionError:
+    title: Chart Version not found.
+    message: Unable to determine the latest stable version of the Supportability Review chart. Please make sure the Helm repository
+  menuLabels:
+    dashboard: Dashboard
+    downloadBundle: Download Bundle
+    downloadReport: Download Report
+    viewReport: View Report
+    titleDashboard: Supportability Review Dashboard
+    sr.cattle.io.reviewbundle: Review Bundles
+
+typeLabel:
+  sr.cattle.io.reviewbundle: Review Bundles
+
+tableHeaders:
+  pass: Passed Checks
+  clusterCount: Clusters
+  bundleSize: Bundle Size

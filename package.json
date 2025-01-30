@@ -1,9 +1,15 @@
 {
   "name": "supportability-review-app",
-  "version": "0.1.0",
+  "description": "Supportability Review UI extension",
+  "version": "105.0.0-up0.1.0",
   "private": false,
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "core-js": "^3.39.0",
+    "eslint": "8.39.0",
+    "prettier": "3.4.2"
   },
   "dependencies": {
     "@rancher/shell": "^3.0.1"
