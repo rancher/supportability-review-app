@@ -8,6 +8,7 @@
     ".eslintignore": true,
     ".eslintrc.js": true,
     ".gitignore": true,
+    ".nuxt*": true,
     ".nyc_output": true,
     ".vscode": true,
     "LICENSE": true,

@@ -1,10 +1,10 @@
 {
   "name": "supportability-review-app",
   "description": "Supportability Review UI extension",
-  "version": "105.0.0-up0.1.0",
+  "version": "103.0.0-up0.1.0",
   "private": false,
   "engines": {
-    "node": ">=20"
+    "node": ">=16"
   },
   "devDependencies": {
     "core-js": "^3.39.0",
@@ -12,10 +12,12 @@
     "prettier": "3.4.2"
   },
   "dependencies": {
-    "@rancher/shell": "^3.0.1"
+    "@rancher/shell": "^1.2.6"
   },
   "resolutions": {
-    "@types/node": "~20.10.0",
+    "@aws-sdk/types": "3.714.0",
+    "@aws-sdk/util-locate-window": "3.693.0",
+    "@types/node": "18.11.9",
     "@types/lodash": "4.17.5"
   },
   "scripts": {
