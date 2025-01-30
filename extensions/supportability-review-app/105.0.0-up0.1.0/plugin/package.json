@@ -1,0 +1,19 @@
+{
+  "name": "supportability-review-app",
+  "description": "supportability-review-app plugin",
+  "version": "105.0.0-up0.1.0",
+  "private": false,
+  "rancher": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0"
+  },
+  "files": [
+    "**/*"
+  ],
+  "main": "supportability-review-app-105.0.0-up0.1.0.umd.min.js"
+}

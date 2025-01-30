@@ -1,0 +1,2 @@
+"use strict";(("undefined"!==typeof self?self:this)["webpackChunksupportability_review_app_105_0_0_up0_1_0"]=("undefined"!==typeof self?self:this)["webpackChunksupportability_review_app_105_0_0_up0_1_0"]||[]).push([[332],{57086:function(e,n,t){t.r(n),t.d(n,{default:function(){return l}});var i=t(9274);function u(e,n,t,u,p,r){return(0,i.openBlock)(),(0,i.createElementBlock)("h1",null,"DetailView")}var p={name:"ReviewBundleDetailView"},r=t(47433);const _=(0,r.A)(p,[["render",u]]);var l=_}}]);
+//# sourceMappingURL=supportability-review-app-105.0.0-up0.1.0.umd.min.detail.js.map
