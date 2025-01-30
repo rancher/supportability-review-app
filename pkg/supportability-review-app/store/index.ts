@@ -1,15 +1,15 @@
-import { CoreStoreSpecifics, CoreStoreConfig } from '@shell/core/types'
+import { CoreStoreSpecifics, CoreStoreConfig } from '@shell/core/types';
 
-import { SUPPORTABILITY_REVIEW_STORE } from '../config/types'
+import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 
-import getters from './getters'
-import mutations from './mutations'
-import actions from './actions'
+import getters from './getters';
+import mutations from './mutations';
+import actions from './actions';
 
 const srFactory = (): CoreStoreSpecifics => {
   return {
     state() {
-      return { createClusterElements: [] }
+      return { createClusterElements: [] };
     },
 
     getters: { ...getters },
@@ -17,11 +17,11 @@ const srFactory = (): CoreStoreSpecifics => {
     mutations: { ...mutations },
 
     actions: { ...actions }
-  }
-}
-const config: CoreStoreConfig = { namespace: SUPPORTABILITY_REVIEW_STORE }
+  };
+};
+const config: CoreStoreConfig = { namespace: SUPPORTABILITY_REVIEW_STORE };
 
 export default {
   specifics: srFactory(),
   config
-}
+};

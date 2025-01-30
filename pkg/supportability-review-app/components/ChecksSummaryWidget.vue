@@ -29,20 +29,20 @@ export default {
   },
   computed: {
     summaryData() {
-      return [this.info.checks_pass, this.info.checks_warn, this.info.checks_fail, this.info.checks_skip]
+      return [this.info.checks_pass, this.info.checks_warn, this.info.checks_fail, this.info.checks_skip];
     }
   },
   methods: {
     getLabel(index) {
-      const labels = ['Pass', 'Warn', 'Fail', 'Skip']
-      return labels[index]
+      const labels = ['Pass', 'Warn', 'Fail', 'Skip'];
+      return labels[index];
     },
     getBorderClass(index) {
-      const classes = ['border-success', 'border-warning', 'border-danger', 'border-secondary']
-      return classes[index]
+      const classes = ['border-success', 'border-warning', 'border-danger', 'border-secondary'];
+      return classes[index];
     }
   }
-}
+};
 </script>
 
 <style scoped>

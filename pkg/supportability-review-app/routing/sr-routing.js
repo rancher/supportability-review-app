@@ -1,9 +1,9 @@
-import ListResource from '@shell/pages/c/_cluster/_product/_resource/index.vue'
-import CreateResource from '@shell/pages/c/_cluster/_product/_resource/create.vue'
-import ViewResource from '@shell/pages/c/_cluster/_product/_resource/_id.vue'
-import Dashboard from '../pages/DashboardPage.vue'
-import ViewReportPage from '../pages/ViewReportPage'
-import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types'
+import ListResource from '@shell/pages/c/_cluster/_product/_resource/index.vue';
+import CreateResource from '@shell/pages/c/_cluster/_product/_resource/create.vue';
+import ViewResource from '@shell/pages/c/_cluster/_product/_resource/_id.vue';
+import Dashboard from '../pages/DashboardPage.vue';
+import ViewReportPage from '../pages/ViewReportPage';
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types';
 
 const routes = [
   {
@@ -66,6 +66,6 @@ const routes = [
       cluster: BLANK_CLUSTER
     }
   }
-]
+];
 
-export default routes
+export default routes;
