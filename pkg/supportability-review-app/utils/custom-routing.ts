@@ -1,4 +1,4 @@
-import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types'
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types';
 
 export const rootRoute = () => ({
   name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}`,
@@ -11,7 +11,7 @@ export const rootRoute = () => ({
     cluster: BLANK_CLUSTER,
     pkg: SUPPORTABILITY_REVIEW_PRODUCT_NAME
   }
-})
+});
 
 export const createRoute = (name: string, params: Object, meta: Object) => ({
   name: `${rootRoute().name}-${name}`,
@@ -23,4 +23,4 @@ export const createRoute = (name: string, params: Object, meta: Object) => ({
     ...rootRoute().meta,
     ...meta
   }
-})
+});

@@ -26,10 +26,10 @@ export default {
     goToReviewBundle() {
       this.$router.push({
         path: '/c/_/sr/sr.cattle.io.reviewbundle/create'
-      })
+      });
     }
   }
-}
+};
 </script>
 <style scoped>
 .dashboard-view {

@@ -4,7 +4,7 @@ import extensionRouting from './routing/sr-routing';
 import srStore from './store';
 
 // Init the package
-export default function(plugin: IPlugin): void {
+export default function (plugin: IPlugin): void {
   // Auto-import model, detail, edit from the folders
   importTypes(plugin);
 

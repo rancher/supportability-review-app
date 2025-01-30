@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import AksLogo from '../images/aks.png'
-import EksLogo from '../images/eks.png'
-import GkeLogo from '../images/gke.png'
-import HarvesterLogo from '../images/harvester.png'
-import K3sLogo from '../images/k3s.png'
-import RkeLogo from '../images/rke.png'
+import AksLogo from '../images/aks.png';
+import EksLogo from '../images/eks.png';
+import GkeLogo from '../images/gke.png';
+import HarvesterLogo from '../images/harvester.png';
+import K3sLogo from '../images/k3s.png';
+import RkeLogo from '../images/rke.png';
 
 export default {
   name: 'ClustersDistroWidget',
@@ -42,17 +42,17 @@ export default {
         k3s: K3sLogo,
         rke: RkeLogo,
         rke2: RkeLogo
-      }
-      return logos[type] || ''
+      };
+      return logos[type] || '';
     },
     getClusterCountString(count) {
-      return count === 1 ? `${count} Cluster` : `${count} Clusters`
+      return count === 1 ? `${count} Cluster` : `${count} Clusters`;
     },
     getClusterTypeString(type) {
-      return type.toUpperCase()
+      return type.toUpperCase();
     }
   }
-}
+};
 </script>
 
 <style scoped>

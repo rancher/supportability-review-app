@@ -1,9 +1,9 @@
 <script>
-import Loading from '@shell/components/Loading.vue'
-import CruResource from '@shell/components/CruResource.vue'
-import CreateEditView from '@shell/mixins/create-edit-view'
-import { _CREATE, _EDIT } from '@shell/config/query-params'
-import Tolerations from '@shell/components/form/Tolerations'
+import Loading from '@shell/components/Loading.vue';
+import CruResource from '@shell/components/CruResource.vue';
+import CreateEditView from '@shell/mixins/create-edit-view';
+import { _CREATE, _EDIT } from '@shell/config/query-params';
+import Tolerations from '@shell/components/form/Tolerations';
 
 export default {
   name: 'ReviewBundleEditView',
@@ -29,82 +29,82 @@ export default {
   },
   data() {
     if (!this.value.metadata.name) {
-      this.value.metadata.generateName = 'review-bundle-'
+      this.value.metadata.generateName = 'review-bundle-';
     }
     if (!this.value.spec) {
-      this.value.spec = {}
-      this.value.spec.tolerations = []
+      this.value.spec = {};
+      this.value.spec.tolerations = [];
     }
     return {
       description: '',
       customName: '',
       dropdownOptions: ['review-bundle', 'custom-bundle'],
       showDropdown: false
-    }
+    };
   },
   watch: {
     customName(newName) {
       // Automatically update the metadata.generateName field
       if (newName) {
-        this.value.metadata.generateName = `${newName}-`
-        this.showDropdown = false
+        this.value.metadata.generateName = `${newName}-`;
+        this.showDropdown = false;
       } else {
-        this.value.metadata.generateName = 'review-bundle-'
-        this.showDropdown = true
+        this.value.metadata.generateName = 'review-bundle-';
+        this.showDropdown = true;
       }
     }
   },
   computed: {
     isCreate() {
-      return this.mode === _CREATE
+      return this.mode === _CREATE;
     },
     isView() {
-      return this.mode !== _CREATE && this.mode !== _EDIT
+      return this.mode !== _CREATE && this.mode !== _EDIT;
     },
     editorMode() {
       if (!this.isView) {
-        return EDITOR_MODES.EDIT_CODE
+        return EDITOR_MODES.EDIT_CODE;
       }
 
-      return EDITOR_MODES.VIEW_CODE
+      return EDITOR_MODES.VIEW_CODE;
     },
     hasBeenCreated() {
-      return !!this.value.id
+      return !!this.value.id;
     },
     customNameLength() {
-      return this.customName.length
+      return this.customName.length;
     },
     descriptionLength() {
-      return this.description.length
+      return this.description.length;
     },
     isCustomNameValid() {
-      return this.customName.length >= 0 && this.customName.length <= 30
+      return this.customName.length >= 0 && this.customName.length <= 30;
     },
     isDescriptionValid() {
-      return this.description.length >= 0 && this.description.length <= 100
+      return this.description.length >= 0 && this.description.length <= 100;
     },
     isFormValid() {
-      return this.isCustomNameValid && this.isDescriptionValid
+      return this.isCustomNameValid && this.isDescriptionValid;
     }
   },
   methods: {
     selectOption(option) {
-      this.customName = option
-      this.showDropdown = false
+      this.customName = option;
+      this.showDropdown = false;
     },
     handleClickOutside(event) {
       if (this.$refs.dropdown && !this.$refs.dropdown.contains(event.target)) {
-        this.showDropdown = false
+        this.showDropdown = false;
       }
     }
   },
   mounted() {
-    document.addEventListener('click', this.handleClickOutside)
+    document.addEventListener('click', this.handleClickOutside);
   },
   beforeUnmount() {
-    document.removeEventListener('click', this.handleClickOutside)
+    document.removeEventListener('click', this.handleClickOutside);
   }
-}
+};
 </script>
 
 <template>

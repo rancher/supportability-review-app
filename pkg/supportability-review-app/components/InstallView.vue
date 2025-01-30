@@ -1,16 +1,16 @@
 <script>
-import { mapGetters } from 'vuex'
-import { allHash } from '@shell/utils/promise'
+import { mapGetters } from 'vuex';
+import { allHash } from '@shell/utils/promise';
 
-import { Banner } from '@components/Banner'
-import AsyncButton from '@shell/components/AsyncButton'
-import Loading from '@shell/components/Loading'
+import { Banner } from '@components/Banner';
+import AsyncButton from '@shell/components/AsyncButton';
+import Loading from '@shell/components/Loading';
 
-import { CATALOG } from '@shell/config/types'
-import { REPO_TYPE, REPO, CHART, VERSION, LOCAL } from '@shell/config/query-params'
+import { CATALOG } from '@shell/config/types';
+import { REPO_TYPE, REPO, CHART, VERSION, LOCAL } from '@shell/config/query-params';
 
-import { SR_CHARTS } from '../config/types'
-import { handleGrowl, getLatestStableVersion } from '../utils/utils'
+import { SR_CHARTS } from '../config/types';
+import { handleGrowl, getLatestStableVersion } from '../utils/utils';
 
 export default {
   name: 'InstallView',
@@ -20,27 +20,27 @@ export default {
     Loading
   },
   async fetch() {
-    console.log('InstallView: async fetch')
-    this.reloadReady = false
-    const reqs = {}
+    console.log('InstallView: async fetch');
+    this.reloadReady = false;
+    const reqs = {};
 
     if (this.$store.getters['management/canList'](CATALOG.CLUSTER_REPO)) {
       reqs.repos = this.$store.dispatch('management/findAll', {
         type: CATALOG.CLUSTER_REPO
-      })
+      });
     }
 
     // force the refresh of the catalog to populate the charts
     if (!this.srRepo || !this.operatorChart) {
-      reqs.catalogRefresh = this.$store.dispatch('catalog/refresh')
+      reqs.catalogRefresh = this.$store.dispatch('catalog/refresh');
     }
 
-    await allHash(reqs)
-    this.initLoading = false
-    console.log('InstallView: async fetch: done')
+    await allHash(reqs);
+    this.initLoading = false;
+    console.log('InstallView: async fetch: done');
   },
   data() {
-    return { reloadReady: false, initLoading: true }
+    return { reloadReady: false, initLoading: true };
   },
   computed: {
     ...mapGetters({
@@ -50,11 +50,11 @@ export default {
     }),
 
     srRepo() {
-      console.log('InstallView: srRepo')
-      console.log('InstallView: this.charts: ', this.charts)
-      const chart = this.charts?.find((chart) => chart.chartName === SR_CHARTS.OPERATOR)
+      console.log('InstallView: srRepo');
+      console.log('InstallView: this.charts: ', this.charts);
+      const chart = this.charts?.find((chart) => chart.chartName === SR_CHARTS.OPERATOR);
 
-      return this.repos?.find((repo) => repo.id === chart?.repoName)
+      return this.repos?.find((repo) => repo.id === chart?.repoName);
     },
 
     operatorChart() {
@@ -63,48 +63,48 @@ export default {
           repoName: this.srRepo ? this.srRepo.id : null,
           repoType: 'cluster',
           chartName: SR_CHARTS.OPERATOR
-        }) || null
-      console.log('InstallView: operatorChart: chart=', chart)
+        }) || null;
+      console.log('InstallView: operatorChart: chart=', chart);
 
-      return chart
+      return chart;
     }
   },
   methods: {
     async refreshCharts(retry = 0, init) {
-      console.log('InstallView: refreshCharts, retry=', retry)
+      console.log('InstallView: refreshCharts, retry=', retry);
       try {
-        await this.$store.dispatch('catalog/refresh')
+        await this.$store.dispatch('catalog/refresh');
       } catch (e) {
-        handleGrowl({ error: e, store: this.$store })
+        handleGrowl({ error: e, store: this.$store });
       }
 
       if (!this.operatorChart && retry === 0) {
         await this.$store.dispatch('management/findAll', {
           type: CATALOG.CLUSTER_REPO
-        })
-        await this.refreshCharts(retry + 1)
+        });
+        await this.refreshCharts(retry + 1);
       }
 
       if (!this.operatorChart && retry === 1 && !init) {
-        this.reloadReady = true
+        this.reloadReady = true;
       }
     },
 
     async chartRoute() {
-      console.log('InstallView: chartRoute')
+      console.log('InstallView: chartRoute');
       if (!this.operatorChart) {
         try {
-          await this.refreshCharts()
+          await this.refreshCharts();
         } catch (e) {
-          handleGrowl({ error: e, store: this.$store })
+          handleGrowl({ error: e, store: this.$store });
 
-          return
+          return;
         }
       }
 
-      const { repoType, repoName, chartName, versions } = this.operatorChart
+      const { repoType, repoName, chartName, versions } = this.operatorChart;
 
-      const latestStableVersion = getLatestStableVersion(versions)
+      const latestStableVersion = getLatestStableVersion(versions);
 
       if (latestStableVersion) {
         const query = {
@@ -112,28 +112,28 @@ export default {
           [REPO]: repoName,
           [CHART]: chartName,
           [VERSION]: latestStableVersion.version
-        }
+        };
 
         this.$router.push({
           name: 'c-cluster-apps-charts-install',
           params: { cluster: LOCAL },
           query
-        })
+        });
       } else {
         const error = {
           _statusText: this.t('sr.versionError.title'),
           message: this.t('sr.versionError.message')
-        }
+        };
 
-        handleGrowl({ error, store: this.$store })
+        handleGrowl({ error, store: this.$store });
       }
     },
 
     reload() {
-      this.$router.go()
+      this.$router.go();
     }
   }
-}
+};
 </script>
 
 <template>

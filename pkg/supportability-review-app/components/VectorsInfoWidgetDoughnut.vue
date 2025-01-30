@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     getData() {
-      const d = []
+      const d = [];
       this.info.forEach((v, k) => {
         d.push({
           title: k,
@@ -67,16 +67,16 @@ export default {
           fail: v.checks_fail,
           warn: v.checks_warn,
           skip: v.checks_skip
-        })
-      })
-      return d
+        });
+      });
+      return d;
     },
     getDoughnutStyle(value) {
-      const total = value.total || 1 // Prevent division by zero
-      const passPercent = (value.pass / total) * 100
-      const failPercent = (value.fail / total) * 100
-      const warnPercent = (value.warn / total) * 100
-      const skipPercent = (value.skip / total) * 100
+      const total = value.total || 1; // Prevent division by zero
+      const passPercent = (value.pass / total) * 100;
+      const failPercent = (value.fail / total) * 100;
+      const warnPercent = (value.warn / total) * 100;
+      const skipPercent = (value.skip / total) * 100;
 
       // Return CSS for the doughnut background
       return {
@@ -86,22 +86,22 @@ export default {
           #f9b115 ${passPercent + failPercent}% ${passPercent + failPercent + warnPercent}%,
           #8a93a2 ${passPercent + failPercent + warnPercent}% 100%
         )`
-      }
+      };
     },
     getTextOverlayStyle(color, value, total, prevValue) {
       if (value === 0) {
-        return {}
+        return {};
       }
-      const totalPercent = (value / total) * 100
-      const startAngle = (prevValue / total) * 360
-      const endAngle = startAngle + (totalPercent / 100) * 360
-      const midAngle = (startAngle + endAngle) / 2
-      const offset = 90
+      const totalPercent = (value / total) * 100;
+      const startAngle = (prevValue / total) * 360;
+      const endAngle = startAngle + (totalPercent / 100) * 360;
+      const midAngle = (startAngle + endAngle) / 2;
+      const offset = 90;
 
       // Convert angle to radians for positioning
-      const radians = (midAngle - offset) * (Math.PI / 180)
-      const x = Math.cos(radians) * 70
-      const y = Math.sin(radians) * 70
+      const radians = (midAngle - offset) * (Math.PI / 180);
+      const x = Math.cos(radians) * 70;
+      const y = Math.sin(radians) * 70;
 
       return {
         color: this.getTextColor(color),
@@ -111,17 +111,17 @@ export default {
         fontSize: '12px',
         transform: 'translate(-50%, -50%)',
         zIndex: 3
-      }
+      };
     },
     getTextColor(color) {
-      return '#000'
+      return '#000';
     },
     getPercentage(value, total) {
-      const percentage = ((value / total) * 100).toFixed(0)
-      return percentage
+      const percentage = ((value / total) * 100).toFixed(0);
+      return percentage;
     }
   }
-}
+};
 </script>
 
 <style scoped>

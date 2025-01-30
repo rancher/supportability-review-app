@@ -9,7 +9,11 @@
       "catalog.cattle.io/ui-extensions-version": ">= 3.0.0 < 4.0.0"
     }
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write ./",
+    "format-check": "prettier --check ./"
+  },
   "engines": {
     "node": ">=16"
   },
