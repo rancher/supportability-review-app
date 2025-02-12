@@ -32,8 +32,7 @@ export default {
       this.value.metadata.generateName = 'review-bundle-';
     }
     if (!this.value.spec) {
-      this.value.spec = {};
-      this.value.spec.tolerations = [];
+      this.value.spec = { tolerations: [] };
     }
     return {
       description: '',
