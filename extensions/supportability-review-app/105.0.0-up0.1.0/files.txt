@@ -4,7 +4,6 @@ plugin/img/generic-catalog.1842a50e.svg
 plugin/img/gke.fdd861ba.png
 plugin/img/harvester.20240f8a.png
 plugin/img/harvester.e13fdacf.png
-plugin/img/rancher-prime-logo-color-720x290.5165fea0.jpg
 plugin/package.json
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.37.js
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.37.js.map
