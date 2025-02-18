@@ -80,9 +80,7 @@ export default {
   color: #1a73e8;
   cursor: pointer;
   border-radius: 5px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .get-started-btn:hover {
