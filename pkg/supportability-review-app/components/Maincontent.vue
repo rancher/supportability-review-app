@@ -50,10 +50,19 @@
           </span>
         </div>
         <div class="cards">
-          <div v-for="card in cards" :key="card.id" class="card">
-            <h4 class="card-heading">{{ card.heading }}</h4>
-            <p class="label">Details</p>
-            <p class="card-details">{{ card.details }}</p>
+          <template v-if="filteredCards(section.title).length > 0">
+            <div
+              v-for="card in filteredCards(section.title)"
+              :key="card.id"
+              class="card"
+              :class="getCardClass(card.state)">
+              <p class="label">{{ card.label }}</p>
+              <p class="card-details">{{ card.details }}</p>
+            </div>
+          </template>
+
+          <div v-else class="card wao-card">
+            <p class="card-details">Everything in {{ section.title }} is properly configured.</p>
           </div>
         </div>
       </div>
@@ -70,7 +79,7 @@ export default {
       required: true
     },
     cards: {
-      type: Object,
+      type: Array,
       required: true
     }
   },
@@ -103,6 +112,29 @@ export default {
     };
   },
   methods: {
+    filteredCards(vectorCategory) {
+      let failCount = 0;
+      let warnCount = 0;
+
+      return this.cards
+        .filter((card) => card.vector === vectorCategory)
+        .slice(0, 5)
+        .map((card) => {
+          if (card.state === 'fail') {
+            failCount++;
+            return { ...card, label: `Failure #${failCount}` };
+          } else if (card.state === 'warn') {
+            warnCount++;
+            return { ...card, label: `Warning #${warnCount}` };
+          }
+          return card;
+        });
+    },
+    getCardClass(state) {
+      if (state === 'fail') return 'failure';
+      if (state === 'warn') return 'warning';
+      return '';
+    },
     handleScroll() {
       const sections = this.sections.map((_, index) => this.$refs['section' + index][0].getBoundingClientRect().top);
 
@@ -188,7 +220,7 @@ export default {
 
 .icon img {
   margin-top: 35px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   height: 110px;
 }
 
@@ -271,18 +303,19 @@ export default {
 }
 
 .cards {
+  color: black;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   justify-content: center;
   margin-top: 30px;
 }
 
 .card {
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  border-radius: 20px 52px;
-  padding: 20px;
-  width: 200px;
-  height: 200px;
+  border-radius: 20px 20px;
+  padding: 10px;
+  width: 160px;
+  height: 180px;
   box-shadow:
     0 4px 8px rgba(0, 0, 0, 0.1),
     0 6px 20px rgba(0, 0, 0, 0.1);
@@ -314,11 +347,24 @@ export default {
   letter-spacing: 0.8px;
 }
 
-.card-details,
-.card-remediation {
+.card-details {
   font-size: 16px;
   line-height: 1.6;
   color: #4a4a4a;
   margin: 5px 0;
+}
+.card.failure {
+  border: 2px solid #f44336;
+  box-shadow: inset 0px 0px 15px rgba(244, 67, 54, 0.5);
+}
+
+.card.warning {
+  border: 2px solid #ff9800;
+  box-shadow: inset 0px 0px 25px rgba(255, 152, 0, 0.5);
+}
+
+.wao-card {
+  border: 2px solid green;
+  box-shadow: inset 0px 0px 25px rgba(0, 128, 0, 0.5);
 }
 </style>
