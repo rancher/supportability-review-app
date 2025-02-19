@@ -12,23 +12,7 @@ export default {
   name: 'ReportView',
   data() {
     return {
-      cards: [
-        {
-          id: 1,
-          heading: 'Sample Card 1',
-          details: 'Ensure kubelet is not affected by CVE-2024-10220'
-        },
-        {
-          id: 2,
-          heading: 'Sample Card 2',
-          details: 'Ensure cluster has minimum two (2) nodes.'
-        },
-        {
-          id: 3,
-          heading: 'Sample Card 3',
-          details: 'Ensure cluster has minimum two (2) controlplane nodes.'
-        }
-      ],
+      cards: [],
       reportObject: null,
       clusterData: [],
       summaryData: {
@@ -96,7 +80,8 @@ export default {
             checks_pass: 0,
             checks_skip: 0
           },
-          vectorData: {}
+          vectorData: {},
+          cards: []
         };
 
         reportData.clusters.forEach((cluster) => {
@@ -123,6 +108,14 @@ export default {
               report_data.vectorData[check.vector].checks_pass += check.state === 'pass';
               report_data.vectorData[check.vector].checks_fail += check.state === 'fail';
               report_data.vectorData[check.vector].checks_warn += check.state === 'warn';
+              if (check.state == 'fail' || check.state == 'warn') {
+                report_data.cards.push({
+                  id: check.check_id,
+                  details: check.text,
+                  state: check.state,
+                  vector: check.vector
+                });
+              }
             });
           });
           for (const vectorName in report_data.vectorData) {
@@ -130,6 +123,11 @@ export default {
             vectorData.checks_total = vectorData.checks_pass + vectorData.checks_fail + vectorData.checks_warn;
           }
         });
+        report_data.cards.sort((a, b) => {
+          const order = { fail: 1, warn: 2 };
+          return order[a.state] - order[b.state];
+        });
+        this.cards = report_data.cards;
         this.clusterData = report_data.clusterData || [];
         this.summaryData = report_data.summaryData || {};
         this.vectorData = new Map(Object.entries(report_data.vectorData || {}));
