@@ -31,9 +31,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: < 3.0.0
     apiVersion: v2
     appVersion: 104.0.0-up0.1.0
-    created: "2025-02-12T04:37:22.954060596Z"
+    created: "2025-02-19T05:30:06.47588701Z"
     description: supportability-review-app plugin
-    digest: f4f777764eb6e64449b53a5fe0ad6a69b449b6f27f9f0bfb07e7b905327dfa4b
+    digest: 1f13d25d5f7fc8994caf8214f4a9f357fff3f0bed33d6e325ccdc23f88fa46c1
     name: supportability-review-app
     type: application
     urls:
@@ -50,12 +50,12 @@ entries:
       catalog.cattle.io/ui-extensions-version: < 3.0.0
     apiVersion: v2
     appVersion: 103.0.0-up0.1.0
-    created: "2025-02-19T05:27:13.780558038Z"
+    created: "2025-02-12T04:32:22.563688519Z"
     description: supportability-review-app plugin
-    digest: 44d2d22979fab54a8edcfe7ef7c6ea2a7feba0121433679537471e8dc3918e8f
+    digest: 74bd4f5dae940f1efa4677735e984d320ac02e4be345c383b9190d3526902711
     name: supportability-review-app
     type: application
     urls:
     - assets/supportability-review-app/supportability-review-app-103.0.0-up0.1.0.tgz
     version: 103.0.0-up0.1.0
-generated: "2025-02-19T05:27:13.780167056Z"
+generated: "2025-02-19T05:30:06.475472512Z"
