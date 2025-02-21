@@ -3,11 +3,13 @@ import Loading from '@shell/components/Loading.vue';
 import CruResource from '@shell/components/CruResource.vue';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
+import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import Tolerations from '@shell/components/form/Tolerations';
 
 export default {
   name: 'ReviewBundleEditView',
   components: {
+    Checkbox,
     CruResource,
     Loading,
     Tolerations
@@ -33,8 +35,10 @@ export default {
     }
     if (!this.value.spec) {
       this.value.spec = {};
+      this.value.spec.analyzeClusters = ['local'];
     }
     return {
+      analyzeLocalOnly: true,
       description: '',
       customName: '',
       dropdownOptions: ['review-bundle', 'custom-bundle'],
@@ -42,6 +46,13 @@ export default {
     };
   },
   watch: {
+    analyzeLocalOnly(neu) {
+      if (neu) {
+        this.value.spec.analyzeClusters = ['local'];
+      } else {
+        this.value.spec.analyzeClusters = [];
+      }
+    },
     customName(newName) {
       // Automatically update the metadata.generateName field
       if (newName) {
@@ -140,6 +151,11 @@ export default {
       </div>
 
       <p v-if="!isCustomNameValid" class="error-text">Bundle Name must be upto 30 characters.</p>
+
+      <label for="analysis">Analysis</label>
+      <div class="col span-8 mb-20">
+        <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
+      </div>
 
       <label for="tolerations">Tolerations</label>
       <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
