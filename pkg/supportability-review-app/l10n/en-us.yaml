@@ -24,6 +24,8 @@ sr:
     viewReport: View Report
     titleDashboard: Supportability Review Dashboard
     sr.cattle.io.reviewbundle: Review Bundles
+  reviewBundle:
+    analyzeLocalOnly: Analyze local cluster only
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles
