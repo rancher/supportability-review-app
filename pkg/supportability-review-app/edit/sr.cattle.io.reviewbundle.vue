@@ -32,7 +32,7 @@ export default {
       this.value.metadata.generateName = 'review-bundle-';
     }
     if (!this.value.spec) {
-      this.value.spec = { tolerations: [] };
+      this.value.spec = {};
     }
     return {
       description: '',
@@ -142,7 +142,7 @@ export default {
       <p v-if="!isCustomNameValid" class="error-text">Bundle Name must be upto 30 characters.</p>
 
       <label for="tolerations">Tolerations</label>
-      <Tolerations v-model="value.spec.tolerations" :mode="mode" />
+      <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
 
       <label for="description">Description</label>
       <div class="textarea-container">
