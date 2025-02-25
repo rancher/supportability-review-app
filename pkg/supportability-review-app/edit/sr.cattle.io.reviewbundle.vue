@@ -3,14 +3,19 @@ import Loading from '@shell/components/Loading.vue';
 import CruResource from '@shell/components/CruResource.vue';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
+import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import Tolerations from '@shell/components/form/Tolerations';
-
+import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
+import TextAreaAutoGrow from '@components/Form/TextArea/TextAreaAutoGrow.vue';
 export default {
   name: 'ReviewBundleEditView',
   components: {
+    Checkbox,
     CruResource,
     Loading,
-    Tolerations
+    Tolerations,
+    LabeledInput,
+    TextAreaAutoGrow
   },
   mixins: [CreateEditView],
   props: {
@@ -32,9 +37,11 @@ export default {
       this.value.metadata.generateName = 'review-bundle-';
     }
     if (!this.value.spec) {
-      this.value.spec = { tolerations: [] };
+      this.value.spec = {};
+      this.value.spec.analyzeClusters = ['local'];
     }
     return {
+      analyzeLocalOnly: true,
       description: '',
       customName: '',
       dropdownOptions: ['review-bundle', 'custom-bundle'],
@@ -42,14 +49,11 @@ export default {
     };
   },
   watch: {
-    customName(newName) {
-      // Automatically update the metadata.generateName field
-      if (newName) {
-        this.value.metadata.generateName = `${newName}-`;
-        this.showDropdown = false;
+    analyzeLocalOnly(neu) {
+      if (neu) {
+        this.value.spec.analyzeClusters = ['local'];
       } else {
-        this.value.metadata.generateName = 'review-bundle-';
-        this.showDropdown = true;
+        this.value.spec.analyzeClusters = [];
       }
     }
   },
@@ -69,39 +73,24 @@ export default {
     },
     hasBeenCreated() {
       return !!this.value.id;
-    },
-    customNameLength() {
-      return this.customName.length;
-    },
-    descriptionLength() {
-      return this.description.length;
-    },
-    isCustomNameValid() {
-      return this.customName.length >= 0 && this.customName.length <= 30;
-    },
-    isDescriptionValid() {
-      return this.description.length >= 0 && this.description.length <= 100;
-    },
-    isFormValid() {
-      return this.isCustomNameValid && this.isDescriptionValid;
     }
   },
   methods: {
-    selectOption(option) {
-      this.customName = option;
-      this.showDropdown = false;
-    },
-    handleClickOutside(event) {
-      if (this.$refs.dropdown && !this.$refs.dropdown.contains(event.target)) {
-        this.showDropdown = false;
+    setDefaultName() {
+      this.value.metadata.generateName = this.value.metadata.generateName
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/^-+/, '')
+        .slice(0, 30);
+
+      if (!this.value.metadata.generateName.trim()) {
+        this.value.metadata.generateName = 'review-bundle-';
+      }
+      if (!this.value.metadata.generateName.endsWith('-')) {
+        this.value.metadata.generateName += '-';
       }
     }
-  },
-  mounted() {
-    document.addEventListener('click', this.handleClickOutside);
-  },
-  beforeUnmount() {
-    document.removeEventListener('click', this.handleClickOutside);
   }
 };
 </script>
@@ -119,133 +108,38 @@ export default {
     @error="(e) => (errors = e)"
     @finish="save"
     @cancel="done">
-    <h1>EditView</h1>
-    <!-- Bundle Name -->
+    <div>
+      <h2 class="bundle-name mb-200">Bundle Name</h2>
+      <LabeledInput
+        v-model:value="value.metadata.generateName"
+        label="Enter Bundle Name"
+        subLabel="Use lowercase letters, max 30 characters. Spaces will be replaced with '-' automatically."
+        placeholder="review-bundle"
+        :maxlength="30"
+        @blur="setDefaultName" />
+      <h2 class="bundle-description mb-200">Bundle Description</h2>
+      <TextAreaAutoGrow placeholder="Enter bundle description" autocapitalize="off" />
+    </div>
     <div v-if="isCreate" class="input-wrapper">
-      <label for="bundle-name">Bundle Name</label>
-      <div :class="['name-container', { 'dropdown-active': showDropdown }]" ref="dropdown">
-        <input
-          id="bundle-name"
-          type="text"
-          v-model="customName"
-          @focus="showDropdown = true"
-          @input="showDropdown = false"
-          placeholder="Enter bundle name" />
-        <span class="char-count-name">{{ customName.length }}/30</span>
-        <div v-if="showDropdown" class="dropdown">
-          <div v-for="option in dropdownOptions" :key="option" @click="selectOption(option)" class="dropdown-item">
-            {{ option }}
-          </div>
-        </div>
+      <h2 class="analysis-label mt-20" for="analysis">Analysis</h2>
+      <div class="col span-8 mb-20">
+        <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
       </div>
 
-      <p v-if="!isCustomNameValid" class="error-text">Bundle Name must be upto 30 characters.</p>
-
-      <label for="tolerations">Tolerations</label>
-      <Tolerations v-model="value.spec.tolerations" :mode="mode" />
-
-      <label for="description">Description</label>
-      <div class="textarea-container">
-        <textarea id="description" v-model="description" placeholder="Enter bundle Description" />
-        <span class="char-count-description">{{ description.length }}/100</span>
-      </div>
-
-      <p v-if="!isDescriptionValid" class="error-text">Description must be upto 100 characters.</p>
+      <h2 class="toleration-label" for="tolerations">Tolerations</h2>
+      <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
     </div>
   </CruResource>
 </template>
-
 <style scoped>
-.name-container {
-  position: relative;
-  width: 320px;
+.bundle-description {
+  margin-top: 40px;
 }
-.textarea-container {
-  position: relative;
-  width: 600px;
+.analysis-label {
+  font-size: 21px;
+  color: --body-text;
 }
-.char-count-name,
-.char-count-description {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  font-weight: bold;
-  font-size: 12px;
-  color: #888;
-}
-
-.error-text {
-  color: #f00;
-  font-weight: bold;
-}
-
-label {
-  font-weight: bold;
-  font-size: 22px;
-  display: block;
-  margin-top: 20px;
-}
-
-input {
-  padding: 10px;
-  font-size: 16px;
-  width: 320px;
-  box-sizing: border-box;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: Arial;
-}
-
-textarea {
-  padding: 10px;
-  font-size: 16px;
-  width: 600px;
-  box-sizing: border-box;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: Arial;
-  resize: none;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #666;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #999;
-  font-style: italic;
-  opacity: 0.7;
-}
-
-div[v-if='isCreate'] {
-  padding: 20px;
-  background-color: #a62d2d;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-.dropdown {
-  position: absolute;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-.dropdown-active {
-  margin-bottom: 100px;
-}
-.dropdown-item {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-}
-.dropdown-item:hover {
-  background-color: #777;
+.toleration-label {
+  font-size: 21px;
 }
 </style>
