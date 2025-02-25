@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" />
+    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eol_eom="eol_eom" />
     <Maincontent class="main-content" :vectorData="vectorData" :cards="cards" />
   </div>
 </template>
@@ -20,6 +20,10 @@ export default {
         checks_fail: 0,
         checks_warn: 0,
         checks_pass: 0
+      },
+      eol_eom: {
+        local: null,
+        rancher: null
       },
       vectorData: new Map(),
       circleRadius: 45
@@ -83,7 +87,29 @@ export default {
           vectorData: {},
           cards: []
         };
-
+        reportData?.systems_summary?.eom_eol?.forEach((item) => {
+          var formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
+          var formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
+          if (item.cluster === 'local' && item.app === 'rancher') {
+            this.eol_eom.rancher = {
+              name: item.app,
+              version: item.version,
+              eol: formattedEOL,
+              eom: formattedEOM,
+              is_eol: item.is_eol,
+              is_eom: item.is_eom
+            };
+          } else if (item.cluster === 'local') {
+            this.eol_eom.local = {
+              name: item.app,
+              version: item.version,
+              eol: formattedEOL,
+              eom: formattedEOM,
+              is_eol: item.is_eol,
+              is_eom: item.is_eom
+            };
+          }
+        });
         reportData.clusters.forEach((cluster) => {
           const typeIndex = report_data.clusterData.findIndex((c) => c.type === cluster.kubernetes_distro);
           if (typeIndex !== -1) {
