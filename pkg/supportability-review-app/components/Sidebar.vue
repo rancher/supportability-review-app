@@ -1,6 +1,7 @@
 <template>
   <div class="layout">
     <div class="fixed-column">
+      <div class="cluster-type-name">Local Cluster Summary</div>
       <div class="circular-progress">
         <div class="circle-container">
           <svg viewBox="0 0 100 100" class="circular-svg">
@@ -60,7 +61,8 @@
             }"></div>
         </div>
       </div>
-      <div class="Cluster-type-heading">Cluster Type</div>
+      <div class="Cluster-type-heading">Cluster Details</div>
+
       <div class="cluster-logos">
         <div v-for="(cluster, index) in clusterData" :key="index">
           <div v-if="cluster.count > 0" class="cluster-item">
@@ -69,6 +71,15 @@
             <p class="cluster-count">{{ getClusterCountString(cluster.count) }}</p>
           </div>
         </div>
+      </div>
+      <div v-if="eol_eom.local.is_eol || eol_eom.local.is_eom" class="cluster-eol-heading">
+        {{ eol_eom.local.name }} {{ eol_eom.local.version }} is
+        {{ eol_eom.local.is_eol ? `EOL at ${eol_eom.local.eol}` : `EOM at ${eol_eom.local.eom}` }}
+      </div>
+      <div v-if="eol_eom.rancher.is_eol || eol_eom.rancher.is_eom" class="Cluster-type-heading">Rancher Details</div>
+      <div v-if="eol_eom.rancher.is_eol || eol_eom.rancher.is_eom" class="cluster-eol-heading">
+        {{ eol_eom.rancher.name }} {{ eol_eom.rancher.version }} is
+        {{ eol_eom.rancher.is_eol ? `EOL at ${eol_eom.rancher.eol}` : `EOM at ${eol_eom.rancher.eom}` }}
       </div>
     </div>
   </div>
@@ -96,6 +107,10 @@ export default {
       default: () => []
     },
     summaryData: {
+      type: Object,
+      required: true
+    },
+    eol_eom: {
       type: Object,
       required: true
     }
@@ -226,6 +241,15 @@ export default {
   font-weight: bold;
   color: #000;
   margin-bottom: 10px;
+  border: 0px solid red;
+}
+.cluster-type-name {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 20px;
+  border: 0px solid red;
 }
 .cluster-logos {
   display: flex;
@@ -234,10 +258,7 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 0px;
-  /*
-  border: 0.1px solid black;
-  */
-  min-height: 200px;
+  border: 0px solid green;
 }
 .cluster-item {
   display: flex;
@@ -275,37 +296,41 @@ export default {
   color: #1e1616;
   font-weight: 600;
 }
+
+.cluster-eol-heading {
+  text-align: left;
+  margin: 10px 0px 10px 0px;
+  font-size: 15px;
+  color: #999;
+}
+
 @media (min-width: 1600px) {
   .fixed-column {
     margin: 20px 0;
-    padding: 40px;
+    padding: 30px;
   }
-
   .supportability-score {
     margin: 20px 0;
     font-size: 26px;
   }
 
   .checks-status {
-    margin-bottom: 60px;
-    margin-top: 24px;
+    margin-bottom: 20px;
+    margin-top: 10px;
   }
 
   .status-title {
     font-size: 26px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .status-row {
-    margin-bottom: 25px;
-  }
-
-  .cluster-logos {
-    padding: 20px;
+    margin-bottom: 15px;
   }
 
   .cluster-item {
-    padding: 16px;
+    margin: 10px 0;
+    padding: 15px;
   }
   .Cluster-type-heading {
     font-size: 26px;
