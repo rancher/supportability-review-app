@@ -1,6 +1,5 @@
 <template>
   <div class="main-container">
-    <!-- Navigation Bar -->
     <nav class="navbar">
       <ul>
         <li
@@ -13,7 +12,6 @@
       </ul>
     </nav>
 
-    <!-- Scrollable Content -->
     <div class="content" @scroll="handleScroll">
       <div
         v-for="(section, index) in sections"
@@ -153,7 +151,7 @@ export default {
 <style scoped>
 .main-container {
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: #efeaea;
   height: 100%;
   box-sizing: border-box;
@@ -164,7 +162,7 @@ export default {
   top: 0;
   background-color: #1e293b;
   padding: 6px 0;
-  z-index: 0; /* Keeps the navbar on top of other elements */
+  z-index: 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border: 0px solid rgb(74, 212, 143);
 }
@@ -182,7 +180,7 @@ export default {
   cursor: pointer;
   padding: 8px 16px;
   font-size: 17px;
-  color: #e2e8f0; /* Light Grayish Blue */
+  color: #e2e8f0;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -190,11 +188,11 @@ export default {
 }
 
 .navbar li:hover {
-  background-color: #334155; /* Muted Blue Gray */
+  background-color: #334155;
   color: #ffffff;
 }
 .navbar li.active {
-  background-color: #475569; /* Deep Grayish Blue */
+  background-color: #475569;
   color: #ffffff;
   font-weight: 600;
   border-bottom: 1px solid #94a3b8;
@@ -366,5 +364,10 @@ export default {
 .wao-card {
   border: 2px solid green;
   box-shadow: inset 0px 0px 25px rgba(0, 128, 0, 0.5);
+}
+@media (min-width: 1600px) {
+  .row {
+    height: 88vh;
+  }
 }
 </style>
