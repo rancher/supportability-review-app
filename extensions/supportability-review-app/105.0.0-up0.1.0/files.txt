@@ -5,10 +5,10 @@ plugin/img/gke.fdd861ba.png
 plugin/img/harvester.20240f8a.png
 plugin/img/harvester.e13fdacf.png
 plugin/package.json
+plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.106.js
+plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.106.js.map
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.37.js
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.37.js.map
-plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.480.js
-plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.480.js.map
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.60.js
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.60.js.map
 plugin/supportability-review-app-105.0.0-up0.1.0.umd.min.detail.js
