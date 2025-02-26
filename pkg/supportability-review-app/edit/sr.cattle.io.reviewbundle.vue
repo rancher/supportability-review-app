@@ -38,8 +38,9 @@ export default {
     }
     if (!this.value.spec) {
       this.value.spec = {};
-      this.value.spec.analyzeClusters = ['local'];
     }
+    this.value.spec.analyzeClusters = ['local'];
+    this.value.spec.sonobuoyNamespace = 'sonobuoy';
     return {
       analyzeLocalOnly: true,
       description: '',
@@ -109,7 +110,9 @@ export default {
     @finish="save"
     @cancel="done">
     <div>
-      <h2 class="bundle-name mb-200">Bundle Name</h2>
+      <h1 class="mb-200">Collector</h1>
+
+      <h3 class="mb-200">Bundle Name</h3>
       <LabeledInput
         v-model:value="value.metadata.generateName"
         label="Enter Bundle Name"
@@ -117,29 +120,24 @@ export default {
         placeholder="review-bundle"
         :maxlength="30"
         @blur="setDefaultName" />
-      <h2 class="bundle-description mb-200">Bundle Description</h2>
+
+      <h3 class="mt-40 mb-200">Bundle Description</h3>
       <TextAreaAutoGrow placeholder="Enter bundle description" autocapitalize="off" />
+
+      <h3 class="mt-10 mb-200">Sonobuoy Namespace</h3>
+      <LabeledInput v-model:value="value.spec.sonobuoyNamespace" :maxlength="64" />
+
+      <h3 class="mt-10 mb-200" for="tolerations">Tolerations</h3>
+      <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
     </div>
-    <div v-if="isCreate" class="input-wrapper">
-      <h2 class="analysis-label mt-20" for="analysis">Analysis</h2>
+    <div>
+      <h1 class="mt-10 mb-200">Analyzer</h1>
+
+      <h3 class="mt-20">Target cluster</h3>
       <div class="col span-8 mb-20">
         <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
       </div>
-
-      <h2 class="toleration-label" for="tolerations">Tolerations</h2>
-      <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
     </div>
   </CruResource>
 </template>
-<style scoped>
-.bundle-description {
-  margin-top: 40px;
-}
-.analysis-label {
-  font-size: 21px;
-  color: --body-text;
-}
-.toleration-label {
-  font-size: 21px;
-}
-</style>
+<style scoped></style>
