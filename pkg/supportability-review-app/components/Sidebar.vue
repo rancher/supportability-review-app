@@ -72,14 +72,14 @@
           </div>
         </div>
       </div>
-      <div v-if="eol_eom.local.is_eol || eol_eom.local.is_eom" class="cluster-eol-heading">
-        {{ eol_eom.local.name }} {{ eol_eom.local.version }} is
-        {{ eol_eom.local.is_eol ? `EOL at ${eol_eom.local.eol}` : `EOM at ${eol_eom.local.eom}` }}
+      <div v-if="eom_eol.local.is_eol || eom_eol.local.is_eom" class="cluster-eol-heading">
+        {{ eom_eol.local.name }} {{ eom_eol.local.version }} is
+        {{ eom_eol.local.is_eol ? `EOL at ${eom_eol.local.eol}` : `EOM at ${eom_eol.local.eom}` }}
       </div>
-      <div v-if="eol_eom.rancher.is_eol || eol_eom.rancher.is_eom" class="Cluster-type-heading">Rancher Details</div>
-      <div v-if="eol_eom.rancher.is_eol || eol_eom.rancher.is_eom" class="cluster-eol-heading">
-        {{ eol_eom.rancher.name }} {{ eol_eom.rancher.version }} is
-        {{ eol_eom.rancher.is_eol ? `EOL at ${eol_eom.rancher.eol}` : `EOM at ${eol_eom.rancher.eom}` }}
+      <div v-if="eom_eol.rancher.is_eol || eom_eol.rancher.is_eom" class="Cluster-type-heading">Rancher Details</div>
+      <div v-if="eom_eol.rancher.is_eol || eom_eol.rancher.is_eom" class="cluster-eol-heading">
+        {{ eom_eol.rancher.name }} {{ eom_eol.rancher.version }} is
+        {{ eom_eol.rancher.is_eol ? `EOL at ${eom_eol.rancher.eol}` : `EOM at ${eom_eol.rancher.eom}` }}
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@ export default {
       type: Object,
       required: true
     },
-    eol_eom: {
+    eom_eol: {
       type: Object,
       required: true
     }
