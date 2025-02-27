@@ -22,8 +22,8 @@ export default {
         checks_pass: 0
       },
       eol_eom: {
-        local: null,
-        rancher: null
+        local: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' },
+        rancher: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' }
       },
       vectorData: new Map(),
       circleRadius: 45
@@ -90,10 +90,11 @@ export default {
         reportData?.systems_summary?.eom_eol?.forEach((item) => {
           var formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
           var formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
+          const formattedVersion = item.version.split('.').slice(0, 2).join('.');
           if (item.cluster === 'local' && item.app === 'rancher') {
             this.eol_eom.rancher = {
               name: item.app,
-              version: item.version,
+              version: formattedVersion,
               eol: formattedEOL,
               eom: formattedEOM,
               is_eol: item.is_eol,
@@ -102,7 +103,7 @@ export default {
           } else if (item.cluster === 'local') {
             this.eol_eom.local = {
               name: item.app,
-              version: item.version,
+              version: formattedVersion,
               eol: formattedEOL,
               eom: formattedEOM,
               is_eol: item.is_eol,
@@ -186,3 +187,4 @@ export default {
   flex-grow: 1;
 }
 </style>
+clear
