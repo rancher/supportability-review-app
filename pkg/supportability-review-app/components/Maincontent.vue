@@ -162,7 +162,7 @@ export default {
   top: 0;
   background-color: #1e293b;
   padding: 6px 0;
-  z-index: 0;
+  z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border: 0px solid rgb(74, 212, 143);
 }
