@@ -91,6 +91,11 @@ export default {
       if (!this.value.metadata.generateName.endsWith('-')) {
         this.value.metadata.generateName += '-';
       }
+    },
+    setDefaultSonobuoyNamespace() {
+      if (!this.value.spec.sonobuoyNamespace.trim()) {
+        this.value.spec.sonobuoyNamespace = 'sonobuoy';
+      }
     }
   }
 };
@@ -125,7 +130,11 @@ export default {
       <TextAreaAutoGrow placeholder="Enter bundle description" autocapitalize="off" />
 
       <h3 class="mt-10 mb-200">Sonobuoy Namespace</h3>
-      <LabeledInput v-model:value="value.spec.sonobuoyNamespace" :maxlength="64" />
+      <LabeledInput
+        v-model:value="value.spec.sonobuoyNamespace"
+        placeholder="sonobuoy"
+        :maxlength="64"
+        @blur="setDefaultSonobuoyNamespace" />
 
       <h3 class="mt-10 mb-200" for="tolerations">Tolerations</h3>
       <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
