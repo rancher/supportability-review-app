@@ -56,12 +56,9 @@ export default class ReviewBundle extends SteveModel {
   }
 
   async downloadThisBundle() {
-    const hostname = window.location.host;
     try {
       this.downloadFromUrl(
-        'https://' +
-          hostname +
-          '/k8s/clusters/local/api/v1/namespaces/sr-operator-system/services/http:sr-bundle-app-frontend-service:80/proxy/' +
+        '/k8s/clusters/local/api/v1/namespaces/sr-operator-system/services/http:sr-bundle-app-frontend-service:80/proxy/' +
           '?key=' +
           this.metadata.name +
           '&type=file',

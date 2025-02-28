@@ -55,10 +55,7 @@ export default {
   methods: {
     async fetchReport() {
       const name = this.$route.query.bundlename;
-      const hostname = window.location.host;
       const path =
-        'https://' +
-        hostname +
         '/k8s/clusters/local/api/v1/namespaces/sr-operator-system/services/http:sr-bundle-app-frontend-service:80/proxy/' +
         '?key=' +
         name +
