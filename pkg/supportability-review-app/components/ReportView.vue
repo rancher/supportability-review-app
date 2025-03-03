@@ -137,7 +137,8 @@ export default {
                   id: check.check_id,
                   details: check.text,
                   state: check.state,
-                  vector: check.vector
+                  vector: check.vector,
+                  priority: check.priority
                 });
               }
             });
@@ -148,8 +149,12 @@ export default {
           }
         });
         report_data.cards.sort((a, b) => {
-          const order = { fail: 1, warn: 2 };
-          return order[a.state] - order[b.state];
+          const priorityOrder = { high: 1, medium: 2, low: 3 };
+          const stateOrder = { fail: 1, warn: 2 };
+          return (
+            (stateOrder[a.state] || 3) - (stateOrder[b.state] || 3) ||
+            priorityOrder[a.priority] - priorityOrder[b.priority]
+          );
         });
         this.cards = report_data.cards;
         this.clusterData = report_data.clusterData || [];
