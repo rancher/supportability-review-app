@@ -20,7 +20,7 @@
         :ref="'section' + index"
         class="section row">
         <div class="icon">
-          <img src="../images/security.png" alt="icon" />
+          <img :src="getIcon(section.title)" :alt="section.title + ' icon'" />
         </div>
         <div class="progress-section">
           <div class="progress-text">
@@ -142,6 +142,15 @@ export default {
     },
     scrollToSection(index) {
       this.$refs['section' + index][0].scrollIntoView({ behavior: 'smooth' });
+    },
+    getIcon(title) {
+      const icons = {
+        Security: require('../images/shield.svg'),
+        'Operational Best Practice': require('../images/controls.svg'),
+        'Design Validation': require('../images/monitoring.svg'),
+        'Support Matrix Conformance': require('../images/regulation.svg')
+      };
+      return icons[title];
     }
   }
 };
