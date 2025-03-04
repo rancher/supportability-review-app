@@ -294,10 +294,28 @@ export default {
   color: #2196f3;
   text-decoration: none;
   font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
-.info-box .link:hover {
-  text-decoration: underline;
+.info-box .link::after {
+  content: 'Open a case with SUSE attaching support bundle (all clusters)';
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-20%);
+  width: max-content;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.info-box .link:hover::after {
+  display: block;
 }
 
 .cards {
