@@ -108,7 +108,10 @@ export default {
             };
           }
         });
-        reportData.clusters.forEach((cluster) => {
+        for (const cluster of reportData.clusters) {
+          if (cluster.cluster_id !== 'local') {
+            continue;
+          }
           const typeIndex = report_data.clusterData.findIndex((c) => c.type === cluster.kubernetes_distro);
           if (typeIndex !== -1) {
             report_data.clusterData[typeIndex].count++;
@@ -147,7 +150,8 @@ export default {
             const vectorData = report_data.vectorData[vectorName];
             vectorData.checks_total = vectorData.checks_pass + vectorData.checks_fail + vectorData.checks_warn;
           }
-        });
+          break;
+        }
         report_data.cards.sort((a, b) => {
           const priorityOrder = { high: 1, medium: 2, low: 3 };
           const stateOrder = { fail: 1, warn: 2 };
