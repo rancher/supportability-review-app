@@ -135,8 +135,7 @@ export default {
     },
     handleScroll() {
       const sections = this.sections.map((_, index) => this.$refs['section' + index][0].getBoundingClientRect().top);
-
-      let activeIndex = sections.findIndex((top) => top >= 0 && top < window.innerHeight / 2);
+      const activeIndex = sections.findIndex((top) => top >= 0 && top < window.innerHeight / 2);
       if (activeIndex !== -1) {
         this.activeSection = activeIndex;
       }

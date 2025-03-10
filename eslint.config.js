@@ -47,6 +47,9 @@ export default [
     rules: {
       // Vue-specific rules
       'no-undef': 'warn',
+      'no-unused-vars': 'error',
+      'no-var': 'error',
+      'prefer-const': 'error',
 
       '@typescript-eslint/no-unused-vars': 'error',
       'vue/attribute-hyphenation': 'warn',
@@ -57,7 +60,7 @@ export default [
       'vue/max-attributes-per-line': 'off',
       'vue/multi-word-component-names': 'warn',
       'vue/no-mutating-props': 'warn',
-      'vue/no-unused-vars': 'warn',
+      'vue/no-unused-vars': 'error',
       'vue/no-unused-components': 'error',
       'vue/no-use-v-if-with-v-for': 'error',
       'vue/order-in-components': 'error',

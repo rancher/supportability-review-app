@@ -85,8 +85,8 @@ export default {
           cards: []
         };
         reportData?.systems_summary?.eom_eol?.forEach((item) => {
-          var formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
-          var formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
+          const formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
+          const formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
           const formattedVersion = item.version.split('.').slice(0, 2).join('.');
           if (item.cluster === 'local' && item.app === 'rancher') {
             this.eom_eol.rancher = {
