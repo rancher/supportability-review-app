@@ -50,6 +50,7 @@ export default [
 
       '@typescript-eslint/no-unused-vars': 'warn',
       'vue/attribute-hyphenation': 'warn',
+      'vue/attributes-order': 'error',
       'vue/html-closing-bracket-newline': 'off',
       'vue/html-indent': 'off',
       'vue/html-self-closing': 'off',
