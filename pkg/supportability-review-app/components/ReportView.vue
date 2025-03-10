@@ -165,7 +165,7 @@ export default {
         this.summaryData = report_data.summaryData || {};
         this.vectorData = new Map(Object.entries(report_data.vectorData || {}));
       } catch (error) {
-        console.log('Report Error');
+        console.log('Report Error:' + error);
       }
     }
   }
