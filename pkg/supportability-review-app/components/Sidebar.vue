@@ -29,7 +29,7 @@
         <p class="status-title">Checks Status:</p>
         <div class="status-row">
           <p class="status-label">Passed Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_pass }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_pass }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div class="progress" :style="{ width: progressPassWidth + '%' }"></div>
@@ -37,7 +37,7 @@
 
         <div class="status-row">
           <p class="status-label">Failed Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_fail }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_fail }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div
@@ -50,7 +50,7 @@
 
         <div class="status-row">
           <p class="status-label">Warning Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_warn }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_warn }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div

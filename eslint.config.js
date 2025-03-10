@@ -31,7 +31,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-require-imports': 'warn',
       '@typescript-eslint/no-unused-expressions': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'warn'
     }
@@ -48,8 +48,9 @@ export default [
       // Vue-specific rules
       'no-undef': 'warn',
 
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'error',
       'vue/attribute-hyphenation': 'warn',
+      'vue/attributes-order': 'error',
       'vue/html-closing-bracket-newline': 'off',
       'vue/html-indent': 'off',
       'vue/html-self-closing': 'off',
@@ -57,10 +58,11 @@ export default [
       'vue/multi-word-component-names': 'warn',
       'vue/no-mutating-props': 'warn',
       'vue/no-unused-vars': 'warn',
-      'vue/no-unused-components': 'warn',
+      'vue/no-unused-components': 'error',
       'vue/no-use-v-if-with-v-for': 'error',
       'vue/order-in-components': 'error',
-      'vue/singleline-html-element-content-newline': 'off'
+      'vue/singleline-html-element-content-newline': 'off',
+      'vue/this-in-template': 'error'
     }
   }
 ];

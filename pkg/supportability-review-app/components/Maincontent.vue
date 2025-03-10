@@ -15,8 +15,8 @@
     <div class="content" @scroll="handleScroll">
       <div
         v-for="(section, index) in sections"
-        :key="index"
         :id="section.id"
+        :key="index"
         :ref="'section' + index"
         class="section row">
         <div class="icon">
