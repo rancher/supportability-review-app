@@ -58,7 +58,7 @@ export default [
       'vue/multi-word-component-names': 'warn',
       'vue/no-mutating-props': 'warn',
       'vue/no-unused-vars': 'warn',
-      'vue/no-unused-components': 'warn',
+      'vue/no-unused-components': 'error',
       'vue/no-use-v-if-with-v-for': 'error',
       'vue/order-in-components': 'error',
       'vue/singleline-html-element-content-newline': 'off',
