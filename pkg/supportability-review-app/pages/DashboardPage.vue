@@ -12,6 +12,9 @@ export default {
     InstallView,
     DashboardView
   },
+  data() {
+    return { isSROpInstalled: true };
+  },
   async fetch() {
     console.log('pages/DashboardPage.vue: fetch');
     // this covers scenario where Operator is deleted from Apps, and we lose the admin role for Standard Users...
@@ -45,9 +48,6 @@ export default {
     } else {
       this.isSROpInstalled = false;
     }
-  },
-  data() {
-    return { isSROpInstalled: true };
   }
 };
 </script>

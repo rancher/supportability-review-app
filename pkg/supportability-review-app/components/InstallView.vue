@@ -19,6 +19,9 @@ export default {
     AsyncButton,
     Loading
   },
+  data() {
+    return { reloadReady: false, initLoading: true };
+  },
   async fetch() {
     console.log('InstallView: async fetch');
     this.reloadReady = false;
@@ -38,9 +41,6 @@ export default {
     await allHash(reqs);
     this.initLoading = false;
     console.log('InstallView: async fetch: done');
-  },
-  data() {
-    return { reloadReady: false, initLoading: true };
   },
   computed: {
     ...mapGetters({
