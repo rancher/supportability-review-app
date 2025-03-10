@@ -61,7 +61,8 @@ export default [
       'vue/no-unused-components': 'warn',
       'vue/no-use-v-if-with-v-for': 'error',
       'vue/order-in-components': 'error',
-      'vue/singleline-html-element-content-newline': 'off'
+      'vue/singleline-html-element-content-newline': 'off',
+      'vue/this-in-template': 'error'
     }
   }
 ];
