@@ -95,11 +95,6 @@ import RkeLogo from '../images/rke.png';
 import security from '../images/security.png';
 export default {
   name: 'Sidebar',
-  data() {
-    return {
-      circleRadius: 45
-    };
-  },
   props: {
     clusterData: {
       type: Array,
@@ -115,27 +110,10 @@ export default {
       required: true
     }
   },
-
-  methods: {
-    getClusterLogo(type) {
-      const logos = {
-        aks: AksLogo,
-        eks: EksLogo,
-        gke: GkeLogo,
-        harvester: HarvesterLogo,
-        k3s: K3sLogo,
-        rke: RkeLogo,
-        rke2: RkeLogo,
-        security: security
-      };
-      return logos[type] || '';
-    },
-    getClusterCountString(count) {
-      return count === 1 ? `${count} Cluster` : `${count} Clusters`;
-    },
-    getClusterTypeString(type) {
-      return type.toUpperCase();
-    }
+  data() {
+    return {
+      circleRadius: 45
+    };
   },
   computed: {
     circleCircumference() {
@@ -155,6 +133,27 @@ export default {
     },
     progressPercentage() {
       return ((this.summaryData.checks_pass / this.summaryData.checks_total) * 100).toFixed(1);
+    }
+  },
+  methods: {
+    getClusterLogo(type) {
+      const logos = {
+        aks: AksLogo,
+        eks: EksLogo,
+        gke: GkeLogo,
+        harvester: HarvesterLogo,
+        k3s: K3sLogo,
+        rke: RkeLogo,
+        rke2: RkeLogo,
+        security: security
+      };
+      return logos[type] || '';
+    },
+    getClusterCountString(count) {
+      return count === 1 ? `${count} Cluster` : `${count} Clusters`;
+    },
+    getClusterTypeString(type) {
+      return type.toUpperCase();
     }
   }
 };

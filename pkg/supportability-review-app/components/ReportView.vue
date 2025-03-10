@@ -8,8 +8,8 @@
 import Sidebar from './Sidebar.vue';
 import Maincontent from './Maincontent.vue';
 export default {
-  components: { Sidebar, Maincontent },
   name: 'ReportView',
+  components: { Sidebar, Maincontent },
   data() {
     return {
       cards: [],
@@ -28,9 +28,6 @@ export default {
       vectorData: new Map(),
       circleRadius: 45
     };
-  },
-  mounted() {
-    this.fetchReport();
   },
   computed: {
     circleCircumference() {
@@ -51,6 +48,9 @@ export default {
     progressPercentage() {
       return ((this.summaryData.checks_pass / this.summaryData.checks_total) * 100).toFixed(1);
     }
+  },
+  mounted() {
+    this.fetchReport();
   },
   methods: {
     async fetchReport() {

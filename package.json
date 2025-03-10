@@ -8,8 +8,11 @@
   },
   "devDependencies": {
     "core-js": "^3.39.0",
-    "eslint": "8.39.0",
-    "prettier": "3.4.2"
+    "eslint": "^9.22.0",
+    "eslint-plugin-vue": "^10.0.0",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.26.0",
+    "vue-eslint-parser": "^10.1.1"
   },
   "dependencies": {
     "@rancher/shell": "^3.0.1"
@@ -25,6 +28,11 @@
     "build-pkg": "./node_modules/@rancher/shell/scripts/build-pkg.sh",
     "serve-pkgs": "./node_modules/@rancher/shell/scripts/serve-pkgs",
     "publish-pkgs": "./node_modules/@rancher/shell/scripts/extension/publish",
-    "parse-tag-name": "./node_modules/@rancher/shell/scripts/extension/parse-tag-name"
-  }
+    "parse-tag-name": "./node_modules/@rancher/shell/scripts/extension/parse-tag-name",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lint-check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "format": "prettier --write ./pkg",
+    "format-check": "prettier --check ./pkg"
+  },
+  "type": "module"
 }
