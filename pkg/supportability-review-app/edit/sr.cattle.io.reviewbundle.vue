@@ -49,15 +49,6 @@ export default {
       showDropdown: false
     };
   },
-  watch: {
-    analyzeLocalOnly(neu) {
-      if (neu) {
-        this.value.spec.analyzeClusters = ['local'];
-      } else {
-        this.value.spec.analyzeClusters = [];
-      }
-    }
-  },
   computed: {
     isCreate() {
       return this.mode === _CREATE;
@@ -74,6 +65,15 @@ export default {
     },
     hasBeenCreated() {
       return !!this.value.id;
+    }
+  },
+  watch: {
+    analyzeLocalOnly(neu) {
+      if (neu) {
+        this.value.spec.analyzeClusters = ['local'];
+      } else {
+        this.value.spec.analyzeClusters = [];
+      }
     }
   },
   methods: {

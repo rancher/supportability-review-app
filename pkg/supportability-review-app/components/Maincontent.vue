@@ -15,8 +15,8 @@
     <div class="content" @scroll="handleScroll">
       <div
         v-for="(section, index) in sections"
-        :key="index"
         :id="section.id"
+        :key="index"
         :ref="'section' + index"
         class="section row">
         <div class="icon">
@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  name: 'Maincontent',
+  name: 'MainContent',
   props: {
     vectorData: {
       type: Object,
@@ -135,8 +135,7 @@ export default {
     },
     handleScroll() {
       const sections = this.sections.map((_, index) => this.$refs['section' + index][0].getBoundingClientRect().top);
-
-      let activeIndex = sections.findIndex((top) => top >= 0 && top < window.innerHeight / 2);
+      const activeIndex = sections.findIndex((top) => top >= 0 && top < window.innerHeight / 2);
       if (activeIndex !== -1) {
         this.activeSection = activeIndex;
       }

@@ -1,15 +1,15 @@
 <template>
   <div class="layout">
-    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eom_eol="eom_eol" />
-    <Maincontent class="main-content" :vectorData="vectorData" :cards="cards" />
+    <SideBar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eomEol="eomEol" />
+    <MainContent class="main-content" :vectorData="vectorData" :cards="cards" />
   </div>
 </template>
 <script>
-import Sidebar from './Sidebar.vue';
-import Maincontent from './Maincontent.vue';
+import SideBar from './Sidebar.vue';
+import MainContent from './Maincontent.vue';
 export default {
-  components: { Sidebar, Maincontent },
   name: 'ReportView',
+  components: { SideBar, MainContent },
   data() {
     return {
       cards: [],
@@ -21,16 +21,13 @@ export default {
         checks_warn: 0,
         checks_pass: 0
       },
-      eom_eol: {
+      eomEol: {
         local: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' },
         rancher: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' }
       },
       vectorData: new Map(),
       circleRadius: 45
     };
-  },
-  mounted() {
-    this.fetchReport();
   },
   computed: {
     circleCircumference() {
@@ -51,6 +48,9 @@ export default {
     progressPercentage() {
       return ((this.summaryData.checks_pass / this.summaryData.checks_total) * 100).toFixed(1);
     }
+  },
+  mounted() {
+    this.fetchReport();
   },
   methods: {
     async fetchReport() {
@@ -85,11 +85,11 @@ export default {
           cards: []
         };
         reportData?.systems_summary?.eom_eol?.forEach((item) => {
-          var formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
-          var formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
+          const formattedEOL = item.eol_date ? item.eol_date.split('/').reverse().join('/') : null;
+          const formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
           const formattedVersion = item.version.split('.').slice(0, 2).join('.');
           if (item.cluster === 'local' && item.app === 'rancher') {
-            this.eom_eol.rancher = {
+            this.eomEol.rancher = {
               name: item.app,
               version: formattedVersion,
               eol: formattedEOL,
@@ -98,7 +98,7 @@ export default {
               is_eom: item.is_eom
             };
           } else if (item.cluster === 'local') {
-            this.eom_eol.local = {
+            this.eomEol.local = {
               name: item.app,
               version: formattedVersion,
               eol: formattedEOL,
@@ -165,7 +165,7 @@ export default {
         this.summaryData = report_data.summaryData || {};
         this.vectorData = new Map(Object.entries(report_data.vectorData || {}));
       } catch (error) {
-        console.log('Report Error');
+        console.log('Report Error:' + error);
       }
     }
   }
