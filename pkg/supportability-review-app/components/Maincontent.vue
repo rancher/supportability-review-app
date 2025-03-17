@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  name: 'Maincontent',
+  name: 'MainContent',
   props: {
     vectorData: {
       type: Object,

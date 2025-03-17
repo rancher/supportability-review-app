@@ -1,15 +1,15 @@
 <template>
   <div class="layout">
-    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eomEol="eomEol" />
-    <Maincontent class="main-content" :vectorData="vectorData" :cards="cards" />
+    <SideBar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eomEol="eomEol" />
+    <MainContent class="main-content" :vectorData="vectorData" :cards="cards" />
   </div>
 </template>
 <script>
-import Sidebar from './Sidebar.vue';
-import Maincontent from './Maincontent.vue';
+import SideBar from './Sidebar.vue';
+import MainContent from './Maincontent.vue';
 export default {
   name: 'ReportView',
-  components: { Sidebar, Maincontent },
+  components: { SideBar, MainContent },
   data() {
     return {
       cards: [],

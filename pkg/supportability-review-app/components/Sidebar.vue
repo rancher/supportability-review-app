@@ -94,7 +94,7 @@ import K3sLogo from '../images/k3s.png';
 import RkeLogo from '../images/rke.png';
 import security from '../images/security.png';
 export default {
-  name: 'Sidebar',
+  name: 'SideBar',
   props: {
     clusterData: {
       type: Array,

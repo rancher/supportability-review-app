@@ -58,7 +58,7 @@ export default [
       'vue/html-indent': 'off',
       'vue/html-self-closing': 'off',
       'vue/max-attributes-per-line': 'off',
-      'vue/multi-word-component-names': 'warn',
+      'vue/multi-word-component-names': 'error',
       'vue/no-mutating-props': 'warn',
       'vue/no-unused-vars': 'error',
       'vue/no-unused-components': 'error',
