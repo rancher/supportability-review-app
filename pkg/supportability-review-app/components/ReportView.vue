@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eom_eol="eom_eol" />
+    <Sidebar class="sidebar" :clusterData="clusterData" :summaryData="summaryData" :eomEol="eomEol" />
     <Maincontent class="main-content" :vectorData="vectorData" :cards="cards" />
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
         checks_warn: 0,
         checks_pass: 0
       },
-      eom_eol: {
+      eomEol: {
         local: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' },
         rancher: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' }
       },
@@ -89,7 +89,7 @@ export default {
           const formattedEOM = item.eom_date ? item.eom_date.split('/').reverse().join('/') : null;
           const formattedVersion = item.version.split('.').slice(0, 2).join('.');
           if (item.cluster === 'local' && item.app === 'rancher') {
-            this.eom_eol.rancher = {
+            this.eomEol.rancher = {
               name: item.app,
               version: formattedVersion,
               eol: formattedEOL,
@@ -98,7 +98,7 @@ export default {
               is_eom: item.is_eom
             };
           } else if (item.cluster === 'local') {
-            this.eom_eol.local = {
+            this.eomEol.local = {
               name: item.app,
               version: formattedVersion,
               eol: formattedEOL,

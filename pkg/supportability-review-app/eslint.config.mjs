@@ -64,6 +64,7 @@ export default [
       'vue/no-unused-components': 'error',
       'vue/no-use-v-if-with-v-for': 'error',
       'vue/order-in-components': 'error',
+      'vue/prop-name-casing': 'error',
       'vue/singleline-html-element-content-newline': 'off',
       'vue/this-in-template': 'error'
     }
