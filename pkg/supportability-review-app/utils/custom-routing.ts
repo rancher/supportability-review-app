@@ -13,7 +13,7 @@ export const rootRoute = () => ({
   }
 });
 
-export const createRoute = (name: string, params: Object, meta: Object) => ({
+export const createRoute = (name: string, params: object, meta: object) => ({
   name: `${rootRoute().name}-${name}`,
   params: {
     ...rootRoute().params,
