@@ -33,7 +33,7 @@ export default [
       '@typescript-eslint/no-unused-expressions': 'warn',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
-      '@typescript-eslint/no-wrapper-object-types': 'warn'
+      '@typescript-eslint/no-wrapper-object-types': 'error'
     }
   },
   // Vue plugin settings
