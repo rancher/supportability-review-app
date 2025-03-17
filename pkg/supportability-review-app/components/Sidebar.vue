@@ -98,8 +98,7 @@ export default {
   props: {
     clusterData: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     },
     summaryData: {
       type: Object,

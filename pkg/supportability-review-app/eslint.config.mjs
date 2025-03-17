@@ -60,6 +60,7 @@ export default [
       'vue/max-attributes-per-line': 'off',
       'vue/multi-word-component-names': 'error',
       'vue/no-mutating-props': 'warn',
+      'vue/no-required-prop-with-default': 'error',
       'vue/no-unused-vars': 'error',
       'vue/no-unused-components': 'error',
       'vue/no-use-v-if-with-v-for': 'error',
