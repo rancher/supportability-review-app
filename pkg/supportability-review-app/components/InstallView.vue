@@ -3,7 +3,6 @@ import { mapGetters } from 'vuex';
 import { allHash } from '@shell/utils/promise';
 
 import { Banner } from '@components/Banner';
-import AsyncButton from '@shell/components/AsyncButton';
 import Loading from '@shell/components/Loading';
 
 import { CATALOG } from '@shell/config/types';
@@ -16,8 +15,10 @@ export default {
   name: 'InstallView',
   components: {
     Banner,
-    AsyncButton,
     Loading
+  },
+  data() {
+    return { reloadReady: false, initLoading: true };
   },
   async fetch() {
     console.log('InstallView: async fetch');
@@ -38,9 +39,6 @@ export default {
     await allHash(reqs);
     this.initLoading = false;
     console.log('InstallView: async fetch: done');
-  },
-  data() {
-    return { reloadReady: false, initLoading: true };
   },
   computed: {
     ...mapGetters({

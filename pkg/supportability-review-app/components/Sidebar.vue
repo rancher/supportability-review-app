@@ -29,7 +29,7 @@
         <p class="status-title">Checks Status:</p>
         <div class="status-row">
           <p class="status-label">Passed Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_pass }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_pass }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div class="progress" :style="{ width: progressPassWidth + '%' }"></div>
@@ -37,7 +37,7 @@
 
         <div class="status-row">
           <p class="status-label">Failed Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_fail }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_fail }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div
@@ -50,7 +50,7 @@
 
         <div class="status-row">
           <p class="status-label">Warning Checks</p>
-          <p class="status-value">{{ this.summaryData.checks_warn }}/{{ this.summaryData.checks_total }}</p>
+          <p class="status-value">{{ summaryData.checks_warn }}/{{ summaryData.checks_total }}</p>
         </div>
         <div class="horizontal-progress">
           <div
@@ -72,14 +72,14 @@
           </div>
         </div>
       </div>
-      <div v-if="eom_eol.local.is_eol || eom_eol.local.is_eom" class="cluster-eol-heading">
-        {{ eom_eol.local.name }} {{ eom_eol.local.version }} is
-        {{ eom_eol.local.is_eol ? `EOL at ${eom_eol.local.eol}` : `EOM at ${eom_eol.local.eom}` }}
+      <div v-if="eomEol.local.is_eol || eomEol.local.is_eom" class="cluster-eol-heading">
+        {{ eomEol.local.name }} {{ eomEol.local.version }} is
+        {{ eomEol.local.is_eol ? `EOL at ${eomEol.local.eol}` : `EOM at ${eomEol.local.eom}` }}
       </div>
-      <div v-if="eom_eol.rancher.is_eol || eom_eol.rancher.is_eom" class="Cluster-type-heading">Rancher Details</div>
-      <div v-if="eom_eol.rancher.is_eol || eom_eol.rancher.is_eom" class="cluster-eol-heading">
-        {{ eom_eol.rancher.name }} {{ eom_eol.rancher.version }} is
-        {{ eom_eol.rancher.is_eol ? `EOL at ${eom_eol.rancher.eol}` : `EOM at ${eom_eol.rancher.eom}` }}
+      <div v-if="eomEol.rancher.is_eol || eomEol.rancher.is_eom" class="Cluster-type-heading">Rancher Details</div>
+      <div v-if="eomEol.rancher.is_eol || eomEol.rancher.is_eom" class="cluster-eol-heading">
+        {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} is
+        {{ eomEol.rancher.is_eol ? `EOL at ${eomEol.rancher.eol}` : `EOM at ${eomEol.rancher.eom}` }}
       </div>
     </div>
   </div>
@@ -94,48 +94,25 @@ import K3sLogo from '../images/k3s.png';
 import RkeLogo from '../images/rke.png';
 import security from '../images/security.png';
 export default {
-  name: 'Sidebar',
-  data() {
-    return {
-      circleRadius: 45
-    };
-  },
+  name: 'SideBar',
   props: {
     clusterData: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     },
     summaryData: {
       type: Object,
       required: true
     },
-    eom_eol: {
+    eomEol: {
       type: Object,
       required: true
     }
   },
-
-  methods: {
-    getClusterLogo(type) {
-      const logos = {
-        aks: AksLogo,
-        eks: EksLogo,
-        gke: GkeLogo,
-        harvester: HarvesterLogo,
-        k3s: K3sLogo,
-        rke: RkeLogo,
-        rke2: RkeLogo,
-        security: security
-      };
-      return logos[type] || '';
-    },
-    getClusterCountString(count) {
-      return count === 1 ? `${count} Cluster` : `${count} Clusters`;
-    },
-    getClusterTypeString(type) {
-      return type.toUpperCase();
-    }
+  data() {
+    return {
+      circleRadius: 45
+    };
   },
   computed: {
     circleCircumference() {
@@ -155,6 +132,27 @@ export default {
     },
     progressPercentage() {
       return ((this.summaryData.checks_pass / this.summaryData.checks_total) * 100).toFixed(1);
+    }
+  },
+  methods: {
+    getClusterLogo(type) {
+      const logos = {
+        aks: AksLogo,
+        eks: EksLogo,
+        gke: GkeLogo,
+        harvester: HarvesterLogo,
+        k3s: K3sLogo,
+        rke: RkeLogo,
+        rke2: RkeLogo,
+        security: security
+      };
+      return logos[type] || '';
+    },
+    getClusterCountString(count) {
+      return count === 1 ? `${count} Cluster` : `${count} Clusters`;
+    },
+    getClusterTypeString(type) {
+      return type.toUpperCase();
     }
   }
 };

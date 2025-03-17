@@ -1,4 +1,4 @@
-import { STATE, NAME as NAME_COL, AGE, NAMESPACE as NAMESPACE_COL } from '@shell/config/table-headers';
+import { STATE, NAME as NAME_COL, AGE } from '@shell/config/table-headers';
 import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, SUPPORTABILITY_REVIEW_CRD_IDS, SR_APP_PAGES } from './config/types';
 import { rootRoute, createRoute } from './utils/custom-routing';
 
