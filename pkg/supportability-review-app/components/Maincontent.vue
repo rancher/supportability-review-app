@@ -20,7 +20,7 @@
         :ref="'section' + index"
         class="section row">
         <div class="icon">
-          <img src="../images/security.png" alt="icon" />
+          <img :src="getIcon(section.title)" :alt="section.title + ' icon'" />
         </div>
         <div class="progress-section">
           <div class="progress-text">
@@ -69,6 +69,10 @@
 </template>
 
 <script>
+import shieldIcon from '../images/shield.svg';
+import controlsIcon from '../images/controls.svg';
+import monitoringIcon from '../images/monitoring.svg';
+import regulationIcon from '../images/regulation.svg';
 export default {
   name: 'MainContent',
   props: {
@@ -142,6 +146,15 @@ export default {
     },
     scrollToSection(index) {
       this.$refs['section' + index][0].scrollIntoView({ behavior: 'smooth' });
+    },
+    getIcon(title) {
+      const icons = {
+        Security: shieldIcon,
+        'Operational Best Practice': controlsIcon,
+        'Design Validation': monitoringIcon,
+        'Support Matrix Conformance': regulationIcon
+      };
+      return icons[title];
     }
   }
 };
