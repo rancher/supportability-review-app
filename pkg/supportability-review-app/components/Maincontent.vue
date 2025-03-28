@@ -149,7 +149,7 @@ export default {
     },
     getIcon(title) {
       const icons = {
-        Security: shieldIcon,
+        'Security': shieldIcon,
         'Operational Best Practice': controlsIcon,
         'Design Validation': monitoringIcon,
         'Support Matrix Conformance': regulationIcon
