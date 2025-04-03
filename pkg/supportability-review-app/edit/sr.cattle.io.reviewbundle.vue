@@ -3,6 +3,7 @@ import Loading from '@shell/components/Loading.vue';
 import CruResource from '@shell/components/CruResource.vue';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
+import { NORMAN } from '@shell/config/types';
 import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import Tolerations from '@shell/components/form/Tolerations';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
@@ -41,6 +42,15 @@ export default {
     }
     this.value.spec.analyzeClusters = ['local'];
     this.value.spec.sonobuoyNamespace = 'sonobuoy';
+    if (this.isCreate()) {
+      this.createApiToken()
+        .then((token) => {
+          this.value.spec.token = token;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
     return {
       analyzeLocalOnly: true,
       description: '',
@@ -50,9 +60,6 @@ export default {
     };
   },
   computed: {
-    isCreate() {
-      return this.mode === _CREATE;
-    },
     isView() {
       return this.mode !== _CREATE && this.mode !== _EDIT;
     },
@@ -77,6 +84,22 @@ export default {
     }
   },
   methods: {
+    async createApiToken() {
+      const maxTTLMsec = 4 * 60 * 60 * 1000; // 4 hours
+
+      const token = await this.$store.dispatch('rancher/create', {
+        type: NORMAN.TOKEN,
+        ttl: maxTTLMsec,
+        description: 'Supportability Review'
+      });
+
+      const created = await token.save();
+
+      return created.token;
+    },
+    isCreate() {
+      return this.mode === _CREATE;
+    },
     setDefaultName() {
       this.value.metadata.generateName = this.value.metadata.generateName
         .toLowerCase()
