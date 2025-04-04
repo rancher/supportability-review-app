@@ -1,7 +1,7 @@
 {
   "name": "supportability-review-app",
   "description": "Supportability Review UI extension",
-  "version": "104.0.0-up0.1.0",
+  "version": "2.0.0",
   "private": false,
   "engines": {
     "node": ">=16"
