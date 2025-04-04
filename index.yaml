@@ -60,6 +60,7 @@ entries:
     version: 103.0.0-up0.1.0
   - annotations:
       catalog.cattle.io/certified: rancher
+      catalog.cattle.io/display-name: Supportability Review
       catalog.cattle.io/namespace: cattle-ui-plugin-system
       catalog.cattle.io/os: linux
       catalog.cattle.io/permits-os: linux, windows
@@ -69,9 +70,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
     appVersion: 3.0.0
-    created: "2025-04-04T00:40:05.535995681Z"
+    created: "2025-04-04T01:02:22.807853007Z"
     description: Collects and analyses cluster data for supportability assessment
-    digest: d3ad523179ac72984bf202c12f511c62365e6ba09777e1b688848530547fad63
+    digest: a466f5ffcd5f6daa02782e072b2a5aba0501cd07569e10cb830ff866b461e43e
     name: supportability-review-app
     type: application
     urls:
@@ -96,4 +97,4 @@ entries:
     urls:
     - assets/supportability-review-app/supportability-review-app-1.0.0.tgz
     version: 1.0.0
-generated: "2025-04-04T00:40:05.5348896Z"
+generated: "2025-04-04T01:02:22.806851482Z"
