@@ -69,9 +69,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
     appVersion: 3.0.0
-    created: "2025-04-04T00:11:27.029330204Z"
-    description: supportability-review-app plugin
-    digest: 4d8db776eb3a3887a581bce14a80abbb2e84c6a261052521cf789c1281e0a07b
+    created: "2025-04-04T00:25:54.443511369Z"
+    description: Collects and analyses cluster data for supportability assessment
+    digest: 8bf049fb4bf1c554f4a5450c2e1a93bd96712934455105cc6a3cf912193bb312
     name: supportability-review-app
     type: application
     urls:
@@ -96,4 +96,4 @@ entries:
     urls:
     - assets/supportability-review-app/supportability-review-app-1.0.0.tgz
     version: 1.0.0
-generated: "2025-04-04T00:11:27.028971207Z"
+generated: "2025-04-04T00:25:54.442437281Z"

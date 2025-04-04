@@ -9,7 +9,7 @@ annotations:
   catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
 apiVersion: v2
 appVersion: 3.0.0
-description: supportability-review-app plugin
+description: Collects and analyses cluster data for supportability assessment
 name: supportability-review-app
 type: application
 version: 3.0.0
