@@ -1,9 +1,12 @@
 <script>
 import Loading from '@shell/components/Loading.vue';
 import CruResource from '@shell/components/CruResource.vue';
+import Tabbed from '@shell/components/Tabbed/index.vue';
+import Tab from '@shell/components/Tabbed/Tab.vue';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
 import { NORMAN } from '@shell/config/types';
+import { Banner } from '@components/Banner';
 import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import Tolerations from '@shell/components/form/Tolerations';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
@@ -11,12 +14,15 @@ import TextAreaAutoGrow from '@components/Form/TextArea/TextAreaAutoGrow.vue';
 export default {
   name: 'ReviewBundleEditView',
   components: {
+    Banner,
     Checkbox,
     CruResource,
-    Loading,
-    Tolerations,
     LabeledInput,
-    TextAreaAutoGrow
+    Loading,
+    Tabbed,
+    Tab,
+    TextAreaAutoGrow,
+    Tolerations
   },
   mixins: [CreateEditView],
   props: {
@@ -137,39 +143,53 @@ export default {
     @error="(e) => (errors = e)"
     @finish="save"
     @cancel="done">
-    <div>
-      <h1 class="mb-200">Collector</h1>
+    <Tabbed>
+      <Tab label-key="sr.supportabilityReview.basic" name="basic-config" :weight="3">
+        <div>
+          <h2 class="mb-200">Collector Config</h2>
 
-      <h3 class="mb-200">Bundle Name</h3>
-      <LabeledInput
-        v-model:value="value.metadata.generateName"
-        label="Enter Bundle Name"
-        subLabel="Use lowercase letters, max 30 characters. Spaces will be replaced with '-' automatically."
-        placeholder="review-bundle"
-        :maxlength="30"
-        @blur="setDefaultName" />
+          <h4 class="mb-200">Bundle Name</h4>
+          <LabeledInput
+            v-model:value="value.metadata.generateName"
+            label="Enter Bundle Name"
+            placeholder="review-bundle"
+            :maxlength="30"
+            @blur="setDefaultName" />
+          <Banner class="mb-10" color="info">
+            <div v-clean-html="t('sr.supportabilityReview.bundleNameRestriction', {}, true)" />
+          </Banner>
+        </div>
+      </Tab>
+      <Tab label-key="sr.supportabilityReview.advanced" name="advanced-config" :weight="2">
+        <div>
+          <h2 class="mb-200">Collector Config</h2>
 
-      <h3 class="mt-40 mb-200">Bundle Description</h3>
-      <TextAreaAutoGrow placeholder="Enter bundle description" autocapitalize="off" />
+          <h4 class="mt-10 mb-200">Sonobuoy Namespace</h4>
+          <LabeledInput
+            v-model:value="value.spec.sonobuoyNamespace"
+            placeholder="sonobuoy"
+            :maxlength="64"
+            @blur="setDefaultSonobuoyNamespace" />
 
-      <h3 class="mt-10 mb-200">Sonobuoy Namespace</h3>
-      <LabeledInput
-        v-model:value="value.spec.sonobuoyNamespace"
-        placeholder="sonobuoy"
-        :maxlength="64"
-        @blur="setDefaultSonobuoyNamespace" />
+          <h4 class="mt-10 mb-200" for="tolerations">Tolerations</h4>
+          <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
 
-      <h3 class="mt-10 mb-200" for="tolerations">Tolerations</h3>
-      <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
-    </div>
-    <div>
-      <h1 class="mt-10 mb-200">Analyzer</h1>
+          <h4 class="mt-10 mb-200">Bundle Description</h4>
+          <TextAreaAutoGrow
+            minHeight="50"
+            placeholder="Enter bundle description"
+            autocapitalize="off"
+            spellcheck="false" />
+        </div>
+        <div>
+          <h2 class="mt-10 mb-200">Analyzer Config</h2>
 
-      <h3 class="mt-20">Target cluster</h3>
-      <div class="col span-8 mb-20">
-        <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
-      </div>
-    </div>
+          <div class="col span-8 mb-20">
+            <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
+          </div>
+        </div>
+      </Tab>
+    </Tabbed>
   </CruResource>
 </template>
 <style scoped></style>
