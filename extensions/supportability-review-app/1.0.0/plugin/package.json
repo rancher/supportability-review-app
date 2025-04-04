@@ -1,6 +1,6 @@
 {
   "name": "supportability-review-app",
-  "description": "supportability-review-app plugin",
+  "description": "Collects and analyses cluster data for supportability assessment",
   "version": "1.0.0",
   "private": false,
   "rancher": true,
