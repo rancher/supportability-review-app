@@ -26,6 +26,10 @@ sr:
     sr.cattle.io.reviewbundle: Review Bundles
   reviewBundle:
     analyzeLocalOnly: Analyze local cluster only
+  supportabilityReview:
+    basic: Basic
+    advanced: Advanced
+    bundleNameRestriction: Use lowercase letters, max 30 characters. Spaces will be replaced with '-' automatically.
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles
