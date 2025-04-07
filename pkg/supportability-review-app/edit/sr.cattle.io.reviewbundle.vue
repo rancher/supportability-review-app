@@ -56,6 +56,25 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+
+      fetch('/v3/settings/server-url', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.value.spec.hostName = data.value;
+        })
+        .catch((error) => {
+          console.error('Fetch error:', error);
+        });
     }
     return {
       analyzeLocalOnly: true,
