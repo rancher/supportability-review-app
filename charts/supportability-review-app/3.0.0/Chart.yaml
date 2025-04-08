@@ -15,3 +15,5 @@ description: Collects and analyses cluster data for supportability assessment
 name: supportability-review-app
 type: application
 version: 3.0.0
+icon: >-
+  https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png

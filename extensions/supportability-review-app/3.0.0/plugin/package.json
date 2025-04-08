@@ -4,6 +4,7 @@
   "version": "3.0.0",
   "private": false,
   "rancher": true,
+  "icon": "https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png",
   "engines": {
     "node": ">=16"
   },
