@@ -12,6 +12,8 @@ annotations:
 apiVersion: v2
 appVersion: 1.0.0
 description: Collects and analyses cluster data for supportability assessment
-name: supportability-review-app
+name: supportability-review
 type: application
 version: 1.0.0
+icon: >-
+  https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png

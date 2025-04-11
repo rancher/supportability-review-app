@@ -1,9 +1,10 @@
 {
-  "name": "supportability-review-app",
+  "name": "supportability-review",
   "description": "Collects and analyses cluster data for supportability assessment",
   "version": "1.0.0",
   "private": false,
   "rancher": true,
+  "icon": "https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png",
   "engines": {
     "node": ">=16"
   },
@@ -15,5 +16,5 @@
   "files": [
     "**/*"
   ],
-  "main": "supportability-review-app-1.0.0.umd.min.js"
+  "main": "supportability-review-1.0.0.umd.min.js"
 }
