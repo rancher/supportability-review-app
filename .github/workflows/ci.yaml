@@ -29,10 +29,10 @@ jobs:
 
       - name: Run lint
         run: |
-          cd pkg/supportability-review-app/
+          cd pkg/supportability-review/
           npm run format-check
           npm run lint-check
 
       - name: Build Rancher Extension
         run: |
-          yarn build-pkg supportability-review-app
+          yarn build-pkg supportability-review
