@@ -1,5 +1,4 @@
 import SteveModel from '@shell/plugins/steve/steve-class';
-import { createRoute } from '../utils/custom-routing';
 
 export default class ReviewBundle extends SteveModel {
   get _availableActions() {
@@ -39,8 +38,7 @@ export default class ReviewBundle extends SteveModel {
   }
 
   viewReport() {
-    const route = createRoute('report', {}, {});
-    window.location.href = `../${route.params.product}/view-report/${this.id}/?bundlename=${this.metadata.name}`;
+    window.location.href = `./view-report/${this.id}/?bundlename=${this.metadata.name}`;
   }
 
   downloadFromUrl(url, filename) {
