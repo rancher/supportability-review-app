@@ -25,7 +25,7 @@ export default {
   methods: {
     goToReviewBundle() {
       this.$router.push({
-        path: '/c/_/sr/sr.cattle.io.reviewbundle/create'
+        path: '/supportability-review/c/_/sr.cattle.io.reviewbundle/create'
       });
     }
   }
