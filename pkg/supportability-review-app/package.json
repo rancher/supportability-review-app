@@ -1,5 +1,5 @@
 {
-  "name": "supportability-review-app",
+  "name": "supportability-review",
   "description": "Collects and analyses cluster data for supportability assessment",
   "version": "3.0.0",
   "private": false,

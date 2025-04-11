@@ -1,7 +1,7 @@
-export const SUPPORTABILITY_REVIEW_STORE = 'sr';
+export const SUPPORTABILITY_REVIEW_STORE = 'supportability-review';
 
 // If this is changed, then the same should reflect in en-us.yaml
-export const SUPPORTABILITY_REVIEW_PRODUCT_NAME = 'sr';
+export const SUPPORTABILITY_REVIEW_PRODUCT_NAME = 'supportability-review';
 
 export const SUPPORTABILITY_REVIEW_CRD_IDS = {
   REVIEW_BUNDLE: 'sr.cattle.io.reviewbundle'
