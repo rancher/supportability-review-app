@@ -1,14 +1,14 @@
-import ListResource from '@shell/pages/c/_cluster/_product/_resource/index.vue';
-import CreateResource from '@shell/pages/c/_cluster/_product/_resource/create.vue';
-import ViewResource from '@shell/pages/c/_cluster/_product/_resource/_id.vue';
+import ListResource from '../pages/_resource/index.vue';
+import CreateResource from '../pages/_resource/create.vue';
+import ViewResource from '../pages/_resource/_id.vue';
 import Dashboard from '../pages/DashboardPage.vue';
 import ViewReportPage from '../pages/ViewReportPage';
 import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types';
 
 const routes = [
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/dashboard`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/dashboard`,
     component: Dashboard,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
@@ -17,8 +17,8 @@ const routes = [
     }
   },
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-view-report`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/view-report`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-view-report`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/view-report`,
     component: ViewReportPage,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
@@ -27,8 +27,8 @@ const routes = [
     }
   },
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-view-report`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/view-report/:id/:report?`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-view-report`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/view-report/:id/:report?`,
     component: ViewReportPage,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
@@ -40,8 +40,8 @@ const routes = [
   // the following routes cover the "resource page"
   // registering routes for list/edit/create views
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-resource`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/:resource`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-resource`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/:resource`,
     component: ListResource,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
@@ -49,8 +49,8 @@ const routes = [
     }
   },
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-resource-create`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/:resource/create`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-resource-create`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/:resource/create`,
     component: CreateResource,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
@@ -58,8 +58,8 @@ const routes = [
     }
   },
   {
-    name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-resource-id`,
-    path: `/c/:cluster/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/:resource/:id`,
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-resource-id`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/:resource/:id`,
     component: ViewResource,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
