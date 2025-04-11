@@ -3,10 +3,9 @@ import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, SUPPORTABILITY_REVIEW_CRD_IDS, SR_A
 import { rootRoute, createRoute } from './utils/custom-routing';
 
 export function init($plugin, store) {
-  const { product, configureType, virtualType, basicType, headers } = $plugin.DSL(
+  const { product, configureType, virtualType, basicType, weightType, headers } = $plugin.DSL(
     store,
     SUPPORTABILITY_REVIEW_PRODUCT_NAME
-    // SUPPORTABILITY_REVIEW_PRODUCT_FULL_NAME,
   );
 
   function getBundleSizeString(row) {
@@ -39,18 +38,19 @@ export function init($plugin, store) {
 
   // dashboard menu entry in SR App
   virtualType({
-    labelKey: 'sr.menuLabels.dashboard',
-    // label: store.getters["i18n/t"]("sr.menuLabels.dashboard"),
+    label: store.getters['i18n/t']('sr.menuLabels.dashboard'),
     name: SR_APP_PAGES.DASHBOARD,
+    weight: 10,
     route: rootRoute()
   });
 
   // defining a k8s resource as page
+  weightType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, 9, true);
   configureType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, {
-    displayName: store.getters['i18n/t'](`typeLabel."${SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE}"`),
     isCreatable: true,
     isEditable: false,
-    isRemovable: true
+    isRemovable: true,
+    customRoute: createRoute('resource', { resource: SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE })
   });
   headers(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, [
     STATE,
