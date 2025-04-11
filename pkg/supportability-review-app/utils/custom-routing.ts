@@ -1,7 +1,7 @@
 import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types';
 
 export const rootRoute = () => ({
-  name: `c-cluster-${SUPPORTABILITY_REVIEW_PRODUCT_NAME}`,
+  name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster`,
   params: {
     product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
     cluster: BLANK_CLUSTER
