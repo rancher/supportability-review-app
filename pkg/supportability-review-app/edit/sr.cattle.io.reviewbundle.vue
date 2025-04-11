@@ -48,7 +48,7 @@ export default {
     }
     this.value.spec.analyzeClusters = ['local'];
     this.value.spec.sonobuoyNamespace = 'sonobuoy';
-    if (this.isCreate()) {
+    if (this.mode === _CREATE) {
       this.createApiToken()
         .then((token) => {
           this.value.spec.token = token;
@@ -121,9 +121,6 @@ export default {
       const created = await token.save();
 
       return created.token;
-    },
-    isCreate() {
-      return this.mode === _CREATE;
     },
     setDefaultName() {
       this.value.metadata.generateName = this.value.metadata.generateName
