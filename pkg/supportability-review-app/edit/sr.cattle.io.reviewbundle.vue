@@ -75,6 +75,27 @@ export default {
         .catch((error) => {
           console.error('Fetch error:', error);
         });
+
+      fetch('/rancherversion', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.RancherPrime === 'false') {
+            this.value.spec.collectClusters = ['local'];
+          }
+        })
+        .catch((error) => {
+          console.error('Fetch error:', error);
+        });
     }
     return {
       analyzeLocalOnly: true,
