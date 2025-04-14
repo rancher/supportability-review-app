@@ -7,7 +7,6 @@ import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
 import { NORMAN } from '@shell/config/types';
 import { Banner } from '@components/Banner';
-import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import Tolerations from '@shell/components/form/Tolerations';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import TextAreaAutoGrow from '@components/Form/TextArea/TextAreaAutoGrow.vue';
@@ -15,7 +14,6 @@ export default {
   name: 'ReviewBundleEditView',
   components: {
     Banner,
-    Checkbox,
     CruResource,
     LabeledInput,
     Loading,
@@ -98,7 +96,6 @@ export default {
         });
     }
     return {
-      analyzeLocalOnly: true,
       description: '',
       customName: '',
       dropdownOptions: ['review-bundle', 'custom-bundle'],
@@ -120,15 +117,7 @@ export default {
       return !!this.value.id;
     }
   },
-  watch: {
-    analyzeLocalOnly(neu) {
-      if (neu) {
-        this.value.spec.analyzeClusters = ['local'];
-      } else {
-        this.value.spec.analyzeClusters = [];
-      }
-    }
-  },
+  watch: {},
   methods: {
     async createApiToken() {
       const maxTTLMsec = 4 * 60 * 60 * 1000; // 4 hours
@@ -217,13 +206,6 @@ export default {
             placeholder="Enter bundle description"
             autocapitalize="off"
             spellcheck="false" />
-        </div>
-        <div>
-          <h2 class="mt-10 mb-200">Analyzer Config</h2>
-
-          <div class="col span-8 mb-20">
-            <Checkbox v-model:value="analyzeLocalOnly" :label="t('sr.reviewBundle.analyzeLocalOnly')" :mode="mode" />
-          </div>
         </div>
       </Tab>
     </Tabbed>
