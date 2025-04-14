@@ -1,6 +1,15 @@
 import SteveModel from '@shell/plugins/steve/steve-class';
+import { clone } from '@shell/utils/object';
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME } from '../config/types';
 
 export default class ReviewBundle extends SteveModel {
+  get detailLocation() {
+    const detailLocation = clone(this._detailLocation);
+    detailLocation.params.resource = this.type;
+    detailLocation.name = `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-resource-id`;
+    return detailLocation;
+  }
+
   get _availableActions() {
     let out = super._availableActions;
 
