@@ -15,11 +15,10 @@
     "vue-eslint-parser": "^10.1.1"
   },
   "dependencies": {
-    "@rancher/shell": "^3.0.1"
+    "@rancher/shell": "^3.0.4"
   },
   "resolutions": {
-    "@types/node": "~20.10.0",
-    "@types/lodash": "4.17.5"
+    "@types/node": "~20.10.0"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
