@@ -187,7 +187,9 @@ l0 -298 -112 4 c-62 3 -129 8 -149 12 -23 4 -39 3 -43 -4 -5 -7 -49 -11 -121 -11 l
 
       <!-- Install charts -->
       <div v-else class="relative">
-        <Loading v-if="!operatorChart && !reloadReady" mode="relative" class="mt-20" />
+        <div v-if="!operatorChart && !reloadReady" mode="relative" class="mt-20">
+          Supportability Review Operator Chart not found.
+        </div>
 
         <div v-else-if="!operatorChart && reloadReady">
           <Banner color="warning">
