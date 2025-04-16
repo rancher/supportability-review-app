@@ -3,22 +3,24 @@ import { mapGetters } from 'vuex';
 import { allHash } from '@shell/utils/promise';
 
 import { Banner } from '@components/Banner';
+import AsyncButton from '@shell/components/AsyncButton';
 import Loading from '@shell/components/Loading';
 
 import { CATALOG } from '@shell/config/types';
 import { REPO_TYPE, REPO, CHART, VERSION, LOCAL } from '@shell/config/query-params';
 
-import { SR_CHARTS } from '../config/types';
+import { SR_REPO, SR_CHARTS } from '../config/types';
 import { handleGrowl, getLatestStableVersion } from '../utils/utils';
 
 export default {
   name: 'InstallView',
   components: {
+    AsyncButton,
     Banner,
     Loading
   },
   data() {
-    return { reloadReady: false, initLoading: true };
+    return { reloadReady: false, initLoading: true, chartBranch: '' };
   },
   async fetch() {
     console.log('InstallView: async fetch');
@@ -38,6 +40,27 @@ export default {
 
     await allHash(reqs);
     this.initLoading = false;
+
+    fetch('/rancherversion', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const versionArray = data.Version.split('.');
+        this.chartBranch = 'minimal-dev-' + versionArray[0] + '.' + versionArray[1];
+      })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+      });
+
     console.log('InstallView: async fetch: done');
   },
   computed: {
@@ -68,6 +91,36 @@ export default {
     }
   },
   methods: {
+    async addRepository(btnCb) {
+      console.log('InstallView: addRepository');
+      try {
+        const repoObj = await this.$store.dispatch('management/create', {
+          type: CATALOG.CLUSTER_REPO,
+          metadata: { name: 'supportability-review-operator-charts' },
+          spec: {
+            gitBranch: this.chartBranch,
+            //gitBranch: SR_REPO.BRANCH,
+            gitRepo: SR_REPO.REPO
+          }
+        });
+
+        try {
+          await repoObj.save();
+        } catch (e) {
+          handleGrowl({ error: e, store: this.$store });
+          btnCb(false);
+
+          return;
+        }
+
+        await this.refreshCharts();
+        btnCb(true);
+      } catch (e) {
+        handleGrowl({ error: e, store: this.$store });
+        btnCb(false);
+      }
+    },
+
     async refreshCharts(retry = 0, init) {
       console.log('InstallView: refreshCharts, retry=', retry);
       try {
@@ -188,7 +241,7 @@ l0 -298 -112 4 c-62 3 -129 8 -149 12 -23 4 -39 3 -43 -4 -5 -7 -49 -11 -121 -11 l
       <!-- Install charts -->
       <div v-else class="relative">
         <div v-if="!operatorChart && !reloadReady" mode="relative" class="mt-20">
-          Supportability Review Operator Chart not found.
+          <AsyncButton mode="srRepository" @click="addRepository" />
         </div>
 
         <div v-else-if="!operatorChart && reloadReady">
