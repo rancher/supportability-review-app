@@ -38,3 +38,9 @@ tableHeaders:
   pass: Passed Checks
   clusterCount: Clusters
   bundleSize: Bundle Size
+
+asyncButton:
+  srRepository:
+    action: Add Supportability Review Operator Repository
+    success: Added
+    waiting: Adding&hellip;
