@@ -52,7 +52,7 @@
           Supportability Review offers proactive support and ensures that your system complies with SUSE's best
           practices.
         </h3>
-        <button v-if="bundleCount < 1" @click="goToReviewBundle" class="btn role-secondary">Get Started</button>
+        <button v-if="bundleCount < 1" class="btn role-secondary" @click="goToReviewBundle">Get Started</button>
       </div>
     </div>
   </div>
@@ -61,19 +61,19 @@
 import { SUPPORTABILITY_REVIEW_CRD_IDS } from '../config/types';
 export default {
   name: 'DashboardView',
-  methods: {
-    goToReviewBundle() {
-      this.$router.push({
-        path: '/sr/c/_/sr.cattle.io.reviewbundle/create'
-      });
-    }
-  },
   async fetch() {
     await this.$store.dispatch('management/findAll', { type: SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE });
   },
   computed: {
     bundleCount() {
       return this.$store.getters['management/all'](SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE).length;
+    }
+  },
+  methods: {
+    goToReviewBundle() {
+      this.$router.push({
+        path: '/sr/c/_/sr.cattle.io.reviewbundle/create'
+      });
     }
   }
 };
