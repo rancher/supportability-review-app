@@ -9,6 +9,7 @@ product:
 nav:
   group:
     sr.cattle.io: Supportability Review
+  inProgress: Collection/Analysis are in progress
 
 sr:
   appInstall:
@@ -24,17 +25,25 @@ sr:
     viewReport: View Report
     titleDashboard: Supportability Review Dashboard
     sr.cattle.io.reviewbundle: Review Bundles
-  reviewBundle:
-    analyzeLocalOnly: Analyze local cluster only
-  supportabilityReview:
     basic: Basic
     advanced: Advanced
     bundleNameRestriction: Use lowercase letters, max 30 characters. Spaces will be replaced with '-' automatically.
+    upSell: We only shows at most 5 failure/warnings. If you need more result and remediations please contact us.
+  reviewBundle:
+    analyzeLocalOnly: Analyze local cluster only
+  vector:
+    security: Security
+    operationalBestPractice: Operational Best Practice
+    designValidation: Design Validation
+    supportMatrixConformance: Support Matrix Conformance
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles
 
 tableHeaders:
+  checkStatus: Status
+  checkNumber: Check Number
+  checkDescription: Description
   pass: Passed Checks
   clusterCount: Clusters
   bundleSize: Bundle Size
