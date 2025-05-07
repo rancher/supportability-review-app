@@ -38,15 +38,16 @@ export default {
     }
   },
   data() {
-    if (!this.value.metadata.name) {
-      this.value.metadata.generateName = 'review-bundle-';
-    }
-    if (!this.value.spec) {
-      this.value.spec = {};
-    }
-    this.value.spec.analyzeClusters = ['local'];
-    this.value.spec.sonobuoyNamespace = 'sonobuoy';
-    if (this.mode === _CREATE) {
+    if (this.isCreate()) {
+      if (!this.value.metadata.name) {
+        this.value.metadata.generateName = 'review-bundle-';
+      }
+      if (!this.value.spec) {
+        this.value.spec = {};
+      }
+      this.value.spec.analyzeClusters = ['local'];
+      this.value.spec.sonobuoyNamespace = 'sonobuoy';
+
       this.createApiToken()
         .then((token) => {
           this.value.spec.token = token;
@@ -89,6 +90,9 @@ export default {
         .then((data) => {
           if (data.RancherPrime === 'false') {
             this.value.spec.collectClusters = ['local'];
+            this.isPrime = false;
+          } else {
+            this.isPrime = true;
           }
         })
         .catch((error) => {
@@ -97,9 +101,7 @@ export default {
     }
     return {
       description: '',
-      customName: '',
-      dropdownOptions: ['review-bundle', 'custom-bundle'],
-      showDropdown: false
+      isPrime: true
     };
   },
   computed: {
@@ -119,6 +121,9 @@ export default {
   },
   watch: {},
   methods: {
+    isCreate() {
+      return this.mode === _CREATE;
+    },
     async createApiToken() {
       const maxTTLMsec = 4 * 60 * 60 * 1000; // 4 hours
 
@@ -209,6 +214,9 @@ export default {
         </div>
       </Tab>
     </Tabbed>
+    <Banner v-if="!isPrime" class="mb-10" color="info">
+      <div v-clean-html="t('sr.menuLabels.forCommunityUser', {}, true)" />
+    </Banner>
   </CruResource>
 </template>
 <style scoped></style>
