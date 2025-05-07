@@ -47,7 +47,7 @@ export default class ReviewBundle extends SteveModel {
   }
 
   viewReport() {
-    window.location.href = `./view-report/${this.id}/?bundlename=${this.metadata.name}`;
+    window.location.href = `./sr.cattle.io.reviewbundle/${this.metadata.name}`;
   }
 
   downloadFromUrl(url, filename) {
