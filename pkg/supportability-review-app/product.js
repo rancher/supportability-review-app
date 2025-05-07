@@ -96,16 +96,6 @@ export function init($plugin, store) {
     AGE
   ]);
 
-  virtualType({
-    label: store.getters['i18n/t']('sr.menuLabels.viewReport'),
-    name: SR_APP_PAGES.VIEW_REPORT,
-    route: createRoute('view-report')
-  });
-
   // registering the defined pages as side-menu entries
-  basicType([
-    SR_APP_PAGES.DASHBOARD,
-    SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE
-    // SR_APP_PAGES.VIEW_REPORT,
-  ]);
+  basicType([SR_APP_PAGES.DASHBOARD, SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE]);
 }
