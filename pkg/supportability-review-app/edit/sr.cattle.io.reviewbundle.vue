@@ -170,7 +170,7 @@ export default {
     @finish="save"
     @cancel="done">
     <Tabbed>
-      <Tab label-key="sr.supportabilityReview.basic" name="basic-config" :weight="3">
+      <Tab label-key="sr.menuLabels.basic" name="basic-config" :weight="3">
         <div>
           <h2 class="mb-200">Collector Config</h2>
 
@@ -182,11 +182,11 @@ export default {
             :maxlength="30"
             @blur="setDefaultName" />
           <Banner class="mb-10" color="info">
-            <div v-clean-html="t('sr.supportabilityReview.bundleNameRestriction', {}, true)" />
+            <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
           </Banner>
         </div>
       </Tab>
-      <Tab label-key="sr.supportabilityReview.advanced" name="advanced-config" :weight="2">
+      <Tab label-key="sr.menuLabels.advanced" name="advanced-config" :weight="2">
         <div>
           <h2 class="mb-200">Collector Config</h2>
 
