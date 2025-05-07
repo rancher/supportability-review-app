@@ -1,25 +1,22 @@
 <template>
-  <div class="dashboard-view">
-    <section class="hero">
-      <div class="icon-container">
-        <i class="icon-service custom-icon"></i>
-      </div>
-      <div class="title">Supportability Review</div>
-      <p class="tagline">Ensuring your system design is built on a solid, supportable foundation.</p>
-    </section>
-
-    <section class="content">
-      <p>
-        Supportability Review is a feature of
-        <strong>Rancher Prime</strong>
-        , offering proactive support and ensuring your system complies with SUSE’s best practices.
-      </p>
-    </section>
-
-    <button class="get-started-btn" @click="goToReviewBundle">Get Started</button>
+  <div class="supportability-empty-dashboard">
+    <i class="icon-service mb-30"></i>
+    <h1 class="mb-2">Welcome to Supportability Review</h1>
+    <p class="text-base mb-30">
+      <span>Ensure your system design is stable, scalable, and support-ready.</span>
+      <a href="https://www.suse.com/support/kb/doc/?id=000021242" target="_blank" rel="noopener noreferrer nofollow">
+        Learn More
+        <i class="icon icon-external-link ml-1"></i>
+      </a>
+    </p>
+    <h3 class="text-sm mb-30">
+      Supportability Review offers proactive support and ensures that your system complies with SUSE's best practices.
+    </h3>
+    <button v-if="bundleCount < 1" @click="goToReviewBundle" class="btn role-secondary">Get Started</button>
   </div>
 </template>
 <script>
+import { SUPPORTABILITY_REVIEW_CRD_IDS } from '../config/types';
 export default {
   name: 'DashboardView',
   methods: {
@@ -28,64 +25,41 @@ export default {
         path: '/sr/c/_/sr.cattle.io.reviewbundle/create'
       });
     }
+  },
+  async fetch() {
+    await this.$store.dispatch('management/findAll', { type: SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE });
+  },
+  computed: {
+    bundleCount() {
+      return this.$store.getters['management/all'](SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE).length;
+    }
   }
 };
 </script>
 <style scoped>
-.dashboard-view {
-  min-height: 90vh;
+.supportability-empty-dashboard {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   text-align: center;
-  font-family: sans-serif;
+  padding: 2rem;
+  min-height: 100%;
 }
 
-.icon-container {
-  margin-bottom: 20px;
+.supportability-empty-dashboard > p > span {
+  color: var(--disabled-text);
 }
 
-.custom-icon {
+.supportability-empty-dashboard > i {
   font-size: 100px;
-  opacity: 0.8;
-  margin-bottom: 10px;
+  color: var(--disabled-text);
 }
-
-.title {
-  font-size: 28px;
-  margin-bottom: 15px;
-  font-weight: 400;
-}
-
-.tagline {
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: lighter;
-}
-
-.content p {
-  font-size: 16px;
-  margin-bottom: 20px;
-  line-height: 1.8;
-  max-width: 800px;
-}
-
-.get-started-btn {
-  padding: 0px 20px;
-  font-size: 16px;
-  border: 2px solid #1a73e8;
-  background-color: transparent;
-  color: #1a73e8;
-  cursor: pointer;
-  border-radius: 5px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-.get-started-btn:hover {
-  color: #ffffff;
+.supportability-empty-dashboard h3 {
+  max-width: 600px;
+  margin: 0 auto;
+  white-space: normal;
+  word-wrap: break-word;
 }
 </style>
