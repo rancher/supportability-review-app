@@ -215,7 +215,10 @@ export default {
       </Tab>
     </Tabbed>
     <Banner v-if="!isPrime" class="mb-10" color="info">
-      <div v-clean-html="t('sr.menuLabels.forCommunityUser', {}, true)" />
+      <div v-clean-html="t('sr.menuLabels.forCommunityUser0', {}, true)" />
+    </Banner>
+    <Banner v-if="!isPrime" class="mb-10" color="info">
+      <div v-clean-html="t('sr.menuLabels.forCommunityUser1', {}, true)" />
     </Banner>
   </CruResource>
 </template>
