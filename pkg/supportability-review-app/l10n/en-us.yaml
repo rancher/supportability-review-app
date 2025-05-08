@@ -1,8 +1,7 @@
 product:
   sr: Supportability Review
   description: |
-    Supportability Review is a feature entitlement of Rancher Prime.
-    It provides proactive support to customers with the reassurance that their system design/solution is based on a sound foundation, is supportable in principle and complies with SUSE’s current recommended practice.
+    Supportability Review provides proactive support to customers with the reassurance that their system design/solution is based on a sound foundation, is supportable in principle and complies with SUSE’s current recommended practice.
   notInstalledOrNoSchema: Either the user doesn't have enough permissions to run the Supportability Review extension or the Operator (rancher-supportability-review) is not installed (required to run the Supportability Review extension). <br><br> For user permissions, check with your Rancher administrator if the correct role is assigned. To install Supportabiliyt Review Operator please click the button below.
   notInstalledHasSchema: The Supportability Review Operator is required to run the Supportability Review extension. To install it please follow the instructions on the official documentation.
 
