@@ -27,7 +27,7 @@ sr:
     basic: Basic
     advanced: Advanced
     bundleNameRestriction: Use lowercase letters, max 30 characters. Spaces will be replaced with '-' automatically.
-    upSell: We show up to 5 failures/warnings; for more results, remediations, or support, please contact us at ranchersupportnow@suse.com.
+    upSell: We show up to 5 failures/warnings; for more results, remediations, or support, please contact us at <a href="mailto:ranchersupportnow@suse.com">ranchersupportnow@suse.com</a>.
     forCommunityUser0: Prime customers can collect the data bundle for their entire Rancher environment. Non-prime users can only collect the data bundle for their local cluster.
     forCommunityUser1: Prime customers can obtain a full supportability review by opening a Rancher support case with the generated complete bundle. Sample report is preparing.
   reviewBundle:
