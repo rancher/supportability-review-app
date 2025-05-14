@@ -38,7 +38,7 @@ export default {
     }
   },
   data() {
-    if (this.isCreate()) {
+    if (this.mode === _CREATE) {
       if (!this.value.metadata.name) {
         this.value.metadata.generateName = 'review-bundle-';
       }
@@ -121,9 +121,6 @@ export default {
   },
   watch: {},
   methods: {
-    isCreate() {
-      return this.mode === _CREATE;
-    },
     async createApiToken() {
       const maxTTLMsec = 4 * 60 * 60 * 1000; // 4 hours
 
