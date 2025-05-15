@@ -265,147 +265,153 @@ export default {
 </script>
 
 <template>
-  <h1>Local cluster summary</h1>
-  <h2>Checks status</h2>
-  <Banner v-if="clusterData === null" class="mb-20" color="info">
-    <div v-clean-html="t('nav.inProgress', {}, true)" />
-  </Banner>
-  <div v-else class="main-card-container">
-    <div class="card">
-      <div class="card-top-block">
-        <h2>Cluster state</h2>
-      </div>
-      <div>
-        <h5>Provider: {{ eomEol.local.name }}</h5>
-        <h5 v-if="eomEol.rancher.is_eol">
-          {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOL: {{ eomEol.rancher.eol }}
-        </h5>
-        <h5 v-else-if="eomEol.rancher.is_eom">
-          {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOM: {{ eomEol.rancher.eom }}
-        </h5>
-        <h5 v-if="eomEol.local.is_eol">
-          {{ eomEol.local.name }} {{ eomEol.local.version }} EOL: {{ eomEol.local.eol }}
-        </h5>
-        <h5 v-else-if="eomEol.local.is_eom">
-          {{ eomEol.local.name }} {{ eomEol.local.version }} EOM: {{ eomEol.local.eom }}
-        </h5>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-top-block">
-        <h2>Check Result</h2>
-      </div>
-      <div>
-        <h5>Passed ({{ summaryData.checks_pass }}/{{ summaryData.checks_total }})</h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
-          :color-stops="colorStopsPassed" />
-        <h5>Failed ({{ summaryData.checks_fail }}/{{ summaryData.checks_total }})</h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
-          :color-stops="colorStopsFailed" />
-        <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
-          :color-stops="colorStopsWarning" />
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-top-block">
-        <h2>Check Vectors</h2>
-      </div>
-      <div>
-        <h5>Security ({{ vectorData.security.checks_pass }}/{{ vectorData.security.checks_total }})</h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
-          :color-stops="colorStopsVector" />
-        <h5>
-          Operational Best Practice ({{ vectorData.operationalBestPractice.checks_pass }}/{{
-            vectorData.operationalBestPractice.checks_total
-          }})
-        </h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="
-            (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
-          "
-          :color-stops="colorStopsVector" />
-        <h5>
-          Design Validation ({{ vectorData.designValidation.checks_pass }}/{{
-            vectorData.designValidation.checks_total
-          }})
-        </h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
-          :color-stops="colorStopsVector" />
-        <h5>
-          Support Matrix Conformance ({{ vectorData.supportMatrixConformance.checks_pass }}/{{
-            vectorData.supportMatrixConformance.checks_total
-          }})
-        </h5>
-        <PercentageBar
-          class="mb-15"
-          :show-percentage="true"
-          :model-value="
-            (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) * 100
-          "
-          :color-stops="colorStopsVector" />
-      </div>
-    </div>
-  </div>
-  <h2>Failed/Warnings</h2>
-  <Banner v-if="clusterData === null" class="mb-20" color="info">
-    <div v-clean-html="t('nav.inProgress', {}, true)" />
-  </Banner>
-  <Tabbed v-else>
-    <Tab label-key="sr.vector.security" name="security" :weight="5">
-      <div>
-        <SortableTable :headers="checkResultHeaders" :search="false" :rowActions="false" :rows="vectorList.security" />
-      </div>
-    </Tab>
-    <Tab label-key="sr.vector.operationalBestPractice" name="operationalBestPractice" :weight="4">
-      <div>
-        <SortableTable
-          :headers="checkResultHeaders"
-          :search="false"
-          :rowActions="false"
-          :rows="vectorList.operationalBestPractice" />
-      </div>
-    </Tab>
-    <Tab label-key="sr.vector.designValidation" name="designValidation" :weight="3">
-      <div>
-        <SortableTable
-          :headers="checkResultHeaders"
-          :search="false"
-          :rowActions="false"
-          :rows="vectorList.designValidation" />
-      </div>
-    </Tab>
-    <Tab label-key="sr.vector.supportMatrixConformance" name="supportMatrixConformance" :weight="2">
-      <div>
-        <SortableTable
-          :headers="checkResultHeaders"
-          :search="false"
-          :rowActions="false"
-          :rows="vectorList.supportMatrixConformance" />
-      </div>
-    </Tab>
-  </Tabbed>
   <div>
-    <Banner class="mb-10" color="info">
-      <div v-clean-html="t('sr.menuLabels.upSell', {}, true)" />
+    <h1>Local cluster summary</h1>
+    <h2>Checks status</h2>
+    <Banner v-if="clusterData === null" class="mb-20" color="info">
+      <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
+    <div v-else class="main-card-container">
+      <div class="card">
+        <div class="card-top-block">
+          <h2>Cluster state</h2>
+        </div>
+        <div>
+          <h5>Provider: {{ eomEol.local.name }}</h5>
+          <h5 v-if="eomEol.rancher.is_eol">
+            {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOL: {{ eomEol.rancher.eol }}
+          </h5>
+          <h5 v-else-if="eomEol.rancher.is_eom">
+            {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOM: {{ eomEol.rancher.eom }}
+          </h5>
+          <h5 v-if="eomEol.local.is_eol">
+            {{ eomEol.local.name }} {{ eomEol.local.version }} EOL: {{ eomEol.local.eol }}
+          </h5>
+          <h5 v-else-if="eomEol.local.is_eom">
+            {{ eomEol.local.name }} {{ eomEol.local.version }} EOM: {{ eomEol.local.eom }}
+          </h5>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top-block">
+          <h2>Check Result</h2>
+        </div>
+        <div>
+          <h5>Passed ({{ summaryData.checks_pass }}/{{ summaryData.checks_total }})</h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
+            :color-stops="colorStopsPassed" />
+          <h5>Failed ({{ summaryData.checks_fail }}/{{ summaryData.checks_total }})</h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
+            :color-stops="colorStopsFailed" />
+          <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
+            :color-stops="colorStopsWarning" />
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top-block">
+          <h2>Check Vectors</h2>
+        </div>
+        <div>
+          <h5>Security ({{ vectorData.security.checks_pass }}/{{ vectorData.security.checks_total }})</h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
+            :color-stops="colorStopsVector" />
+          <h5>
+            Operational Best Practice ({{ vectorData.operationalBestPractice.checks_pass }}/{{
+              vectorData.operationalBestPractice.checks_total
+            }})
+          </h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="
+              (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
+            "
+            :color-stops="colorStopsVector" />
+          <h5>
+            Design Validation ({{ vectorData.designValidation.checks_pass }}/{{
+              vectorData.designValidation.checks_total
+            }})
+          </h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
+            :color-stops="colorStopsVector" />
+          <h5>
+            Support Matrix Conformance ({{ vectorData.supportMatrixConformance.checks_pass }}/{{
+              vectorData.supportMatrixConformance.checks_total
+            }})
+          </h5>
+          <PercentageBar
+            class="mb-15"
+            :show-percentage="true"
+            :model-value="
+              (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) * 100
+            "
+            :color-stops="colorStopsVector" />
+        </div>
+      </div>
+    </div>
+    <h2>Failed/Warnings</h2>
+    <Banner v-if="clusterData === null" class="mb-20" color="info">
+      <div v-clean-html="t('nav.inProgress', {}, true)" />
+    </Banner>
+    <Tabbed v-else>
+      <Tab label-key="sr.vector.security" name="security" :weight="5">
+        <div>
+          <SortableTable
+            :headers="checkResultHeaders"
+            :search="false"
+            :rowActions="false"
+            :rows="vectorList.security" />
+        </div>
+      </Tab>
+      <Tab label-key="sr.vector.operationalBestPractice" name="operationalBestPractice" :weight="4">
+        <div>
+          <SortableTable
+            :headers="checkResultHeaders"
+            :search="false"
+            :rowActions="false"
+            :rows="vectorList.operationalBestPractice" />
+        </div>
+      </Tab>
+      <Tab label-key="sr.vector.designValidation" name="designValidation" :weight="3">
+        <div>
+          <SortableTable
+            :headers="checkResultHeaders"
+            :search="false"
+            :rowActions="false"
+            :rows="vectorList.designValidation" />
+        </div>
+      </Tab>
+      <Tab label-key="sr.vector.supportMatrixConformance" name="supportMatrixConformance" :weight="2">
+        <div>
+          <SortableTable
+            :headers="checkResultHeaders"
+            :search="false"
+            :rowActions="false"
+            :rows="vectorList.supportMatrixConformance" />
+        </div>
+      </Tab>
+    </Tabbed>
+    <div>
+      <Banner class="mb-10" color="info">
+        <div v-clean-html="t('sr.menuLabels.upSell', {}, true)" />
+      </Banner>
+    </div>
   </div>
 </template>
 
