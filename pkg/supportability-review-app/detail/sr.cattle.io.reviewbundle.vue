@@ -267,31 +267,22 @@ export default {
 <template>
   <div>
     <h1>Local cluster summary</h1>
+    <h5>Provider: {{ eomEol.local.name }}</h5>
+    <h5 v-if="eomEol.rancher.is_eol">
+      {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOL: {{ eomEol.rancher.eol }}
+    </h5>
+    <h5 v-else-if="eomEol.rancher.is_eom">
+      {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOM: {{ eomEol.rancher.eom }}
+    </h5>
+    <h5 v-if="eomEol.local.is_eol">{{ eomEol.local.name }} {{ eomEol.local.version }} EOL: {{ eomEol.local.eol }}</h5>
+    <h5 v-else-if="eomEol.local.is_eom">
+      {{ eomEol.local.name }} {{ eomEol.local.version }} EOM: {{ eomEol.local.eom }}
+    </h5>
     <h2>Checks status</h2>
     <Banner v-if="clusterData === null" class="mb-20" color="info">
       <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
     <div v-else class="main-card-container">
-      <div class="card">
-        <div class="card-top-block">
-          <h2>Cluster state</h2>
-        </div>
-        <div>
-          <h5>Provider: {{ eomEol.local.name }}</h5>
-          <h5 v-if="eomEol.rancher.is_eol">
-            {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOL: {{ eomEol.rancher.eol }}
-          </h5>
-          <h5 v-else-if="eomEol.rancher.is_eom">
-            {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOM: {{ eomEol.rancher.eom }}
-          </h5>
-          <h5 v-if="eomEol.local.is_eol">
-            {{ eomEol.local.name }} {{ eomEol.local.version }} EOL: {{ eomEol.local.eol }}
-          </h5>
-          <h5 v-else-if="eomEol.local.is_eom">
-            {{ eomEol.local.name }} {{ eomEol.local.version }} EOM: {{ eomEol.local.eom }}
-          </h5>
-        </div>
-      </div>
       <div class="card">
         <div class="card-top-block">
           <h2>Check Result</h2>
