@@ -69,16 +69,13 @@ export default {
         designValidation: [],
         supportMatrixConformance: []
       },
-      colorStopsPassed: {
-        0: '--success'
+      colorStopsFail: {
+        0: '--success',
+        20: '--info',
+        75: '--warning',
+        95: '--error'
       },
-      colorStopsFailed: {
-        0: '--error'
-      },
-      colorStopsWarning: {
-        0: '--warning'
-      },
-      colorStopsVector: {
+      colorStopsNormal: {
         0: '--error',
         20: '--warning',
         75: '--info',
@@ -293,19 +290,19 @@ export default {
             class="mb-15"
             :show-percentage="true"
             :model-value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
-            :color-stops="colorStopsPassed" />
+            :color-stops="colorStopsNormal" />
           <h5>Failed ({{ summaryData.checks_fail }}/{{ summaryData.checks_total }})</h5>
           <PercentageBar
             class="mb-15"
             :show-percentage="true"
             :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
-            :color-stops="colorStopsFailed" />
+            :color-stops="colorStopsFail" />
           <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
           <PercentageBar
             class="mb-15"
             :show-percentage="true"
             :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
-            :color-stops="colorStopsWarning" />
+            :color-stops="colorStopsFail" />
         </div>
       </div>
       <div class="card">
@@ -318,7 +315,7 @@ export default {
             class="mb-15"
             :show-percentage="true"
             :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
-            :color-stops="colorStopsVector" />
+            :color-stops="colorStopsNormal" />
           <h5>
             Operational Best Practice ({{ vectorData.operationalBestPractice.checks_pass }}/{{
               vectorData.operationalBestPractice.checks_total
@@ -330,7 +327,7 @@ export default {
             :model-value="
               (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
             "
-            :color-stops="colorStopsVector" />
+            :color-stops="colorStopsNormal" />
           <h5>
             Design Validation ({{ vectorData.designValidation.checks_pass }}/{{
               vectorData.designValidation.checks_total
@@ -340,7 +337,7 @@ export default {
             class="mb-15"
             :show-percentage="true"
             :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
-            :color-stops="colorStopsVector" />
+            :color-stops="colorStopsNormal" />
           <h5>
             Support Matrix Conformance ({{ vectorData.supportMatrixConformance.checks_pass }}/{{
               vectorData.supportMatrixConformance.checks_total
@@ -352,7 +349,7 @@ export default {
             :model-value="
               (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) * 100
             "
-            :color-stops="colorStopsVector" />
+            :color-stops="colorStopsNormal" />
         </div>
       </div>
     </div>
