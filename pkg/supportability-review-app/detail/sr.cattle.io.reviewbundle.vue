@@ -366,6 +366,7 @@ export default {
           <SortableTable
             :headers="checkResultHeaders"
             :search="false"
+            :tableActions="false"
             :rowActions="false"
             :rows="vectorList.security" />
         </div>
@@ -375,6 +376,7 @@ export default {
           <SortableTable
             :headers="checkResultHeaders"
             :search="false"
+            :tableActions="false"
             :rowActions="false"
             :rows="vectorList.operationalBestPractice" />
         </div>
@@ -384,6 +386,7 @@ export default {
           <SortableTable
             :headers="checkResultHeaders"
             :search="false"
+            :tableActions="false"
             :rowActions="false"
             :rows="vectorList.designValidation" />
         </div>
@@ -393,6 +396,7 @@ export default {
           <SortableTable
             :headers="checkResultHeaders"
             :search="false"
+            :tableActions="false"
             :rowActions="false"
             :rows="vectorList.supportMatrixConformance" />
         </div>
