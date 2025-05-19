@@ -2,26 +2,6 @@ import { STATE, NAME as NAME_COL, AGE } from '@shell/config/table-headers';
 import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, SUPPORTABILITY_REVIEW_CRD_IDS, SR_APP_PAGES } from './config/types';
 import { rootRoute, createRoute } from './utils/custom-routing';
 const stsIcon = require('./icon.svg');
-const styleSheet = document.createElement('style');
-// css fix for SVG icon in Rancher 2.8 and 2.9
-// it also fixes colors for both light and dark theme
-const css = `
-  .side-menu .category div a > img {
-    display: block;
-    width: 42px;
-    font-size: 25px;
-    margin-right: 14px;
-  }
-  .theme-dark .side-menu .category div a > img {
-    filter: brightness(0) saturate(100%) invert(39%) sepia(90%) saturate(399%) hue-rotate(160deg) brightness(93%) contrast(95%)
-  }
-  .theme-dark .side-menu .category div a:hover > img, .side-menu .category div a.active-menu-link > img {
-    filter:  brightness(0) invert(1);
-  }
-`;
-
-styleSheet.textContent = css;
-document.head.appendChild(styleSheet);
 export function init($plugin, store) {
   const { product, configureType, virtualType, basicType, weightType, headers } = $plugin.DSL(
     store,
