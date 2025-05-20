@@ -80,7 +80,8 @@ export default {
         20: '--warning',
         75: '--info',
         95: '--success'
-      }
+      },
+      activeTab: 'security'
     };
   },
   computed: {
@@ -256,6 +257,9 @@ export default {
         .catch((error) => {
           console.error('Error:', error);
         });
+    },
+    switchToTab(tabName) {
+      this.$refs.tabbedRef?.select(tabName);
     }
   }
 };
@@ -310,46 +314,55 @@ export default {
           <h2>Check Vectors</h2>
         </div>
         <div>
-          <h5>Security ({{ vectorData.security.checks_pass }}/{{ vectorData.security.checks_total }})</h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
-            :color-stops="colorStopsNormal" />
-          <h5>
-            Operational Best Practice ({{ vectorData.operationalBestPractice.checks_pass }}/{{
-              vectorData.operationalBestPractice.checks_total
-            }})
-          </h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="
-              (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
-            "
-            :color-stops="colorStopsNormal" />
-          <h5>
-            Design Validation ({{ vectorData.designValidation.checks_pass }}/{{
-              vectorData.designValidation.checks_total
-            }})
-          </h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
-            :color-stops="colorStopsNormal" />
-          <h5>
-            Support Matrix Conformance ({{ vectorData.supportMatrixConformance.checks_pass }}/{{
-              vectorData.supportMatrixConformance.checks_total
-            }})
-          </h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="
-              (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) * 100
-            "
-            :color-stops="colorStopsNormal" />
+          <div style="cursor: pointer" @click="switchToTab('security')">
+            <h5>Security ({{ vectorData.security.checks_pass }}/{{ vectorData.security.checks_total }})</h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
+              :color-stops="colorStopsNormal" />
+          </div>
+          <div style="cursor: pointer" @click="switchToTab('operationalBestPractice')">
+            <h5>
+              Operational Best Practice ({{ vectorData.operationalBestPractice.checks_pass }}/{{
+                vectorData.operationalBestPractice.checks_total
+              }})
+            </h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="
+                (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
+              "
+              :color-stops="colorStopsNormal" />
+          </div>
+          <div style="cursor: pointer" @click="switchToTab('designValidation')">
+            <h5>
+              Design Validation ({{ vectorData.designValidation.checks_pass }}/{{
+                vectorData.designValidation.checks_total
+              }})
+            </h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
+              :color-stops="colorStopsNormal" />
+          </div>
+          <div style="cursor: pointer" @click="switchToTab('supportMatrixConformance')">
+            <h5>
+              Support Matrix Conformance ({{ vectorData.supportMatrixConformance.checks_pass }}/{{
+                vectorData.supportMatrixConformance.checks_total
+              }})
+            </h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="
+                (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) *
+                100
+              "
+              :color-stops="colorStopsNormal" />
+          </div>
         </div>
       </div>
     </div>
@@ -357,7 +370,7 @@ export default {
     <Banner v-if="clusterData === null" class="mb-20" color="info">
       <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
-    <Tabbed v-else>
+    <Tabbed v-else ref="tabbedRef">
       <Tab label-key="sr.vector.security" name="security" :weight="5">
         <div>
           <SortableTable
