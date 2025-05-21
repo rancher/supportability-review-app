@@ -200,7 +200,7 @@ export default {
                   report_data.cards.push({
                     id: check.check_id,
                     details: check.text,
-                    state: check.state,
+                    state: check.state == 'fail' ? 'Failed' : 'Warning',
                     vector: check.vector,
                     priority: check.priority
                   });
