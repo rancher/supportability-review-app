@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      clusterData: null,
+      provider: null,
       summaryData: {
         checks_total: 0,
         checks_fail: 0,
@@ -126,15 +126,6 @@ export default {
         })
         .then((reportData) => {
           const report_data = {
-            clusterData: [
-              { type: 'aks', count: 0 },
-              { type: 'eks', count: 0 },
-              { type: 'gke', count: 0 },
-              { type: 'harvester', count: 0 },
-              { type: 'k3s', count: 0 },
-              { type: 'rke', count: 0 },
-              { type: 'rke2', count: 0 }
-            ],
             summaryData: {
               checks_total: 0,
               checks_fail: 0,
@@ -173,10 +164,7 @@ export default {
             if (cluster.cluster_id !== 'local') {
               continue;
             }
-            const typeIndex = report_data.clusterData.findIndex((c) => c.type === cluster.kubernetes_distro);
-            if (typeIndex !== -1) {
-              report_data.clusterData[typeIndex].count++;
-            }
+            this.provider = cluster.kubernetes_distro;
 
             report_data.summaryData.checks_fail += cluster.checks_fail;
             report_data.summaryData.checks_warn += cluster.checks_warn;
@@ -251,7 +239,6 @@ export default {
             }
           });
 
-          this.clusterData = report_data.clusterData || [];
           this.summaryData = report_data.summaryData || {};
           this.vectorData.security = report_data.vectorData['Security'];
           this.vectorData.operationalBestPractice = report_data.vectorData['Operational Best Practice'];
@@ -272,7 +259,7 @@ export default {
 <template>
   <div>
     <h1>Local cluster summary</h1>
-    <h5>Provider: {{ eomEol.local.name }}</h5>
+    <h5>Provider: {{ provider }}</h5>
     <h5 v-if="eomEol.rancher.is_eol">
       {{ eomEol.rancher.name }} {{ eomEol.rancher.version }} EOL: {{ eomEol.rancher.eol }}
     </h5>
@@ -284,7 +271,7 @@ export default {
       {{ eomEol.local.name }} {{ eomEol.local.version }} EOM: {{ eomEol.local.eom }}
     </h5>
     <h2>Checks status</h2>
-    <Banner v-if="clusterData === null" class="mb-20" color="info">
+    <Banner v-if="provider === null" class="mb-20" color="info">
       <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
     <div v-else class="main-card-container">
@@ -371,7 +358,7 @@ export default {
       </div>
     </div>
     <h2>Failed/Warnings</h2>
-    <Banner v-if="clusterData === null" class="mb-20" color="info">
+    <Banner v-if="provider === null" class="mb-20" color="info">
       <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
     <Tabbed v-else ref="tabbedRef">
