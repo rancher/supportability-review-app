@@ -64,6 +64,7 @@ export default {
         rancher: { name: '', version: '', is_eol: false, is_eom: false, eol: '', eom: '' }
       },
       vectorList: {
+        all: [],
         security: [],
         operationalBestPractice: [],
         designValidation: [],
@@ -223,6 +224,9 @@ export default {
           const maxFailures = 5;
           report_data.cards.forEach((card) => {
             const checkResult = { 'checkStatus': card.state, 'checkNumber': card.id, 'checkDescription': card.details };
+            if (this.vectorList.all.length < maxFailures) {
+              this.vectorList.all.push(checkResult);
+            }
             switch (card.vector) {
               case 'Security':
                 if (this.vectorList.security.length < maxFailures) {
@@ -371,6 +375,16 @@ export default {
       <div v-clean-html="t('nav.inProgress', {}, true)" />
     </Banner>
     <Tabbed v-else ref="tabbedRef">
+      <Tab label-key="sr.vector.all" name="all" :weight="6">
+        <div>
+          <SortableTable
+            :headers="checkResultHeaders"
+            :search="false"
+            :tableActions="false"
+            :rowActions="false"
+            :rows="vectorList.all" />
+        </div>
+      </Tab>
       <Tab label-key="sr.vector.security" name="security" :weight="5">
         <div>
           <SortableTable
