@@ -33,6 +33,7 @@ sr:
   reviewBundle:
     analyzeLocalOnly: Analyze local cluster only
   vector:
+    all: All
     security: Security
     operationalBestPractice: Operational Best Practice
     designValidation: Design Validation
