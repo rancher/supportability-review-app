@@ -273,7 +273,7 @@ export default {
         <div class="card-top-block">
           <h2>Check Result</h2>
         </div>
-        <div>
+        <div style="cursor: pointer" @click="switchToTab('all')">
           <h5>Passed ({{ summaryData.checks_pass }}/{{ summaryData.checks_total }})</h5>
           <PercentageBar
             class="mb-15"
