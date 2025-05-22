@@ -273,25 +273,27 @@ export default {
         <div class="card-top-block">
           <h2>Check Result</h2>
         </div>
-        <div style="cursor: pointer" @click="switchToTab('all')">
+        <div>
           <h5>Passed ({{ summaryData.checks_pass }}/{{ summaryData.checks_total }})</h5>
           <PercentageBar
             class="mb-15"
             :show-percentage="true"
             :model-value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
             :color-stops="colorStopsNormal" />
-          <h5>Failed ({{ summaryData.checks_fail }}/{{ summaryData.checks_total }})</h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
-            :color-stops="colorStopsFail" />
-          <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
-          <PercentageBar
-            class="mb-15"
-            :show-percentage="true"
-            :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
-            :color-stops="colorStopsFail" />
+          <div style="cursor: pointer" @click="switchToTab('all')">
+            <h5>Failed ({{ summaryData.checks_fail }}/{{ summaryData.checks_total }})</h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
+              :color-stops="colorStopsFail" />
+            <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
+            <PercentageBar
+              class="mb-15"
+              :show-percentage="true"
+              :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
+              :color-stops="colorStopsFail" />
+          </div>
         </div>
       </div>
       <div class="card">
