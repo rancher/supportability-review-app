@@ -136,30 +136,6 @@ export default {
             vectorData: {},
             cards: []
           };
-          reportData?.systems_summary?.eom_eol?.forEach((item) => {
-            const formattedEOL = item.eol_date ? item.eol_date.split('/').join('-') : null;
-            const formattedEOM = item.eom_date ? item.eom_date.split('/').join('-') : null;
-            const formattedVersion = item.version.split('.').slice(0, 2).join('.');
-            if (item.cluster === 'local' && item.app === 'rancher') {
-              this.eomEol.rancher = {
-                name: item.app,
-                version: formattedVersion,
-                eol: formattedEOL,
-                eom: formattedEOM,
-                is_eol: item.is_eol,
-                is_eom: item.is_eom
-              };
-            } else if (item.cluster === 'local') {
-              this.eomEol.local = {
-                name: item.app,
-                version: formattedVersion,
-                eol: formattedEOL,
-                eom: formattedEOM,
-                is_eol: item.is_eol,
-                is_eom: item.is_eom
-              };
-            }
-          });
           for (const cluster of reportData.clusters) {
             if (cluster.cluster_id !== 'local') {
               continue;
@@ -201,6 +177,24 @@ export default {
             }
             break;
           }
+          reportData?.systems_summary?.eom_eol?.forEach((item) => {
+            if (item.cluster !== 'local') {
+              return;
+            }
+            const eomEolInfo = {
+              name: item.app,
+              version: item.version.split('.').slice(0, 2).join('.'),
+              eol: item.eol_date ? item.eol_date.split('/').join('-') : null,
+              eom: item.eom_date ? item.eom_date.split('/').join('-') : null,
+              is_eol: item.is_eol,
+              is_eom: item.is_eom
+            };
+            if (item.app === 'rancher') {
+              this.eomEol.rancher = eomEolInfo;
+            } else if (item.app === this.provider) {
+              this.eomEol.local = eomEolInfo;
+            }
+          });
           report_data.cards.sort((a, b) => {
             const priorityOrder = { high: 1, medium: 2, low: 3 };
             const stateOrder = { fail: 1, warn: 2 };
