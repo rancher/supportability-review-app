@@ -58,13 +58,13 @@ entries:
       catalog.cattle.io/ui-extensions-version: < 3.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-05-15T00:26:17.664717142Z"
+    created: "2025-05-22T05:32:40.097635063Z"
     description: Collects and analyses cluster data for supportability assessment
-    digest: 599e83515ad2e88408708cc59c6e5bbc830ec1ff616d16f6fa7fa3b0ecd7869a
+    digest: 2c0922d1ea10a262f983fa979c39aac56c66cf04ca4ed2e697c82e7bf946afc5
     icon: https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png
     name: supportability-review-app
     type: application
     urls:
     - assets/supportability-review-app/supportability-review-app-1.0.0.tgz
     version: 1.0.0
-generated: "2025-05-15T00:33:31.551958174Z"
+generated: "2025-05-22T05:32:40.097286226Z"
