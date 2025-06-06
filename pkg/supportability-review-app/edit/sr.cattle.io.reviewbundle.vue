@@ -101,7 +101,8 @@ export default {
     }
     return {
       description: '',
-      isPrime: true
+      isPrime: true,
+      generateName: 'review-bundle'
     };
   },
   computed: {
@@ -135,7 +136,7 @@ export default {
       return created.token;
     },
     setDefaultName() {
-      this.value.metadata.generateName = this.value.metadata.generateName
+      this.value.metadata.generateName = this.generateName
         .toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/[^a-z0-9-]/g, '')
@@ -178,7 +179,7 @@ export default {
 
           <h4 class="mb-200">Bundle Name</h4>
           <LabeledInput
-            v-model:value="value.metadata.generateName"
+            v-model:value="generateName"
             label="Enter Bundle Name"
             placeholder="review-bundle"
             :maxlength="30"
