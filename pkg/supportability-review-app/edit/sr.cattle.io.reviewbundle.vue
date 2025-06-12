@@ -1,19 +1,22 @@
 <script>
-import Loading from '@shell/components/Loading.vue';
 import CruResource from '@shell/components/CruResource.vue';
+import Loading from '@shell/components/Loading.vue';
 import Tabbed from '@shell/components/Tabbed/index.vue';
 import Tab from '@shell/components/Tabbed/Tab.vue';
+import Tolerations from '@shell/components/form/Tolerations';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
 import { NORMAN } from '@shell/config/types';
 import { Banner } from '@components/Banner';
-import Tolerations from '@shell/components/form/Tolerations';
+import { Checkbox } from '@components/Form/Checkbox';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import TextAreaAutoGrow from '@components/Form/TextArea/TextAreaAutoGrow.vue';
+
 export default {
   name: 'ReviewBundleEditView',
   components: {
     Banner,
+    Checkbox,
     CruResource,
     LabeledInput,
     Loading,
@@ -47,6 +50,7 @@ export default {
       }
       this.value.spec.analyzeClusters = ['local'];
       this.value.spec.sonobuoyNamespace = 'sonobuoy';
+      this.value.spec.enablePrivileged = false;
 
       this.createApiToken()
         .then((token) => {
@@ -202,6 +206,12 @@ export default {
 
           <h4 class="mt-10 mb-200" for="tolerations">Tolerations</h4>
           <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
+
+          <h4 class="mt-10 mb-200">Privileged</h4>
+          <Checkbox
+            v-model:value="value.spec.enablePrivileged"
+            class="mb-20"
+            :label="t('sr.menuLabels.enablePrivileged')" />
 
           <h4 class="mt-10 mb-200">Bundle Description</h4>
           <TextAreaAutoGrow
