@@ -1,6 +1,6 @@
 # Supportability Review - Rancher Extension
 
-The **Supportability Review** (SR) extension helps proactively validate your Kubernetes cluster configuration and environment to ensure it's production-ready and support-aligned.
+The **Supportability Review** (SR) extension helps proactively validate your Rancher managed kubernetes cluster configuration and environment to ensure it's production-ready and support-aligned.
 
 It provides:
 
