@@ -44,14 +44,16 @@ Once installed, a new **Cattleman icon** will appear in the side menu.
 - Press the button: `Add Supportability Review Operator Repository`.
 - Then click `Install Supportability Review Operator`.
 ![Dashboard view to add repo](./pkg/supportability-review-app/images/readme/dashboard-add-operator-repo.png)
-During the installation process, you can configure the following components (We recommend keeping the default settings):
 
+- **Important Step:** Please update the default value of the **container registry** field to: `docker.io`(Interim fix until the Rancher registry is synced with the required images.)
+![Container Regitry to docker.io](./pkg/supportability-review-app/images/readme/container-registry.png)
+During the installation process, you can configure the following components (We recommend keeping the default settings):
 - **Images**: Repository details for collector and analyzer images.
 - **Collector Configuration**: CPU, memory limits for the collector container.
 - **Analyzer Configuration**: CPU, memory limits for the analyzer container.
 - **Redis Configuration**: CPU, memory, and ephemeral storage limits for the Redis container.
-![Install view for SR operator](./pkg/supportability-review-app/images/readme/install-supportability-operator.png)
-![Collector configuration during install](./pkg/supportability-review-app/images/readme/collector-config.png)
+
+  ![Collector configuration during install](./pkg/supportability-review-app/images/readme/collector-config.png)
 
 ---
 
