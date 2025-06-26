@@ -278,6 +278,7 @@ export default {
           <PercentageBar
             class="mb-15"
             :show-percentage="true"
+            :value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
             :model-value="(summaryData.checks_pass / summaryData.checks_total) * 100.0"
             :color-stops="colorStopsNormal" />
           <div style="cursor: pointer" @click="switchToTab('all')">
@@ -285,12 +286,14 @@ export default {
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
               :model-value="(summaryData.checks_fail / summaryData.checks_total) * 100.0"
               :color-stops="colorStopsFail" />
             <h5>Warning ({{ summaryData.checks_warn }}/{{ summaryData.checks_total }})</h5>
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
               :model-value="(summaryData.checks_warn / summaryData.checks_total) * 100.0"
               :color-stops="colorStopsFail" />
           </div>
@@ -306,6 +309,7 @@ export default {
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
               :model-value="(vectorData.security.checks_pass / vectorData.security.checks_total) * 100"
               :color-stops="colorStopsNormal" />
           </div>
@@ -318,6 +322,9 @@ export default {
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="
+                (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
+              "
               :model-value="
                 (vectorData.operationalBestPractice.checks_pass / vectorData.operationalBestPractice.checks_total) * 100
               "
@@ -332,6 +339,7 @@ export default {
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
               :model-value="(vectorData.designValidation.checks_pass / vectorData.designValidation.checks_total) * 100"
               :color-stops="colorStopsNormal" />
           </div>
@@ -344,6 +352,10 @@ export default {
             <PercentageBar
               class="mb-15"
               :show-percentage="true"
+              :value="
+                (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) *
+                100
+              "
               :model-value="
                 (vectorData.supportMatrixConformance.checks_pass / vectorData.supportMatrixConformance.checks_total) *
                 100
