@@ -1,6 +1,6 @@
 import SteveModel from '@shell/plugins/steve/steve-class';
 import { clone } from '@shell/utils/object';
-import { SUPPORTABILITY_REVIEW_PRODUCT_NAME } from '../config/types';
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, SUPPORTABILITY_REVIEW_CRD_IDS, BLANK_CLUSTER } from '../config/types';
 
 export default class ReviewBundle extends SteveModel {
   get detailLocation() {
@@ -47,7 +47,7 @@ export default class ReviewBundle extends SteveModel {
   }
 
   viewReport() {
-    window.location.href = `./sr.cattle.io.reviewbundle/${this.metadata.name}`;
+    window.location.href = `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/${BLANK_CLUSTER}/${SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE}/${this.metadata.name}`;
   }
 
   downloadFromUrl(url, filename) {
