@@ -21,9 +21,16 @@ Follow the steps below to install the Supportability Review extension inside Ran
 ![Hamburger menu icon](./pkg/supportability-review-app/images/readme/hamburger-extension-icon.png)
 
 ### 2. Add the Extension to the Available Extensions List
-#### For Rancher Community
-To view the Supportability Review extension in the Extensions list:
 
+#### Rancher Prime
+- Click the **three dots** (⋮) on the extensions page.
+- Select **Add Rancher Repositories**.
+- Wait a few seconds while the repository syncs.
+- You will now see the **Supportability Review** extension listed.
+![Add extension menu](./pkg/supportability-review-app/images/readme/add-extension-repo.png)
+
+#### Rancher Community
+To view the Supportability Review extension in the Extensions list:
 - Click the **three dots** (⋮) on the Extensions page.
 - Select **Manage Repository**.
 - Click the **Create** button.
@@ -37,13 +44,7 @@ To view the Supportability Review extension in the Extensions list:
 - The **Supportability Review** extension will now appear in the list.
 ![Add extension menu](./pkg/supportability-review-app/images/readme/add-repo-community.png)
 
-#### For Rancher Prime
 
-- Click the **three dots** (⋮) on the extensions page.
-- Select **Add Rancher Repositories**.
-- Wait a few seconds while the repository syncs.
-- You will now see the **Supportability Review** extension listed.
-![Add extension menu](./pkg/supportability-review-app/images/readme/add-extension-repo.png)
 ### 3. Install the Extension
 
 - Click on the **Supportability Review** entry.
