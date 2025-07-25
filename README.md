@@ -20,7 +20,24 @@ Follow the steps below to install the Supportability Review extension inside Ran
 - Click on **Extensions → Available / All Extensions**.
 ![Hamburger menu icon](./pkg/supportability-review-app/images/readme/hamburger-extension-icon.png)
 
-### 2. Add Rancher Repositories
+### 2. Add the Extension to the Available Extensions List
+#### For Rancher Community
+To view the Supportability Review extension in the Extensions list:
+
+- Click the **three dots** (⋮) on the Extensions page.
+- Select **Manage Repository**.
+- Click the **Create** button.
+- Choose **Git repository containing Helm chart or cluster template definitions**.
+- Fill in the following details:
+  - **Name**: `supportability-review` (optional)
+  - **Repository URL**: `https://github.com/rancher/supportability-review-app`
+  - **Branch**: `gh-pages`
+- Click **Create**.
+- Wait a few seconds for the repository to sync.
+- The **Supportability Review** extension will now appear in the list.
+![Add extension menu](./pkg/supportability-review-app/images/readme/add-repo-community.png)
+
+#### For Rancher Prime
 
 - Click the **three dots** (⋮) on the extensions page.
 - Select **Add Rancher Repositories**.
