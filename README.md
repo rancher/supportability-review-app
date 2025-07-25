@@ -96,6 +96,30 @@ You can also preview what a full report looks like by clicking the **[View Sampl
 ![Review report visualization](./pkg/supportability-review-app/images/readme/review-visual-report.png)
 ---
 
+## Air-Gap Install
+Pull and push required images into private registry.
+```
+$ docker pull rancher/supportability-review:latest
+$ docker pull rancher/supportability-review-internal:latest
+$ docker pull rancher/supportability-review-operator:latest
+$ docker pull rancher/supportability-review-app-frontend:latest
+$ docker pull rancher/mirrored-library-redis:7.2.9
+
+$ docker tag rancher/supportability-review:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review:latest
+$ docker tag rancher/supportability-review-internal:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-internal:latest
+$ docker tag rancher/supportability-review-operator:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-operator:latest
+$ docker tag rancher/supportability-review-app-frontend:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-app-frontend:latest
+$ docker tag rancher/mirrored-library-redis:7.2.9 ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/mirrored-library-redis:7.2.9
+
+$ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review:latest
+$ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-internal:latest
+$ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-operator:latest
+$ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-app-frontend:latest
+$ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/mirrored-library-redis:7.2.9
+```
+
+---
+
 ## Feedback & Issues
 
 If you encounter any bugs, installation issues, or have suggestions for improvement, please [open an issue](https://github.com/rancher/supportability-review-app/issues) in this repository.
