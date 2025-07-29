@@ -90,9 +90,9 @@ During the installation process, you can configure the following components (We 
   - Add node tolerations.
   - Write a bundle description.
 
-> we recommend keeping the default values
+we recommend keeping the default values
 
-> **Prime customers** can obtain a full supportability review by opening a Rancher support case and sharing the generated review bundle.  
+**Prime customers** can obtain a full supportability review by opening a Rancher support case and sharing the generated review bundle.  
 You can also preview what a full report looks like by clicking the **[View Sample Report](https://suse.my.salesforce.com/sfc/p/#1i000000gLOd/a/Tr00000EFJwk/2gpLmKqcybjI6R_YjwtXwx4qNnKFsOSTmf8SNQvQLbQ)** link.
 
 ---
@@ -135,6 +135,14 @@ $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-app-frontend:latest
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/mirrored-library-redis:7.2.9
 ```
+
+---
+
+## Alternative: Use Offline Supportability Review
+
+If the **UI extension** does not work or is unavailable in your setup, you can use the **offline Supportability Review method** instead.
+
+Please follow the instructions provided here: [Supportability Review](https://github.com/rancherlabs/support-tools/tree/master/collection/rancher/v2.x/supportability-review)
 
 ---
 
