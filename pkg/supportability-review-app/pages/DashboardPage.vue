@@ -16,7 +16,6 @@ export default {
     return { isSROpInstalled: true };
   },
   async fetch() {
-    console.log('pages/DashboardPage.vue: fetch');
     // this covers scenario where Operator is deleted from Apps, and we lose the admin role for Standard Users...
     if (this.$store.getters['management/canList'](SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE)) {
       let installedApps;
@@ -26,7 +25,6 @@ export default {
         installedApps = await this.$store.dispatch('management/findAll', {
           type: CATALOG.APP
         });
-        console.log('installedApps: ', installedApps);
       }
 
       const srSchema = this.$store.getters['management/schemaFor'](SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE);

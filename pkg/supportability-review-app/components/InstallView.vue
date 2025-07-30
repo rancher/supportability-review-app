@@ -23,7 +23,6 @@ export default {
     return { reloadReady: false, initLoading: true, chartBranch: '' };
   },
   async fetch() {
-    console.log('InstallView: async fetch');
     this.reloadReady = false;
     const reqs = {};
 
@@ -60,8 +59,6 @@ export default {
       .catch((error) => {
         console.error('Fetch error:', error);
       });
-
-    console.log('InstallView: async fetch: done');
   },
   computed: {
     ...mapGetters({
@@ -71,8 +68,6 @@ export default {
     }),
 
     srRepo() {
-      console.log('InstallView: srRepo');
-      console.log('InstallView: this.charts: ', this.charts);
       const chart = this.charts?.find((chart) => chart.chartName === SR_CHARTS.OPERATOR);
 
       return this.repos?.find((repo) => repo.id === chart?.repoName);
@@ -85,14 +80,11 @@ export default {
           repoType: 'cluster',
           chartName: SR_CHARTS.OPERATOR
         }) || null;
-      console.log('InstallView: operatorChart: chart=', chart);
-
       return chart;
     }
   },
   methods: {
     async addRepository(btnCb) {
-      console.log('InstallView: addRepository');
       try {
         const repoObj = await this.$store.dispatch('management/create', {
           type: CATALOG.CLUSTER_REPO,
@@ -121,7 +113,6 @@ export default {
     },
 
     async refreshCharts(retry = 0, init) {
-      console.log('InstallView: refreshCharts, retry=', retry);
       try {
         await this.$store.dispatch('catalog/refresh');
       } catch (e) {
@@ -141,7 +132,6 @@ export default {
     },
 
     async chartRoute() {
-      console.log('InstallView: chartRoute');
       if (!this.operatorChart) {
         try {
           await this.refreshCharts();
