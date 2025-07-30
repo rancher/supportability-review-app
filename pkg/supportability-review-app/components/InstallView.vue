@@ -55,7 +55,7 @@ export default {
       })
       .then((data) => {
         const versionArray = data.Version.split('.');
-        this.chartBranch = 'minimal-dev-' + versionArray[0] + '.' + versionArray[1];
+        this.chartBranch = 'release-' + versionArray[0] + '.' + versionArray[1];
       })
       .catch((error) => {
         console.error('Fetch error:', error);
@@ -99,7 +99,6 @@ export default {
           metadata: { name: 'supportability-review-operator-charts' },
           spec: {
             gitBranch: this.chartBranch,
-            //gitBranch: SR_REPO.BRANCH,
             gitRepo: SR_REPO.REPO
           }
         });
