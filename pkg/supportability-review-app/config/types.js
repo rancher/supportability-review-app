@@ -20,6 +20,5 @@ export const SR_CHARTS = {
 export const BLANK_CLUSTER = '_';
 
 export const SR_REPO = {
-  REPO: 'https://github.com/masap/rancher-charts',
-  BRANCH: 'gh-pages'
+  REPO: 'https://github.com/rancher/charts'
 };
