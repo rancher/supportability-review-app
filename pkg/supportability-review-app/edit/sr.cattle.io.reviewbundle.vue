@@ -228,9 +228,6 @@ export default {
     <Banner v-if="!isPrime" class="mb-10" color="info">
       <div v-clean-html="t('sr.menuLabels.forCommunityUser1', {}, true)" />
     </Banner>
-    <Banner v-if="isPrime" class="mb-10" color="info">
-      <div v-clean-html="t('sr.menuLabels.forCommunityUser1', {}, true)" />
-    </Banner>
   </CruResource>
 </template>
 <style scoped></style>
