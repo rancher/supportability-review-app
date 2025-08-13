@@ -14,9 +14,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
     appVersion: 3.0.1
-    created: "2025-07-23T00:35:52.390113992Z"
+    created: "2025-08-13T01:20:30.589613497Z"
     description: Collects and analyses cluster data for supportability assessment
-    digest: 8bf79d7cbfbd08ff06aa1c5bdade70f00192a712b31a53bb4725b820d51c4e7c
+    digest: e26bc8279e040082381b52127f8fc7750d920b58b87a9f0585ce63a20b267a01
     icon: https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png
     name: supportability-review-app
     type: application
@@ -58,9 +58,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: < 3.0.0
     apiVersion: v2
     appVersion: 2.0.2
-    created: "2025-08-13T01:16:49.116880658Z"
+    created: "2025-07-23T00:30:42.862769383Z"
     description: Collects and analyses cluster data for supportability assessment
-    digest: b945472236121230250236796c2cff02b6342e6871846f89124fa1296fa4afe5
+    digest: 5a45e2d2ac5bc9affdd6afcb6cfac80f16f669ceeb079a1aa0a396f58bfddc92
     icon: https://raw.githubusercontent.com/rancher/supportability-review-app/main/pkg/supportability-review-app/icon.png
     name: supportability-review-app
     type: application
@@ -133,4 +133,4 @@ entries:
     urls:
     - assets/supportability-review-app/supportability-review-app-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-13T01:16:49.115533357Z"
+generated: "2025-08-13T01:20:30.589025109Z"
