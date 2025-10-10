@@ -211,12 +211,14 @@ export default {
           <h4 class="mt-10 mb-200">Security</h4>
           <Checkbox
             v-model:value="value.spec.enablePrivileged"
+            v-model="value.spec.enablePrivileged"
             class="mb-10"
             :label="t('sr.menuLabels.enablePrivileged')" />
           <br />
 
           <Checkbox
             v-model:value="value.spec.enableDataObfuscation"
+            v-model="value.spec.enableDataObfuscation"
             class="mb-10"
             :label="t('sr.menuLabels.enableDataObfuscation')" />
 
