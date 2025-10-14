@@ -36,9 +36,9 @@ To view the Supportability Review extension in the Extensions list:
 - Click the **Create** button.
 - Choose **Git repository containing Helm chart or cluster template definitions**.
 - Fill in the following details:
-  - **Name**: `supportability-review` (optional)
-  - **Repository URL**: `https://github.com/rancher/supportability-review-app`
-  - **Branch**: `gh-pages`
+  - **Name**: `sr-app-repo` (optional)
+  - **Repository URL**: `https://github.com/rancher/ui-plugin-charts`
+  - **Branch**: `main`
 - Click **Create**.
 - Wait a few seconds for the repository to sync.
 - The **Supportability Review** extension will now appear in the list.
