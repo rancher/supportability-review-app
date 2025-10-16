@@ -91,8 +91,6 @@ During the installation process, you can configure the following components (We 
 
 we recommend keeping the default values
 
-**Prime customers** can obtain a full supportability review by opening a Rancher support case and sharing the generated review bundle.  
-You can also preview what a full report looks like by clicking the **[View Sample Report](https://suse.my.salesforce.com/sfc/p/#1i000000gLOd/a/Tr00000EFJwk/2gpLmKqcybjI6R_YjwtXwx4qNnKFsOSTmf8SNQvQLbQ)** link.
 
 ---
 
@@ -111,6 +109,11 @@ You can also preview what a full report looks like by clicking the **[View Sampl
   - **View** the report
 - Click on the bundle name or select View Report from the **three-dot menu (⋮)** to view a detailed visual report of your local cluster.
 ![Review report visualization](./pkg/supportability-review-app/images/readme/review-visual-report.png)
+
+The Supportability Review UI extension is limited to displaying a maximum of five failures or warnings and does not generate a downloadable PDF report. **Prime customers** can obtain the complete supportability review report by opening a Rancher support case and providing the generated review bundle.
+
+You can also preview what a full report looks like by clicking the **[View Sample Report](https://suse.my.salesforce.com/sfc/p/#1i000000gLOd/a/Tr00000EFJwk/2gpLmKqcybjI6R_YjwtXwx4qNnKFsOSTmf8SNQvQLbQ)** link.
+
 ---
 
 ## Air-Gap Install
