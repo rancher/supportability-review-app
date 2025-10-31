@@ -3,6 +3,10 @@ fullnameOverride: ""
 plugin:
   enabled: true
   versionOverride: ""
+  endpoint: >-
+    https://raw.githubusercontent.com/rancher/supportability-review-app/gh-pages/extensions/supportability-review-app/3.0.2
+  compressedEndpoint: >-
+    https://raw.githubusercontent.com/rancher/supportability-review-app/gh-pages/extensions/supportability-review-app/3.0.2.tgz
   noCache: false
   noAuth: false
   metadata:
