@@ -15,7 +15,7 @@
     "vue-eslint-parser": "^10.1.1"
   },
   "dependencies": {
-    "@rancher/shell": "^3.0.4"
+    "@rancher/shell": "^3.0.7"
   },
   "resolutions": {
     "@types/node": "~20.10.0"
