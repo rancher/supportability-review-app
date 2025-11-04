@@ -1,6 +1,6 @@
 import SteveModel from '@shell/plugins/steve/steve-class';
 import { clone } from '@shell/utils/object';
-import { SUPPORTABILITY_REVIEW_PRODUCT_NAME } from '../config/types';
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, SUPPORTABILITY_REVIEW_CRD_IDS, BLANK_CLUSTER } from '../config/types';
 
 export default class ReviewBundle extends SteveModel {
   get detailLocation() {
@@ -32,9 +32,22 @@ export default class ReviewBundle extends SteveModel {
       total: 1
     };
 
+    const viewReport = {
+      action: 'viewReport',
+      enabled: this.hasBundle,
+      icon: 'icon icon-fw icon-info',
+      label: t('sr.menuLabels.viewReport'),
+      total: 1
+    };
+
+    out.unshift(viewReport);
     out.unshift(downloadBundle);
 
     return out;
+  }
+
+  viewReport() {
+    window.location.href = `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/${BLANK_CLUSTER}/${SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE}/${this.metadata.name}`;
   }
 
   downloadFromUrl(url, filename) {
