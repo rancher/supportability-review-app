@@ -204,6 +204,9 @@ export default {
             placeholder="sonobuoy"
             :maxlength="64"
             @blur="setDefaultSonobuoyNamespace" />
+          <Banner class="mb-10" color="warning">
+            <div v-clean-html="t('sr.menuLabels.sonobuoyWarning', {}, true)" />
+          </Banner>
 
           <h4 class="mt-10 mb-200" for="tolerations">Tolerations</h4>
           <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
