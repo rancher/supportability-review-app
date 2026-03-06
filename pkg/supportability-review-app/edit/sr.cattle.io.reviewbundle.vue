@@ -50,6 +50,8 @@ export default {
       }
       this.value.spec.analyzeClusters = ['local'];
       this.value.spec.sonobuoyNamespace = 'sonobuoy';
+      this.value.spec.httpProxy = '';
+      this.value.spec.httpsProxy = '';
       this.value.spec.enablePrivileged = false;
       this.value.spec.enableDataObfuscation = false;
 
@@ -210,6 +212,18 @@ export default {
 
           <h4 class="mt-10 mb-200" for="tolerations">Tolerations</h4>
           <Tolerations v-model:value="value.spec.tolerations" :mode="mode" />
+
+          <h4 class="mt-10 mb-200">Networking</h4>
+          <h6 class="mt-10 mb-200">HTTP proxy</h6>
+          <LabeledInput
+            v-model:value="value.spec.httpProxy"
+            :maxlength="256"
+            placeholder="http://proxy.example.com:8080" />
+          <h6 class="mt-10 mb-200">HTTPS proxy</h6>
+          <LabeledInput
+            v-model:value="value.spec.httpsProxy"
+            :maxlength="256"
+            placeholder="https://proxy.example.com:8080" />
 
           <h4 class="mt-10 mb-200">Security</h4>
           <Checkbox
