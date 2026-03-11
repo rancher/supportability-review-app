@@ -422,8 +422,8 @@ export default {
       </Tab>
     </Tabbed>
     <div>
-      <Banner class="mb-10" color="info">
-        <div v-clean-html="t('sr.menuLabels.upSell', {}, true)" />
+      <Banner v-if="provider !== null" class="mb-10" color="info">
+        <div v-clean-html="t('sr.menuLabels.upSell', { mail: value.status.supportMail }, true)" />
       </Banner>
     </div>
   </div>
