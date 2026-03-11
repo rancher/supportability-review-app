@@ -19,7 +19,7 @@
     "format-check": "prettier --check ."
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",

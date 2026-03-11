@@ -17,9 +17,6 @@
   "dependencies": {
     "@rancher/shell": "3.0.8"
   },
-  "resolutions": {
-    "@types/node": "~20.10.0"
-  },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
     "build": "./node_modules/.bin/vue-cli-service build",
