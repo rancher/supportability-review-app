@@ -15,7 +15,7 @@
     "vue-eslint-parser": "^10.4.0"
   },
   "dependencies": {
-    "@rancher/shell": "3.0.8"
+    "@rancher/shell": "3.0.9"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
