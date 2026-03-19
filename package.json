@@ -4,7 +4,7 @@
   "version": "3.0.3",
   "private": false,
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "devDependencies": {
     "core-js": "^3.39.0",
@@ -15,7 +15,7 @@
     "vue-eslint-parser": "^10.1.1"
   },
   "dependencies": {
-    "@rancher/shell": "3.0.8"
+    "@rancher/shell": "3.0.9"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
