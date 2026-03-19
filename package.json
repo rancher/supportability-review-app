@@ -4,7 +4,7 @@
   "version": "3.0.3",
   "private": false,
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "devDependencies": {
     "core-js": "^3.39.0",
