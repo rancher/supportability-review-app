@@ -22,8 +22,8 @@ const css = `
 
 styleSheet.textContent = css;
 document.head.appendChild(styleSheet);
-export function init($plugin, store) {
-  const { product, configureType, virtualType, basicType, weightType, headers } = $plugin.DSL(
+export function init($extension, store) {
+  const { product, configureType, virtualType, basicType, weightType, headers } = $extension.DSL(
     store,
     SUPPORTABILITY_REVIEW_PRODUCT_NAME
   );
