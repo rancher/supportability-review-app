@@ -12,13 +12,13 @@ export default {
   },
   props: {
     resource: {
-      type:     String,
-      required: true,
+      type: String,
+      required: true
     },
     schema: {
-      type:     Object,
-      required: true,
-    },
+      type: Object,
+      required: true
+    }
   },
   async fetch() {
     await this.$store.dispatch(`management/findAll`, { type: SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE });
@@ -34,9 +34,6 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <ResourceTable
-      :schema="schema"
-      :rows="rows"
-    />
+    <ResourceTable :schema="schema" :rows="rows" />
   </div>
 </template>
