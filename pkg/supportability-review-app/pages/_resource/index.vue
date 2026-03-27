@@ -3,7 +3,7 @@ import ResourceList from '@shell/components/ResourceList/index.vue';
 
 export default {
   name: 'ListSupportabilityReviewBundleResource',
-  components: { ResourceList },
+  components: { ResourceList }
 };
 </script>
 
