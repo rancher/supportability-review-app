@@ -18,3 +18,5 @@ plugin/supportability-review-app-3.0.3.umd.min.edit.js
 plugin/supportability-review-app-3.0.3.umd.min.edit.js.map
 plugin/supportability-review-app-3.0.3.umd.min.js
 plugin/supportability-review-app-3.0.3.umd.min.js.map
+plugin/supportability-review-app-3.0.3.umd.min.list.js
+plugin/supportability-review-app-3.0.3.umd.min.list.js.map
