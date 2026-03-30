@@ -34,6 +34,6 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <ResourceTable :schema="schema" :rows="rows" />
+    <ResourceTable :schema="schema" :rows="rows" default-sort-by="age" />
   </div>
 </template>
