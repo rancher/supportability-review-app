@@ -190,6 +190,7 @@ export default {
             label="Enter Bundle Name"
             placeholder="review-bundle"
             :maxlength="30"
+            :disabled="isView"
             @blur="setDefaultName" />
           <Banner class="mb-10" color="info">
             <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
@@ -205,6 +206,7 @@ export default {
             v-model:value="value.spec.sonobuoyNamespace"
             placeholder="sonobuoy"
             :maxlength="64"
+            :disabled="isView"
             @blur="setDefaultSonobuoyNamespace" />
           <Banner class="mb-10" color="warning">
             <div v-clean-html="t('sr.menuLabels.sonobuoyWarning', {}, true)" />
@@ -218,23 +220,27 @@ export default {
           <LabeledInput
             v-model:value="value.spec.httpProxy"
             :maxlength="256"
+            :disabled="isView"
             placeholder="http://proxy.example.com:8080" />
           <h6 class="mt-10 mb-200">HTTPS proxy</h6>
           <LabeledInput
             v-model:value="value.spec.httpsProxy"
             :maxlength="256"
+            :disabled="isView"
             placeholder="https://proxy.example.com:8080" />
 
           <h4 class="mt-10 mb-200">Security</h4>
           <Checkbox
             v-model:value="value.spec.enablePrivileged"
             class="mb-10"
+            :disabled="isView"
             :label="t('sr.menuLabels.enablePrivileged')" />
           <br />
 
           <Checkbox
             v-model:value="value.spec.enableDataObfuscation"
             class="mb-10"
+            :disabled="isView"
             :label="t('sr.menuLabels.enableDataObfuscation')" />
 
           <h4 class="mt-10 mb-200">Bundle Description</h4>
@@ -242,7 +248,8 @@ export default {
             minHeight="50"
             placeholder="Enter bundle description"
             autocapitalize="off"
-            spellcheck="false" />
+            spellcheck="false"
+            :disabled="isView" />
         </div>
       </Tab>
     </Tabbed>
