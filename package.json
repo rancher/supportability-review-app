@@ -15,7 +15,11 @@
     "vue-eslint-parser": "^10.4.0"
   },
   "dependencies": {
-    "@rancher/shell": "3.0.10"
+    "@rancher/shell": "3.0.10",
+    "axios": "1.14.0"
+  },
+  "overrides": {
+    "axios": "1.14.0"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
