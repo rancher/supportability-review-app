@@ -120,23 +120,31 @@ You can also preview what a full report looks like by clicking the **[View Sampl
 ## Air-Gap Install
 Pull and push required images into private registry.
 ```
+$ export PRIVATE_REGISTRY=<hostname>:<port>
+
 $ docker pull rancher/supportability-review:latest
 $ docker pull rancher/supportability-review-internal:latest
 $ docker pull rancher/supportability-review-operator:latest
 $ docker pull rancher/supportability-review-app-frontend:latest
 $ docker pull rancher/appco-redis:8.0.3-2.1
+$ docker pull rancher/mirrored-sonobuoy-sonobuoy:latest
+$ docker pull rancher/security-scan:v0.6.1
 
 $ docker tag rancher/supportability-review:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review:latest
 $ docker tag rancher/supportability-review-internal:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-internal:latest
 $ docker tag rancher/supportability-review-operator:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-operator:latest
 $ docker tag rancher/supportability-review-app-frontend:latest ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-app-frontend:latest
 $ docker tag rancher/appco-redis:8.0.3-2.1 ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/appco-redis:8.0.3-2.1
+$ docker tag rancher/mirrored-sonobuoy-sonobuoy:latest ${PRIVATE_REGISTRY}/rancher/mirrored-sonobuoy-sonobuoy:latest
+$ docker tag rancher/security-scan:v0.6.1 ${PRIVATE_REGISTRY}/rancher/security-scan:v0.6.1
 
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review:latest
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-internal:latest
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-operator:latest
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/supportability-review-app-frontend:latest
 $ docker push ${PRIVATE_REGISTRY_IP_ADDRESS}:5000/rancher/appco-redis:8.0.3-2.1
+$ docker push ${PRIVATE_REGISTRY}/rancher/mirrored-sonobuoy-sonobuoy:latest
+$ docker push ${PRIVATE_REGISTRY}/rancher/security-scan:v0.6.1
 ```
 
 ---
