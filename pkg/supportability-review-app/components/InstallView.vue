@@ -69,8 +69,19 @@ export default {
 
     srRepo() {
       const chart = this.charts?.find((chart) => chart.chartName === SR_CHARTS.OPERATOR);
+      const repoFromChart = this.repos?.find((repo) => repo.id === chart?.repoName);
 
-      return this.repos?.find((repo) => repo.id === chart?.repoName);
+      if (repoFromChart) {
+        return repoFromChart;
+      }
+
+      const repos = this.$store.getters['management/all'](CATALOG.CLUSTER_REPO);
+      const catalogRepos = this.repos || [];
+      const repoByName =
+        repos?.find((repo) => repo.spec?.gitBranch === this.chartBranch && repo.spec?.gitRepo === SR_REPO.REPO) ||
+        catalogRepos?.find((repo) => repo.spec?.gitBranch === this.chartBranch && repo.spec?.gitRepo === SR_REPO.REPO);
+
+      return repoByName || null;
     },
 
     operatorChart() {
@@ -81,6 +92,15 @@ export default {
           chartName: SR_CHARTS.OPERATOR
         }) || null;
       return chart;
+    }
+  },
+  watch: {
+    // If a repository is registered on another screen and `srRepo` is reflected,
+    // but the catalog chart is not yet available, prompt to fetch it again.
+    srRepo(neu) {
+      if (neu && !this.operatorChart) {
+        this.refreshCharts();
+      }
     }
   },
   methods: {
@@ -227,11 +247,14 @@ l0 -298 -112 4 c-62 3 -129 8 -149 12 -23 4 -39 3 -43 -4 -5 -7 -49 -11 -121 -11 l
     <div class="relative">
       <Loading v-if="initLoading" mode="relative" class="mt-20" />
 
+      <!-- Add repository -->
+      <div v-else-if="!srRepo && !operatorChart">
+        <AsyncButton mode="srRepository" @click="addRepository" />
+      </div>
+
       <!-- Install charts -->
       <div v-else class="relative">
-        <div v-if="!operatorChart && !reloadReady" mode="relative" class="mt-20">
-          <AsyncButton mode="srRepository" @click="addRepository" />
-        </div>
+        <Loading v-if="!operatorChart && !reloadReady" mode="relative" class="mt-20" />
 
         <div v-else-if="!operatorChart && reloadReady">
           <Banner color="warning">
