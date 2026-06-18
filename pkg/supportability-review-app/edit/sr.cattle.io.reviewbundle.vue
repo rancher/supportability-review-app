@@ -4,9 +4,10 @@ import Loading from '@shell/components/Loading.vue';
 import Tabbed from '@shell/components/Tabbed/index.vue';
 import Tab from '@shell/components/Tabbed/Tab.vue';
 import Tolerations from '@shell/components/form/Tolerations';
+import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
-import { NORMAN } from '@shell/config/types';
+import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { Banner } from '@components/Banner';
 import { Checkbox } from '@components/Form/Checkbox';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
@@ -19,6 +20,7 @@ export default {
     Checkbox,
     CruResource,
     LabeledInput,
+    LabeledSelect,
     Loading,
     Tabbed,
     Tab,
@@ -49,6 +51,7 @@ export default {
         this.value.spec = {};
       }
       this.value.spec.analyzeClusters = ['local'];
+      this.value.spec.collectClusters = [];
       this.value.spec.sonobuoyNamespace = 'sonobuoy';
       this.value.spec.httpProxy = '';
       this.value.spec.httpsProxy = '';
@@ -97,6 +100,7 @@ export default {
         .then((data) => {
           if (data.RancherPrime === 'false') {
             this.value.spec.collectClusters = ['local'];
+            this.collectAllClusters = false;
             this.isPrime = false;
           } else {
             this.isPrime = true;
@@ -109,12 +113,41 @@ export default {
     return {
       description: '',
       isPrime: true,
-      generateName: 'review-bundle'
+      generateName: 'review-bundle',
+      clusterOptions: [],
+      loadingClusters: false,
+      collectAllClusters: !(this.value?.spec?.collectClusters || []).length
     };
+  },
+  async fetch() {
+    this.loadingClusters = true;
+    try {
+      const clusters = await this.$store.dispatch('management/findAll', {
+        type: MANAGEMENT.CLUSTER
+      });
+
+      this.clusterOptions = clusters
+        .map((cluster) => ({
+          label: cluster.nameDisplay || cluster.id,
+          value: cluster.id
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+    } catch (error) {
+      console.error('Failed to load clusters:', error);
+    } finally {
+      this.loadingClusters = false;
+    }
   },
   computed: {
     isView() {
       return this.mode !== _CREATE && this.mode !== _EDIT;
+    },
+    isFormValid() {
+      if (this.isPrime && !this.isView) {
+        return this.collectAllClusters || (this.value.spec.collectClusters || []).length > 0;
+      }
+
+      return true;
     },
     editorMode() {
       if (!this.isView) {
@@ -127,7 +160,13 @@ export default {
       return !!this.value.id;
     }
   },
-  watch: {},
+  watch: {
+    collectAllClusters(val) {
+      if (val) {
+        this.value.spec.collectClusters = [];
+      }
+    }
+  },
   methods: {
     async createApiToken() {
       const maxTTLMsec = 4 * 60 * 60 * 1000; // 4 hours
@@ -194,6 +233,38 @@ export default {
             @blur="setDefaultName" />
           <Banner class="mb-10" color="info">
             <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
+          </Banner>
+
+          <h4 class="mt-20 mb-200">{{ t('sr.menuLabels.collectClusters') }}</h4>
+          <Checkbox
+            v-model:value="collectAllClusters"
+            class="mb-10"
+            :mode="mode"
+            :disabled="!isPrime"
+            :label="t('sr.menuLabels.collectAllClusters')" />
+          <template v-if="!collectAllClusters">
+            <LabeledSelect
+              v-model:value="value.spec.collectClusters"
+              :multiple="true"
+              :taggable="false"
+              :searchable="true"
+              :options="clusterOptions"
+              :loading="loadingClusters"
+              :mode="mode"
+              :disabled="!isPrime"
+              :label="t('sr.menuLabels.collectClusters')"
+              :placeholder="t('sr.menuLabels.collectClustersPlaceholder')" />
+            <template v-if="isPrime">
+              <Banner v-if="isFormValid" class="mb-10" color="info">
+                {{ t('sr.menuLabels.collectClustersHelp') }}
+              </Banner>
+              <Banner v-else class="mb-10" color="error">
+                {{ t('sr.menuLabels.collectClustersRequired') }}
+              </Banner>
+            </template>
+          </template>
+          <Banner v-else-if="isPrime" class="mb-10" color="info">
+            {{ t('sr.menuLabels.collectAllClustersInfo') }}
           </Banner>
         </div>
       </Tab>
