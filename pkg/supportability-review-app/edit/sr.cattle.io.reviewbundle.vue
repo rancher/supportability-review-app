@@ -55,6 +55,7 @@ export default {
       this.value.spec.sonobuoyNamespace = 'sonobuoy';
       this.value.spec.httpProxy = '';
       this.value.spec.httpsProxy = '';
+      this.value.spec.noProxy = '';
       this.value.spec.enablePrivileged = false;
       this.value.spec.enableDataObfuscation = false;
 
@@ -299,6 +300,12 @@ export default {
             :maxlength="256"
             :mode="mode"
             placeholder="https://proxy.example.com:8080" />
+          <h6 class="mt-10 mb-200">No proxy</h6>
+          <LabeledInput
+            v-model:value="value.spec.noProxy"
+            :maxlength="256"
+            :mode="mode"
+            placeholder=".noproxy.com,127.0.0.1,localhost" />
 
           <h4 class="mt-10 mb-200">Security</h4>
           <Checkbox
