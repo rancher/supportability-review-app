@@ -45,7 +45,7 @@ export default {
   data() {
     if (this.mode === _CREATE) {
       if (!this.value.metadata.name) {
-        this.value.metadata.generateName = 'review-bundle-';
+        this.value.metadata.generateName = 'review-bundle';
       }
       if (!this.value.spec) {
         this.value.spec = {};
@@ -114,7 +114,6 @@ export default {
     return {
       description: '',
       isPrime: true,
-      generateName: 'review-bundle',
       clusterOptions: [],
       loadingClusters: false,
       collectAllClusters: !(this.value?.spec?.collectClusters || []).length
@@ -143,8 +142,25 @@ export default {
     isView() {
       return this.mode !== _CREATE && this.mode !== _EDIT;
     },
+    isBundleNameValid() {
+      if (this.mode !== _CREATE) {
+        return true;
+      }
+
+      const name = (this.value.metadata.generateName || '').trim();
+
+      return /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(name);
+    },
     isFormValid() {
-      if (this.isPrime && !this.isView) {
+      if (this.isView) {
+        return true;
+      }
+
+      if (!this.isBundleNameValid) {
+        return false;
+      }
+
+      if (this.isPrime) {
         return this.collectAllClusters || (this.value.spec.collectClusters || []).length > 0;
       }
 
@@ -182,20 +198,12 @@ export default {
 
       return created.token;
     },
-    setDefaultName() {
-      this.value.metadata.generateName = this.generateName
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')
-        .replace(/^-+/, '')
-        .slice(0, 30);
+    finishBundle(buttonDone) {
+      if (this.mode === _CREATE) {
+        this.value.metadata.generateName = `${this.value.metadata.generateName.trim()}-`;
+      }
 
-      if (!this.value.metadata.generateName.trim()) {
-        this.value.metadata.generateName = 'review-bundle-';
-      }
-      if (!this.value.metadata.generateName.endsWith('-')) {
-        this.value.metadata.generateName += '-';
-      }
+      return this.save(buttonDone);
     },
     setDefaultSonobuoyNamespace() {
       if (!this.value.spec.sonobuoyNamespace.trim()) {
@@ -217,7 +225,7 @@ export default {
     :errors="errors"
     :validation-passed="isFormValid"
     @error="(e) => (errors = e)"
-    @finish="save"
+    @finish="finishBundle"
     @cancel="done">
     <Tabbed>
       <Tab label-key="sr.menuLabels.basic" name="basic-config" :weight="3">
@@ -226,13 +234,15 @@ export default {
 
           <h4 class="mb-200">Bundle Name</h4>
           <LabeledInput
-            v-model:value="generateName"
+            v-model:value="value.metadata.generateName"
             label="Enter Bundle Name"
             placeholder="review-bundle"
             :maxlength="30"
-            :mode="mode"
-            @blur="setDefaultName" />
-          <Banner class="mb-10" color="info">
+            :mode="mode" />
+          <Banner v-if="isBundleNameValid" class="mb-10" color="info">
+            <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
+          </Banner>
+          <Banner v-else class="mb-10" color="error">
             <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
           </Banner>
 
