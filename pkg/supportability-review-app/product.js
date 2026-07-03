@@ -35,7 +35,7 @@ styleSheet.textContent = `
     width: 42px;
     height: 24px;
     margin-right: 14px;
-    background-color: var(--on-tertiary);
+    background-color: var(--on-tertiary, var(--link));
     -webkit-mask-image: url("${stsIconMask}");
     mask-image: url("${stsIconMask}");
     -webkit-mask-size: contain;
@@ -46,10 +46,10 @@ styleSheet.textContent = `
     mask-repeat: no-repeat;
   }
   ${iconSelector}:hover::before {
-    background-color: var(--tertiary-hover-app-bar);
+    background-color: var(--tertiary-hover-app-bar, var(--primary-hover-text));
   }
   ${iconSelector}.active-menu-link::before {
-    background-color: var(--on-active);
+    background-color: var(--on-active, var(--primary-hover-text));
   }
 `;
 document.head.appendChild(styleSheet);
