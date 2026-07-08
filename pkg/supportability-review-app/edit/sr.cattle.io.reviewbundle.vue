@@ -239,10 +239,7 @@ export default {
             placeholder="review-bundle"
             :maxlength="30"
             :mode="mode" />
-          <Banner v-if="isBundleNameValid" class="mb-10" color="info">
-            <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
-          </Banner>
-          <Banner v-else class="mb-10" color="error">
+          <Banner v-if="!isBundleNameValid" class="mb-10" color="error">
             <div v-clean-html="t('sr.menuLabels.bundleNameRestriction', {}, true)" />
           </Banner>
 
