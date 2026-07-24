@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@rancher/shell": "3.0.11",
-    "axios": "1.13.5"
+    "axios": "1.18.0"
   },
   "overrides": {
-    "axios": "1.13.5"
+    "axios": "1.18.0"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
