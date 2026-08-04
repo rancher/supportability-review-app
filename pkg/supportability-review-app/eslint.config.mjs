@@ -16,7 +16,7 @@ export default [
     files: ['**/*.js', '**/*.ts'],
     languageOptions: {
       parserOptions: {
-        parser: '@typescript-eslint/parser'
+        parser: ts.parser
       }
     },
     rules: {
@@ -41,7 +41,7 @@ export default [
     files: ['**/*.vue'],
     languageOptions: {
       parserOptions: {
-        parser: '@typescript-eslint/parser'
+        parser: ts.parser
       }
     },
     rules: {

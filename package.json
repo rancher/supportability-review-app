@@ -7,6 +7,7 @@
     "node": ">=24"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.0",
     "core-js": "^3.49.0",
     "eslint": "^10.0.0",
     "eslint-plugin-vue": "^10.8.0",
@@ -15,7 +16,7 @@
     "vue-eslint-parser": "^10.4.0"
   },
   "dependencies": {
-    "@rancher/shell": "3.0.12"
+    "@rancher/shell": "3.0.11"
   },
   "scripts": {
     "dev": "NODE_ENV=dev ./node_modules/.bin/vue-cli-service serve",
