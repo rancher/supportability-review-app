@@ -47,6 +47,12 @@ sr:
     operationalBestPractice: Operational Best Practice
     designValidation: Design Validation
     supportMatrixConformance: Support Matrix Conformance
+  supportBundle:
+    action: Download Support Bundle
+    title: Generating Support Bundle
+    hint: Collecting logs from the node. This can take a few minutes.
+    daysLabel: Collect logs from the last N days
+    collect: Collect
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles
