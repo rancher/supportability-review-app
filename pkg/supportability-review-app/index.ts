@@ -2,6 +2,7 @@ import { importTypes } from '@rancher/auto-import';
 import { IPlugin } from '@shell/core/types';
 import extensionRouting from './routing/sr-routing';
 import srStore from './store';
+import { registerSupportBundleActions } from './utils/support-bundle';
 
 // Init the package
 export default function (plugin: IPlugin): void {
@@ -19,4 +20,7 @@ export default function (plugin: IPlugin): void {
 
   // Add Vue Routes
   plugin.addRoutes(extensionRouting);
+
+  // Register the support bundle download functionality
+  registerSupportBundleActions(plugin);
 }
