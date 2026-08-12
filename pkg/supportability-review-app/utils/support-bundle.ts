@@ -54,8 +54,6 @@ async function getConfiguredRegistry(model: any): Promise<string> {
     const values = app.values || {};
     const registry = values.global?.cattle?.systemDefaultRegistry || values.global?.systemDefaultRegistry || '';
 
-    console.log('[SR] registry lookup: app =', app.id, 'values =', values, 'registry =', registry);
-
     return registry;
   } catch (err) {
     console.error('[SR] registry lookup failed:', err);
