@@ -49,10 +49,15 @@ sr:
     supportMatrixConformance: Support Matrix Conformance
   supportBundle:
     action: Download Support Bundle
-    title: Generating Support Bundle
-    hint: Collecting logs from the node. This can take a few minutes.
     daysLabel: Collect logs from the last N days
     collect: Collect
+    taskTitle: 'Support Bundle: { node }'
+    phaseStarting: Starting collector pod
+    phaseStartingPod: Waiting for collector pod to start
+    phaseCollecting: Collecting logs
+    phaseDownloading: Downloading bundle
+    completed: 'Downloaded { filename }'
+    failed: 'Failed: { error }'
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles

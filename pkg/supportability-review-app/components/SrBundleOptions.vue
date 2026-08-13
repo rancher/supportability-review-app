@@ -51,11 +51,8 @@ export default {
     submit() {
       const days = Math.min(MAX_DAYS, Math.max(1, Math.floor(Number(this.days)) || DEFAULT_DAYS));
 
-      // Don't emit 'close' here: the caller responds to onSubmit by immediately
-      // dispatching promptModal again with the progress dialog, which swaps this
-      // component out in place. Closing first (and reopening a beat later) races
-      // PromptModal's open/close state and can leave the progress dialog unshown.
       this.onSubmit(days);
+      this.$emit('close');
     }
   }
 };
