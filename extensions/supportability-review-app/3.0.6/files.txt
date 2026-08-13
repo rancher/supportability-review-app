@@ -2,14 +2,12 @@ plugin/img/generic-catalog.1842a50e.svg
 plugin/img/generic-plugin.f1ebdd74.svg
 plugin/img/icon.4aee7313.svg
 plugin/package.json
-plugin/supportability-review-app-3.0.6.umd.min.207.js
-plugin/supportability-review-app-3.0.6.umd.min.207.js.map
+plugin/supportability-review-app-3.0.6.umd.min.119.js
+plugin/supportability-review-app-3.0.6.umd.min.119.js.map
 plugin/supportability-review-app-3.0.6.umd.min.277.js
 plugin/supportability-review-app-3.0.6.umd.min.277.js.map
 plugin/supportability-review-app-3.0.6.umd.min.303.js
 plugin/supportability-review-app-3.0.6.umd.min.303.js.map
-plugin/supportability-review-app-3.0.6.umd.min.356.js
-plugin/supportability-review-app-3.0.6.umd.min.356.js.map
 plugin/supportability-review-app-3.0.6.umd.min.37.js
 plugin/supportability-review-app-3.0.6.umd.min.37.js.map
 plugin/supportability-review-app-3.0.6.umd.min.380.js
