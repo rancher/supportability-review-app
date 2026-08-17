@@ -223,21 +223,26 @@ async function updateTask(model: any, id: string, message: string, progress: num
   await model.$dispatch('notifications/update', { id, message, progress }, { root: true });
 }
 
-async function completeTask(model: any, id: string, message: string): Promise<void> {
-  await model.$dispatch(
-    'notifications/update',
-    {
-      id,
-      message,
-      level: NotificationLevel.Success,
-      progress: 100
-    },
-    { root: true }
-  );
+async function removeAddTask(
+  model: any,
+  completed: boolean,
+  id: string,
+  title: string,
+  message: string
+): Promise<void> {
+  await model.$dispatch('notifications/remove', id, { root: true });
+  const notification = completed
+    ? { id, title, message, level: NotificationLevel.Success, progress: 100 }
+    : { id, title, message, level: NotificationLevel.Error };
+  await model.$dispatch('notifications/add', notification, { root: true });
 }
 
-async function failTask(model: any, id: string, message: string): Promise<void> {
-  await model.$dispatch('notifications/update', { id, message, level: NotificationLevel.Error }, { root: true });
+async function completeTask(model: any, id: string, title: string, message: string): Promise<void> {
+  await removeAddTask(model, true, id, title, message);
+}
+
+async function failTask(model: any, id: string, title: string, message: string): Promise<void> {
+  await removeAddTask(model, false, id, title, message);
 }
 
 function openNotificationCenter(): void {
@@ -317,10 +322,10 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
     downloadBytes(data, filename);
     console.log(`[SR] downloaded ${filename} (${data.length} bytes)`);
 
-    await completeTask(node, podName, t(node, 'sr.supportBundle.completed', { filename }));
+    await completeTask(node, podName, title, t(node, 'sr.supportBundle.completed', { filename }));
   } catch (err: any) {
     console.error(`[SR] support bundle collection failed for node ${nodeName}:`, err);
-    await failTask(node, podName, t(node, 'sr.supportBundle.failed', { error: err?.message || String(err) }));
+    await failTask(node, podName, title, t(node, 'sr.supportBundle.failed', { error: err?.message || String(err) }));
   } finally {
     if (created) {
       try {
