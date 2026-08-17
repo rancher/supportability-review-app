@@ -233,6 +233,11 @@ async function failTask(model: any, id: string, message: string): Promise<void> 
   await model.$dispatch('notifications/update', { id, message, level: NotificationLevel.Error }, { root: true });
 }
 
+function openNotificationCenter(): void {
+  const trigger = document.querySelector<HTMLElement>('[data-testid="notifications-center"]');
+  trigger?.click();
+}
+
 function promptForDays(model: any): Promise<number | null> {
   return new Promise((resolve) => {
     model.$dispatch('promptModal', {
@@ -335,6 +340,8 @@ const collectAction: any = {
     }
 
     const registry = await getConfiguredRegistry(resources[0]);
+
+    openNotificationCenter();
 
     // Fire-and-forget: the action menu doesn't await invoke(), so collection runs
     // in the background and progress is tracked per node in the Notification Center.
