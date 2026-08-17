@@ -73,12 +73,19 @@ async function fetchPodLog(model: any, pod: any): Promise<string> {
 async function waitForTarball(model: any, pod: any, timeoutMs = 900000): Promise<string | null> {
   const start = Date.now();
   let seen = 0;
+  let consecutiveLogFailures = 0;
+  const MAX_CONSECUTIVE_LOG_FAILURES = 5;
+
   while (Date.now() - start < timeoutMs) {
     let log = '';
     try {
       log = await fetchPodLog(model, pod);
+      consecutiveLogFailures = 0;
     } catch {
-      // container may not have started emitting logs yet — keep polling
+      consecutiveLogFailures++;
+      if (consecutiveLogFailures >= MAX_CONSECUTIVE_LOG_FAILURES) {
+        throw new Error(`Lost contact with pod ${pod.id} logs (node may be unreachable)`);
+      }
     }
     if (log.length > seen) {
       console.log('[SR][collector]', log.slice(seen).trimEnd());
