@@ -11,6 +11,13 @@ const jsyaml = require('js-yaml');
 const LOG_COLLECTOR_IMAGE = 'rancherlabs/swiss-army-knife';
 const LOG_COLLECTOR_NAMESPACE = 'sr-operator-system';
 
+const HOST_MOUNT_PATH = '/host';
+
+const BUNDLE_STORAGE_LIMIT = '16Gi';
+const BUNDLE_VOLUME_NAME = 'bundle';
+const BUNDLE_HOST_PATH = '/tmp/sr-bundle';
+const BUNDLE_MOUNT_PATH = `${HOST_MOUNT_PATH}${BUNDLE_HOST_PATH}`;
+
 function logCollectorPodSpec(nodeName: string, podName: string, days: number, registry: string): any {
   const image = registry ? `${registry}/${LOG_COLLECTOR_IMAGE}` : LOG_COLLECTOR_IMAGE;
 
@@ -25,13 +32,23 @@ function logCollectorPodSpec(nodeName: string, podName: string, days: number, re
       hostIPC: true,
       restartPolicy: 'Never',
       tolerations: [{ operator: 'Exists' }],
-      volumes: [{ name: 'host-root', hostPath: { path: '/' } }],
+      volumes: [
+        { name: 'host-root', hostPath: { path: '/' } },
+        { name: BUNDLE_VOLUME_NAME, emptyDir: { sizeLimit: BUNDLE_STORAGE_LIMIT } }
+      ],
       containers: [
         {
           name: 'log-collector',
           image,
-          command: ['bash', '-c', `rancher2_logs_collector.sh -D -s ${days}`],
-          volumeMounts: [{ name: 'host-root', mountPath: '/host' }]
+          command: ['bash', '-c', `rancher2_logs_collector.sh -D -s ${days} -d ${BUNDLE_HOST_PATH}`],
+          resources: {
+            requests: { 'ephemeral-storage': '1Gi' },
+            limits: { 'ephemeral-storage': BUNDLE_STORAGE_LIMIT }
+          },
+          volumeMounts: [
+            { name: 'host-root', mountPath: HOST_MOUNT_PATH },
+            { name: BUNDLE_VOLUME_NAME, mountPath: BUNDLE_MOUNT_PATH }
+          ]
         }
       ]
     }
@@ -106,8 +123,13 @@ async function waitForTarball(model: any, pod: any, timeoutMs = 900000): Promise
     }
     if (freshPod?.status?.phase && freshPod.status.phase !== 'Running') {
       // restartPolicy is Never, so once the container leaves Running without
-      // having printed a tarball path, it never will.
-      throw new Error(`Pod ${pod.id} exited with phase ${freshPod.status.phase} before producing a tarball`);
+      // having printed a tarball path, it never will. Exceeding the storage limit
+      // shows up here as an eviction, so pass the reason on.
+      const reason = freshPod.status.reason
+        ? `: ${freshPod.status.reason} ${freshPod.status.message || ''}`.trim()
+        : '';
+
+      throw new Error(`Pod ${pod.id} exited with phase ${freshPod.status.phase} before producing a tarball${reason}`);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
