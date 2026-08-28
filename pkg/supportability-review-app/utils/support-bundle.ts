@@ -9,7 +9,7 @@ import { SR_CHARTS } from '../config/types';
 const jsyaml = require('js-yaml');
 
 const LOG_COLLECTOR_IMAGE = 'rancherlabs/swiss-army-knife';
-const LOG_COLLECTOR_NAMESPACE = 'cattle-system';
+const LOG_COLLECTOR_NAMESPACE = 'sr-operator-system';
 
 function logCollectorPodSpec(nodeName: string, podName: string, days: number, registry: string): any {
   const image = registry ? `${registry}/${LOG_COLLECTOR_IMAGE}` : LOG_COLLECTOR_IMAGE;
