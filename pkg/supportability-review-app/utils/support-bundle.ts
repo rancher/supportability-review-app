@@ -44,8 +44,8 @@ function logCollectorPodSpec(nodeName: string, podName: string, days: number, re
           image,
           command: ['bash', '-c', `rancher2_logs_collector.sh -D -s ${days} -d ${BUNDLE_HOST_PATH}`],
           resources: {
-            requests: { 'ephemeral-storage': '1Gi' },
-            limits: { 'ephemeral-storage': BUNDLE_STORAGE_LIMIT }
+            requests: { 'ephemeral-storage': '1Gi', memory: '250Mi' },
+            limits: { 'ephemeral-storage': BUNDLE_STORAGE_LIMIT, memory: '1Gi' }
           },
           volumeMounts: [
             { name: 'host-root', mountPath: HOST_MOUNT_PATH },
