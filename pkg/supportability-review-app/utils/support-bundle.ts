@@ -18,6 +18,8 @@ const BUNDLE_VOLUME_NAME = 'bundle';
 const BUNDLE_HOST_PATH = '/tmp/sr-bundle';
 const BUNDLE_MOUNT_PATH = `${HOST_MOUNT_PATH}${BUNDLE_HOST_PATH}`;
 
+const BLOB_FOLD_BYTES = 64 * 1024 * 1024;
+
 function logCollectorPodSpec(nodeName: string, podName: string, days: number, registry: string): any {
   const image = registry ? `${registry}/${LOG_COLLECTOR_IMAGE}` : LOG_COLLECTOR_IMAGE;
 
@@ -137,7 +139,7 @@ async function waitForTarball(model: any, pod: any, timeoutMs = 900000): Promise
   return null;
 }
 
-function execCollect(pod: any, command: string[]): Promise<Uint8Array> {
+function execCollect(pod: any, command: string[]): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const base = pod?.links?.view;
     if (!base) {
@@ -160,7 +162,8 @@ function execCollect(pod: any, command: string[]): Promise<Uint8Array> {
     );
 
     const socket = new Socket(url, false, 0, 'base64.channel.k8s.io');
-    const chunks: Uint8Array[] = [];
+    let parts: BlobPart[] = [];
+    let pending = 0;
 
     socket.addEventListener(EVENT_MESSAGE, (e: any) => {
       const channel = e.detail.data.substr(0, 1);
@@ -172,7 +175,12 @@ function execCollect(pod: any, command: string[]): Promise<Uint8Array> {
         for (let i = 0; i < bin.length; i++) {
           bytes[i] = bin.charCodeAt(i);
         }
-        chunks.push(bytes);
+        parts.push(bytes);
+        pending += bytes.length;
+        if (pending >= BLOB_FOLD_BYTES) {
+          parts = [new Blob(parts)];
+          pending = 0;
+        }
       } else if (`${channel}` === '2') {
         console.warn('[SR][collector:stderr]', base64Decode(payload));
       } else if (`${channel}` === '3') {
@@ -180,14 +188,7 @@ function execCollect(pod: any, command: string[]): Promise<Uint8Array> {
       }
     });
     socket.addEventListener(EVENT_DISCONNECTED, () => {
-      const total = chunks.reduce((sum, c) => sum + c.length, 0);
-      const out = new Uint8Array(total);
-      let offset = 0;
-      for (const c of chunks) {
-        out.set(c, offset);
-        offset += c.length;
-      }
-      resolve(out);
+      resolve(new Blob(parts, { type: 'application/gzip' }));
     });
     socket.addEventListener(EVENT_CONNECT_ERROR, (e: any) => reject(e));
 
@@ -202,8 +203,7 @@ function buildFilename(tarballPath: string, nodeName: string): string {
   return timestamp ? `${nodeName}-${timestamp[1]}` : original || `${nodeName}.tar.gz`;
 }
 
-function downloadBytes(bytes: Uint8Array, filename: string): void {
-  const blob = new Blob([bytes], { type: 'application/gzip' });
+function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -341,8 +341,8 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
     await updateTask(node, podName, t(node, 'sr.supportBundle.phaseDownloading'), PHASE_PROGRESS.downloading);
     const data = await execCollect(pod, ['cat', tarballPath]);
     const filename = buildFilename(tarballPath, nodeName);
-    downloadBytes(data, filename);
-    console.log(`[SR] downloaded ${filename} (${data.length} bytes)`);
+    downloadBlob(data, filename);
+    console.log(`[SR] downloaded ${filename} (${data.size} bytes)`);
 
     await completeTask(node, podName, title, t(node, 'sr.supportBundle.completed', { filename }));
   } catch (err: any) {
