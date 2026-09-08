@@ -47,6 +47,13 @@ sr:
     operationalBestPractice: Operational Best Practice
     designValidation: Design Validation
     supportMatrixConformance: Support Matrix Conformance
+  k8sEol:
+    days: '{days} days'
+    unknown: Unknown
+    none: '—'
+    tooltip: '{distro} {minor} — EOM {eom}, EOL {eol}'
+    unknownTooltip: No EOM/EOL dates are known
+    noDataTooltip: No Kubernetes version reported yet
   supportBundle:
     action: Download Support Bundle
     daysLabel: Collect logs from the last N days
@@ -69,6 +76,7 @@ tableHeaders:
   pass: Passed Checks
   clusterCount: Clusters
   bundleSize: Bundle Size
+  k8sEol: K8s EOL
 
 asyncButton:
   srRepository:
