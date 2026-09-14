@@ -9,7 +9,10 @@ import actions from './actions';
 const srFactory = (): CoreStoreSpecifics => {
   return {
     state() {
-      return { createClusterElements: [] };
+      return {
+        createClusterElements: [],
+        certEvents: {}
+      };
     },
 
     getters: { ...getters },
