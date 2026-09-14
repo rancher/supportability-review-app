@@ -12,10 +12,14 @@ plugin/supportability-review-app-3.0.6.umd.min.37.js
 plugin/supportability-review-app-3.0.6.umd.min.37.js.map
 plugin/supportability-review-app-3.0.6.umd.min.380.js
 plugin/supportability-review-app-3.0.6.umd.min.380.js.map
+plugin/supportability-review-app-3.0.6.umd.min.439.js
+plugin/supportability-review-app-3.0.6.umd.min.439.js.map
 plugin/supportability-review-app-3.0.6.umd.min.445.js
 plugin/supportability-review-app-3.0.6.umd.min.445.js.map
 plugin/supportability-review-app-3.0.6.umd.min.446.js
 plugin/supportability-review-app-3.0.6.umd.min.446.js.map
+plugin/supportability-review-app-3.0.6.umd.min.486.js
+plugin/supportability-review-app-3.0.6.umd.min.486.js.map
 plugin/supportability-review-app-3.0.6.umd.min.573.js
 plugin/supportability-review-app-3.0.6.umd.min.573.js.map
 plugin/supportability-review-app-3.0.6.umd.min.60.js
