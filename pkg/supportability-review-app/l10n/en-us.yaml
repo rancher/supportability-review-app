@@ -54,6 +54,14 @@ sr:
     tooltip: '{distro} {minor} — EOM {eom}, EOL {eol}'
     unknownTooltip: No EOM/EOL dates are known
     noDataTooltip: No Kubernetes version reported yet
+  certExpiry:
+    days: '{days} days'
+    moreThan: '{days}+ days'
+    none: '—'
+    eventTooltip: 'The cluster reports {filename} on {node} expiring {expiry}. Restart RKE2/K3s on the node to renew it.'
+    okTooltip: No certificate is within {days} days of expiring. RKE2/K3s check every 30 minutes and report the exact date once one enters that window.
+    unmonitoredTooltip: This cluster does not report certificate expiry - only RKE2/K3s 1.27 and later do. Managed providers (AKS, EKS, GKE) renew their certificates automatically.
+    errorTooltip: 'Could not read the certificate expiry warnings: {error}'
   supportBundle:
     action: Download Support Bundle
     daysLabel: Collect logs from the last N days
@@ -77,6 +85,7 @@ tableHeaders:
   clusterCount: Clusters
   bundleSize: Bundle Size
   k8sEol: K8s EOL
+  certExpiry: Cert Expiry
 
 asyncButton:
   srRepository:
