@@ -5,6 +5,7 @@ import srStore from './store';
 import { registerSupportBundleActions } from './utils/support-bundle';
 import { registerKubernetesEolColumn } from './utils/k8s-eol-column';
 import { registerCertExpiryColumn } from './utils/cert-expiry-column';
+import { registerUpgradeWarningColumn } from './utils/upgrade-warnings';
 
 // Init the package
 export default function (plugin: IPlugin): void {
@@ -26,7 +27,8 @@ export default function (plugin: IPlugin): void {
   // Register the support bundle download functionality
   registerSupportBundleActions(plugin);
 
-  // Add the Kubernetes EOL and Certificate Expiry columns to the Cluster Management list.
+  // Add the Kubernetes EOL, Certificate Expiry and Upgrade Warning columns to the Cluster Management list.
   registerCertExpiryColumn(plugin);
   registerKubernetesEolColumn(plugin);
+  registerUpgradeWarningColumn(plugin);
 }

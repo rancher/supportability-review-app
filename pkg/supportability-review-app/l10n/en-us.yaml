@@ -51,7 +51,7 @@ sr:
     days: '{days} days'
     unknown: Unknown
     none: '—'
-    tooltip: '{distro} {minor} — EOM {eom}, EOL {eol}'
+    tooltip: '{provider} {minor} — EOM {eom}, EOL {eol}'
     unknownTooltip: No EOM/EOL dates are known
     noDataTooltip: No Kubernetes version reported yet
   certExpiry:
@@ -62,6 +62,14 @@ sr:
     okTooltip: No certificate is within {days} days of expiring. RKE2/K3s check every 30 minutes and report the exact date once one enters that window.
     unmonitoredTooltip: This cluster does not report certificate expiry - only RKE2/K3s 1.27 and later do. Managed providers (AKS, EKS, GKE) renew their certificates automatically.
     errorTooltip: 'Could not read the certificate expiry warnings: {error}'
+  upgradeWarning:
+    none: '—'
+    tooltip: '{count, plural, =1 {1 warning} other {# warnings}} for upgrading {from} to {to}'
+    title: 'Pre-upgrade Warnings: {cluster}'
+    summary: 'Upgrading {provider} {from} to {to}'
+    noWarnings: No known warnings for this upgrade.
+    noVersion: This cluster does not report a Kubernetes version yet.
+    learnMore: Learn more
   supportBundle:
     action: Download Support Bundle
     daysLabel: Collect logs from the last N days
@@ -86,6 +94,7 @@ tableHeaders:
   bundleSize: Bundle Size
   k8sEol: K8s EOL
   certExpiry: Cert Expiry
+  k8sUpgradeWarning: Pre-upgrade Warnings
 
 asyncButton:
   srRepository:

@@ -9,11 +9,11 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const CLUSTER_LIST = { resource: ['provisioning.cattle.io.cluster'] };
 
 export type KubernetesLifecycle = {
-  /** Distro the dates belong to, i.e. `k3s` */
-  distro: string;
+  /** Provider the dates belong to, i.e. `k3s` */
+  provider: string;
   /** Kubernetes minor version the dates belong to, i.e. `1.35` */
   minor: string;
-  /** End of maintenance as `YYYY-MM-DD`, or undefined when the distro has no EOM */
+  /** End of maintenance as `YYYY-MM-DD`, or undefined when the provider has no EOM */
   eom?: string;
   /** End of life as `YYYY-MM-DD` */
   eol?: string;
@@ -31,7 +31,7 @@ function daysUntil(date: string): number {
 
 const UPSTREAM = 'kubernetes';
 
-function distroFor(version: string): string {
+export function providerFor(version: string): string {
   if (version.includes('+rke2r')) {
     return 'rke2';
   }
@@ -52,16 +52,16 @@ export function kubernetesLifecycle(version?: string): KubernetesLifecycle | und
     return undefined;
   }
 
-  const distro = distroFor(version || '');
+  const provider = providerFor(version || '');
   const minor = parsed[1];
-  const entry = EOM_EOL[distro]?.[minor];
+  const entry = EOM_EOL[provider]?.[minor];
 
   if (!entry) {
-    return { distro, minor };
+    return { provider, minor };
   }
 
   return {
-    distro,
+    provider,
     minor,
     eom: entry.eom ? isoDate(entry.eom) : undefined,
     eol: entry.eol ? isoDate(entry.eol) : undefined,
