@@ -47,13 +47,13 @@ export default {
         return this.t('sr.k8sEol.noDataTooltip');
       }
 
-      const { distro, minor, eom, eol } = this.lifecycle;
+      const { provider, minor, eom, eol } = this.lifecycle;
 
       if (!eol) {
         return this.t('sr.k8sEol.unknownTooltip');
       }
 
-      return this.t('sr.k8sEol.tooltip', { distro, minor, eol, eom: eom || '—' });
+      return this.t('sr.k8sEol.tooltip', { provider, minor, eol, eom: eom || '—' });
     }
   }
 };
