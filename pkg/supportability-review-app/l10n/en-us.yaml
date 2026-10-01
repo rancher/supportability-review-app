@@ -67,6 +67,7 @@ sr:
     tooltip: '{count, plural, =1 {1 warning} other {# warnings}} for upgrading {from} to {to}'
     title: 'Pre-upgrade Warnings: {cluster}'
     summary: 'Upgrading {provider} {from} to {to}'
+    rancherSummary: 'Upgrading Rancher {from} to {to}'
     noWarnings: No known warnings for this upgrade.
     noVersion: This cluster does not report a Kubernetes version yet.
     learnMore: Learn more

@@ -31,7 +31,28 @@ export default {
     }
   },
 
-  emits: ['close']
+  emits: ['close'],
+
+  computed: {
+    // One block per thing that gets upgraded: the cluster itself, then Rancher
+    sections() {
+      if (!this.plan) {
+        return [];
+      }
+
+      const { provider, from, to, warnings, rancher } = this.plan;
+      const out = [{ summary: this.t('sr.upgradeWarning.summary', { provider, from, to }), warnings }];
+
+      if (rancher) {
+        out.push({
+          summary: this.t('sr.upgradeWarning.rancherSummary', { from: rancher.from, to: rancher.to }),
+          warnings: rancher.warnings
+        });
+      }
+
+      return out;
+    }
+  }
 };
 </script>
 
@@ -47,16 +68,16 @@ export default {
       <p v-if="!plan" class="text-muted">
         {{ t('sr.upgradeWarning.noVersion') }}
       </p>
-      <template v-else>
+      <div v-for="(section, s) in sections" :key="s" class="section">
         <p class="mb-10">
-          {{ t('sr.upgradeWarning.summary', { provider: plan.provider, from: plan.from, to: plan.to }) }}
+          {{ section.summary }}
         </p>
-        <p v-if="!plan.warnings.length" class="text-muted">
+        <p v-if="!section.warnings.length" class="text-muted">
           {{ t('sr.upgradeWarning.noWarnings') }}
         </p>
         <ul v-else class="warnings">
-          <li v-for="(warning, i) in plan.warnings" :key="i" class="mb-10">
-            <i class="icon icon-warning text-warning mr-5" />
+          <li v-for="(warning, i) in section.warnings" :key="i" class="mb-10">
+            <i class="icon icon-warning text-error mr-5" />
             <strong>{{ warning.title }}</strong>
             <p>{{ warning.description }}</p>
             <a v-if="warning.url" :href="warning.url" target="_blank" rel="noopener noreferrer nofollow">
@@ -65,7 +86,7 @@ export default {
             </a>
           </li>
         </ul>
-      </template>
+      </div>
     </template>
 
     <template #actions>
@@ -81,6 +102,10 @@ export default {
 <style lang="scss" scoped>
 .sr-upgrade-warnings {
   margin: 0;
+}
+
+.section:not(:last-child) {
+  margin-bottom: 20px;
 }
 
 .warnings {
