@@ -9,7 +9,7 @@ import { SR_CHARTS } from '../config/types';
 const jsyaml = require('js-yaml');
 
 const LOG_COLLECTOR_IMAGE = 'rancherlabs/swiss-army-knife';
-const LOG_COLLECTOR_NAMESPACE = 'sr-operator-system';
+const LOG_COLLECTOR_NAMESPACE = 'cattle-system';
 
 const HOST_MOUNT_PATH = '/host';
 
