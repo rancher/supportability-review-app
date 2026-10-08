@@ -153,13 +153,17 @@ function latestPatch(matrix: Record<string, unknown>, minor: string): string | u
     .sort((a, b) => (versionNumber(b) || 0) - (versionNumber(a) || 0))[0];
 }
 
+function supportMatrixUrl(version: string): string {
+  return `https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v${version.replace(/\./g, '-')}/`;
+}
+
 // One warning per OS release that the Rancher version upgraded to no longer supports.
 function osWarnings(nodes: any[], provider: string, rancherTo: string, matrices: OsMatrices): UpgradeWarning[] {
   const matrix = matrices[provider];
   const rancherVersion = matrix ? latestPatch(matrix, rancherTo) : undefined;
   const supported = rancherVersion ? matrix[rancherVersion] : undefined;
 
-  if (!supported) {
+  if (!rancherVersion || !supported) {
     return [];
   }
 
@@ -188,7 +192,8 @@ function osWarnings(nodes: any[], provider: string, rancherTo: string, matrices:
 
     return {
       title: `${os} is not supported by Rancher ${rancherVersion} with ${PROVIDER_LABELS[provider]}`,
-      description: `${nodeNames.join(', ')} ${nodeNames.length === 1 ? 'runs' : 'run'} ${os}. ${supports} Upgrade the operating system of those nodes before upgrading Rancher to ${rancherTo}.`
+      description: `${nodeNames.join(', ')} ${nodeNames.length === 1 ? 'runs' : 'run'} ${os}. ${supports} Upgrade the operating system of those nodes before upgrading Rancher to ${rancherTo}.`,
+      url: supportMatrixUrl(rancherVersion)
     };
   });
 }
