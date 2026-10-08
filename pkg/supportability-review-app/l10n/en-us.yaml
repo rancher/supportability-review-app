@@ -71,6 +71,7 @@ sr:
     noWarnings: No known warnings for this upgrade.
     noVersion: This cluster does not report a Kubernetes version yet.
     learnMore: Learn more
+    rancherKb: 'Please refer to this <a href="{url}" target="_blank" rel="noopener noreferrer nofollow">KB</a> before upgrading Rancher.'
   supportBundle:
     action: Download Support Bundle
     daysLabel: Collect logs from the last N days
