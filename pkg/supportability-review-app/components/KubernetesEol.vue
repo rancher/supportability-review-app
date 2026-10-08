@@ -1,6 +1,8 @@
 <script>
 import { BadgeState } from '@components/BadgeState';
 import { kubernetesLifecycle } from '../utils/k8s-eol-column';
+import { helperData } from '../utils/helper-data';
+import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 
 const CRITICAL_DAYS = 30;
 const WARNING_DAYS = 90;
@@ -16,7 +18,10 @@ export default {
   },
   computed: {
     lifecycle() {
-      return kubernetesLifecycle(this.row?.kubernetesVersionRaw || this.row?.kubernetesVersion);
+      return kubernetesLifecycle(
+        this.row?.kubernetesVersionRaw || this.row?.kubernetesVersion,
+        helperData(this.$store.getters, 'eom-eol')
+      );
     },
     daysToEol() {
       return this.lifecycle?.daysToEol;
@@ -55,6 +60,9 @@ export default {
 
       return this.t('sr.k8sEol.tooltip', { provider, minor, eol, eom: eom || '—' });
     }
+  },
+  created() {
+    this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, 'eom-eol');
   }
 };
 </script>

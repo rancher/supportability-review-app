@@ -1,5 +1,11 @@
 <script>
-import { clusterVersion, rancherVersion, showUpgradeWarnings, upgradePlan } from '../utils/upgrade-warnings';
+import {
+  clusterVersion,
+  osMatrices,
+  rancherVersion,
+  showUpgradeWarnings,
+  upgradePlan
+} from '../utils/upgrade-warnings';
 import { mgmtClusterIdFor } from '../utils/cert-expiry';
 import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 
@@ -19,7 +25,12 @@ export default {
       return this.$store.getters[`${SUPPORTABILITY_REVIEW_STORE}/nodes`](this.clusterId)?.nodes || [];
     },
     plan() {
-      return upgradePlan(clusterVersion(this.row), rancherVersion(this.$store.getters), this.nodes);
+      return upgradePlan(
+        clusterVersion(this.row),
+        rancherVersion(this.$store.getters),
+        this.nodes,
+        osMatrices(this.$store.getters)
+      );
     },
     count() {
       return (this.plan?.warnings.length || 0) + (this.plan?.rancher?.warnings.length || 0);
@@ -29,6 +40,8 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, 'rke2-rancher-os-matrix');
+    this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, 'k3s-rancher-os-matrix');
     this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchNodes`, this.clusterId);
   },
   methods: {

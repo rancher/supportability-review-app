@@ -1,8 +1,5 @@
 import { IPlugin, TableColumnLocation } from '@shell/core/types';
-import eomEolData from '../config/eom-eol.json';
-
-type EomEolEntry = { eom: string | null; eol: string | null };
-const EOM_EOL: Record<string, Record<string, EomEolEntry>> = eomEolData;
+import { BUNDLED_HELPER_DATA, EomEol } from './helper-data';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -45,7 +42,11 @@ export function providerFor(version: string): string {
   return UPSTREAM;
 }
 
-export function kubernetesLifecycle(version?: string): KubernetesLifecycle | undefined {
+// `eomEol` is what the operator serves, see helperData().
+export function kubernetesLifecycle(
+  version?: string,
+  eomEol: EomEol = BUNDLED_HELPER_DATA['eom-eol']
+): KubernetesLifecycle | undefined {
   const parsed = (version || '').match(/^v?(\d+\.\d+)\./);
 
   if (!parsed) {
@@ -54,7 +55,7 @@ export function kubernetesLifecycle(version?: string): KubernetesLifecycle | und
 
   const provider = providerFor(version || '');
   const minor = parsed[1];
-  const entry = EOM_EOL[provider]?.[minor];
+  const entry = eomEol[provider]?.[minor];
 
   if (!entry) {
     return { provider, minor };
