@@ -1,5 +1,6 @@
 import { CertEventRecord } from '../utils/cert-expiry';
 import { NodesRecord } from '../utils/upgrade-warnings';
+import { HelperDataName, HelperDataRecord } from '../utils/helper-data';
 
 export default {
   createClusterElements: (state: any) => state.createClusterElements,
@@ -10,5 +11,9 @@ export default {
   nodes:
     (state: any) =>
     (clusterId: string): NodesRecord | undefined =>
-      state.nodes[clusterId]
+      state.nodes[clusterId],
+  helperData:
+    (state: any) =>
+    (name: HelperDataName): HelperDataRecord | undefined =>
+      state.helperData[name]
 };

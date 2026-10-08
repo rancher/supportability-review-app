@@ -5,15 +5,24 @@ import { SETTING } from '@shell/config/settings';
 import { providerFor } from './k8s-eol-column';
 import { mgmtClusterIdFor } from './cert-expiry';
 import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
-import rke2OsMatrix from '../config/rke2-rancher-os-matrix.json';
-import k3sOsMatrix from '../config/k3s-rancher-os-matrix.json';
+import { BUNDLED_HELPER_DATA, helperData, OsMatrix } from './helper-data';
 
 // Operating systems each Rancher patch release supports, per provider, i.e.
 // `{ rke2: { '2.14.5': { Ubuntu: ['24.04', '22.04'], ... } } }`
-const OS_MATRIX: Record<string, Record<string, Record<string, string[]>>> = {
-  rke2: rke2OsMatrix,
-  k3s: k3sOsMatrix
+export type OsMatrices = Record<string, OsMatrix>;
+
+const BUNDLED_OS_MATRICES: OsMatrices = {
+  rke2: BUNDLED_HELPER_DATA['rke2-rancher-os-matrix'],
+  k3s: BUNDLED_HELPER_DATA['k3s-rancher-os-matrix']
 };
+
+// The matrices the operator serves, see helperData(). `getters` is the root getters.
+export function osMatrices(getters: any): OsMatrices {
+  return {
+    rke2: helperData(getters, 'rke2-rancher-os-matrix'),
+    k3s: helperData(getters, 'k3s-rancher-os-matrix')
+  };
+}
 
 // How the providers are spelled in the warnings
 const PROVIDER_LABELS: Record<string, string> = { rke2: 'RKE2', k3s: 'K3s' };
@@ -145,8 +154,8 @@ function latestPatch(matrix: Record<string, unknown>, minor: string): string | u
 }
 
 // One warning per OS release that the Rancher version upgraded to no longer supports.
-function osWarnings(nodes: any[], provider: string, rancherTo: string): UpgradeWarning[] {
-  const matrix = OS_MATRIX[provider];
+function osWarnings(nodes: any[], provider: string, rancherTo: string, matrices: OsMatrices): UpgradeWarning[] {
+  const matrix = matrices[provider];
   const rancherVersion = matrix ? latestPatch(matrix, rancherTo) : undefined;
   const supported = rancherVersion ? matrix[rancherVersion] : undefined;
 
@@ -187,7 +196,12 @@ function osWarnings(nodes: any[], provider: string, rancherTo: string): UpgradeW
 // Rancher is upgraded one minor version at a time as well, so the warnings are
 // about the version it runs now. The nodes are only known when the dialog is
 // opened, so the OS check is skipped for the cluster list.
-export function rancherPlan(version?: string, provider = '', nodes: any[] = []): RancherPlan | undefined {
+export function rancherPlan(
+  version?: string,
+  provider = '',
+  nodes: any[] = [],
+  matrices: OsMatrices = BUNDLED_OS_MATRICES
+): RancherPlan | undefined {
   const parsed = (version || '').match(/^v?(\d+)\.(\d+)\./);
 
   if (!parsed) {
@@ -196,13 +210,14 @@ export function rancherPlan(version?: string, provider = '', nodes: any[] = []):
 
   const from = `${parsed[1]}.${parsed[2]}`;
   const to = `${parsed[1]}.${Number(parsed[2]) + 1}`;
-  return { from, to, warnings: osWarnings(nodes, provider, to) };
+  return { from, to, warnings: osWarnings(nodes, provider, to, matrices) };
 }
 
 export function upgradePlan(
   versionStr?: string,
   rancherVersionStr?: string,
-  nodes: any[] = []
+  nodes: any[] = [],
+  matrices: OsMatrices = BUNDLED_OS_MATRICES
 ): UpgradePlan | undefined {
   const parsed = (versionStr || '').match(/^v?(\d+)\.(\d+)\./);
 
@@ -263,7 +278,7 @@ export function upgradePlan(
     from: `${parsed[1]}.${parsed[2]}`,
     to: `${parsed[1]}.${Number(parsed[2]) + 1}`,
     warnings: warnings,
-    rancher: rancherPlan(rancherVersionStr, provider, nodes)
+    rancher: rancherPlan(rancherVersionStr, provider, nodes, matrices)
   };
 }
 
@@ -291,7 +306,7 @@ export async function showUpgradeWarnings(cluster: any, store: any): Promise<voi
     component: 'SrUpgradeWarnings',
     componentProps: {
       clusterName: cluster.nameDisplay,
-      plan: upgradePlan(clusterVersion(cluster), rancherVersion(cluster.$rootGetters), nodes)
+      plan: upgradePlan(clusterVersion(cluster), rancherVersion(cluster.$rootGetters), nodes, osMatrices(store.getters))
     },
     closeOnClickOutside: true,
     modalWidth: '600px'

@@ -12,7 +12,8 @@ const srFactory = (): CoreStoreSpecifics => {
       return {
         createClusterElements: [],
         certEvents: {},
-        nodes: {}
+        nodes: {},
+        helperData: {}
       };
     },
 
