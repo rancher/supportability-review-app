@@ -286,15 +286,24 @@ function promptForDays(model: any): Promise<number | null> {
   });
 }
 
+// Pods are read from the cluster store rather than through the node: on Rancher
+// 2.13 the node's own dispatch fails with `Unknown schema for type: pod`.
+function findPod(model: any, id: string): Promise<any> {
+  // force: true bypasses the store cache so we see the live phase
+  return model.$dispatch('cluster/find', { type: 'pod', id, opt: { force: true } }, { root: true });
+}
+
 async function waitForPodRunning(model: any, id: string, timeoutMs = 120000): Promise<any> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     let pod: any = null;
     try {
-      // force: true bypasses the store cache so we see the live phase
-      pod = await model.$dispatch('find', { type: 'pod', id, opt: { force: true } });
-    } catch {
+      pod = await findPod(model, id);
+    } catch (err: any) {
       // 404 until the Pod is registered by the API — keep polling
+      if ((err?.status || err?._status) !== 404) {
+        throw err;
+      }
     }
     if (pod?.status?.phase === 'Running') {
       return pod;
@@ -351,7 +360,7 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
   } finally {
     if (created) {
       try {
-        pod = pod || (await node.$dispatch('find', { type: 'pod', id: podId, opt: { force: true } }));
+        pod = pod || (await findPod(node, podId));
         console.log('[SR] deleting log collector pod:', podId);
         await pod.remove();
       } catch (e) {
