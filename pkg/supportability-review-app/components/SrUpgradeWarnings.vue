@@ -1,6 +1,9 @@
 <script>
 import { Card } from '@components/Card';
 
+const RANCHER_UPGRADE_KB_URL =
+  'https://support.scc.suse.com/s/kb/Rancher-Can-Rancher-Support-validate-our-planned-upgrade';
+
 export default {
   name: 'SrUpgradeWarnings',
 
@@ -46,7 +49,8 @@ export default {
       if (rancher) {
         out.push({
           summary: this.t('sr.upgradeWarning.rancherSummary', { from: rancher.from, to: rancher.to }),
-          warnings: rancher.warnings
+          warnings: rancher.warnings,
+          kbUrl: RANCHER_UPGRADE_KB_URL
         });
       }
 
@@ -86,6 +90,10 @@ export default {
             </a>
           </li>
         </ul>
+        <p
+          v-if="section.kbUrl"
+          v-clean-html="t('sr.upgradeWarning.rancherKb', { url: section.kbUrl }, true)"
+          class="mt-10" />
       </div>
     </template>
 
