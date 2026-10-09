@@ -5,6 +5,7 @@ import Socket, { EVENT_DISCONNECTED, EVENT_MESSAGE, EVENT_CONNECT_ERROR } from '
 import { addParam, addParams } from '@shell/utils/url';
 import { base64Decode } from '@shell/utils/crypto';
 import { SR_CHARTS } from '../config/types';
+import { rancherVersion } from './upgrade-warnings';
 
 const jsyaml = require('js-yaml');
 
@@ -370,10 +371,22 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
   }
 }
 
+function hasNotificationCenter(resource: any): boolean {
+  const parsed = rancherVersion(resource.$rootGetters).match(/^v?(\d+)\.(\d+)/);
+
+  if (!parsed) {
+    return true;
+  }
+
+  const [major, minor] = parsed.slice(1).map(Number);
+
+  return major > 2 || (major === 2 && minor >= 12);
+}
+
 const collectAction: any = {
   labelKey: 'sr.supportBundle.action',
   icon: 'icon-download',
-  enabled: true,
+  enabled: hasNotificationCenter,
   multiple: true,
   weight: -11,
   async invoke(_opts: any, resources: any[]): Promise<void> {
