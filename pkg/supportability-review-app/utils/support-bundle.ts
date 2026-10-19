@@ -11,6 +11,7 @@ const jsyaml = require('js-yaml');
 
 const LOG_COLLECTOR_IMAGE = 'rancherlabs/swiss-army-knife';
 const LOG_COLLECTOR_NAMESPACE = 'cattle-system';
+const LOG_COLLECTOR_CONTAINER = 'log-collector';
 
 const HOST_MOUNT_PATH = '/host';
 
@@ -41,7 +42,7 @@ function logCollectorPodSpec(nodeName: string, podName: string, days: number, re
       ],
       containers: [
         {
-          name: 'log-collector',
+          name: LOG_COLLECTOR_CONTAINER,
           image,
           command: ['bash', '-c', `rancher2_logs_collector.sh -D -s ${days} -d ${BUNDLE_HOST_PATH}`],
           resources: {
@@ -83,18 +84,36 @@ async function getConfiguredRegistry(model: any): Promise<string> {
   }
 }
 
+function podUrl(clusterId: string, id: string): string {
+  return `/k8s/clusters/${encodeURIComponent(clusterId)}/v1/pods/${id}`;
+}
+
+// Resolves to null while the pod doesn't exist (404).
+async function getPod(model: any, url: string): Promise<any | null> {
+  try {
+    return await model.$dispatch('request', { url });
+  } catch (err: any) {
+    if ((err?.status || err?._status) === 404) {
+      return null;
+    }
+    throw err;
+  }
+}
+
 async function fetchPodLog(model: any, pod: any): Promise<string> {
-  const url = addParams(`${pod.links.view}/log`, { container: pod.defaultContainerName });
+  const url = addParams(`${pod.links.view}/log`, { container: LOG_COLLECTOR_CONTAINER });
   const res = await model.$dispatch('request', { url, responseType: 'text' });
 
   return typeof res?.data === 'string' ? res.data : '';
 }
 
-async function waitForTarball(model: any, pod: any, timeoutMs = 900000): Promise<string | null> {
+async function waitForTarball(model: any, url: string, pod: any, timeoutMs = 900000): Promise<string | null> {
   const start = Date.now();
   let seen = 0;
   let consecutiveLogFailures = 0;
   const MAX_CONSECUTIVE_LOG_FAILURES = 5;
+  let consecutiveStatusFailures = 0;
+  const MAX_CONSECUTIVE_STATUS_FAILURES = 5;
 
   while (Date.now() - start < timeoutMs) {
     let log = '';
@@ -120,8 +139,17 @@ async function waitForTarball(model: any, pod: any, timeoutMs = 900000): Promise
     try {
       // A failed log fetch above is ambiguous (container not started yet vs. pod
       // gone), so confirm the pod itself still exists before continuing to poll.
-      freshPod = await model.$dispatch('find', { type: 'pod', id: pod.id, opt: { force: true } });
-    } catch {
+      freshPod = await getPod(model, url);
+      consecutiveStatusFailures = 0;
+    } catch (err: any) {
+      consecutiveStatusFailures++;
+      if (consecutiveStatusFailures >= MAX_CONSECUTIVE_STATUS_FAILURES) {
+        throw new Error(`Lost contact with pod ${pod.id}: ${err?.message || err?._statusText || String(err)}`, {
+          cause: err
+        });
+      }
+    }
+    if (freshPod === null) {
       throw new Error(`Pod ${pod.id} no longer exists`);
     }
     if (freshPod?.status?.phase && freshPod.status.phase !== 'Running') {
@@ -152,7 +180,7 @@ function execCollect(pod: any, command: string[]): Promise<Blob> {
     // strings. `command` is repeated once per argument, which addParam handles.
     const url = addParam(
       addParams(`${base.replace(/^http/, 'ws')}/exec`, {
-        container: pod.defaultContainerName,
+        container: LOG_COLLECTOR_CONTAINER,
         stdout: '1',
         stdin: '0',
         stderr: '1',
@@ -287,25 +315,11 @@ function promptForDays(model: any): Promise<number | null> {
   });
 }
 
-// Pods are read from the cluster store rather than through the node: on Rancher
-// 2.13 the node's own dispatch fails with `Unknown schema for type: pod`.
-function findPod(model: any, id: string): Promise<any> {
-  // force: true bypasses the store cache so we see the live phase
-  return model.$dispatch('cluster/find', { type: 'pod', id, opt: { force: true } }, { root: true });
-}
-
-async function waitForPodRunning(model: any, id: string, timeoutMs = 120000): Promise<any> {
+async function waitForPodRunning(model: any, url: string, timeoutMs = 120000): Promise<any> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
-    let pod: any = null;
-    try {
-      pod = await findPod(model, id);
-    } catch (err: any) {
-      // 404 until the Pod is registered by the API — keep polling
-      if ((err?.status || err?._status) !== 404) {
-        throw err;
-      }
-    }
+    // null (404) until the Pod is registered by the API — keep polling
+    const pod = await getPod(model, url);
     if (pod?.status?.phase === 'Running') {
       return pod;
     }
@@ -319,14 +333,14 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
   const podName = `log-collector-${nodeName}-${Math.random().toString(36).slice(2, 7)}`;
   const podId = `${LOG_COLLECTOR_NAMESPACE}/${podName}`;
   const title = t(node, 'sr.supportBundle.taskTitle', { node: nodeName });
-  let pod: any = null;
+  // Captured up front: the current cluster changes if the user navigates away.
+  const currentCluster = node.$rootGetters['currentCluster'];
+  const url = podUrl(currentCluster?.id, podId);
   let created = false;
 
   await notifyTask(node, podName, title, t(node, 'sr.supportBundle.phaseStarting'), PHASE_PROGRESS.starting);
 
   try {
-    const currentCluster = node.$rootGetters['currentCluster'];
-
     console.log(`[SR] creating log collector pod ${podId} on node ${nodeName} (cluster ${currentCluster?.id})`);
     await currentCluster.doAction('apply', {
       yaml: jsyaml.dump(logCollectorPodSpec(nodeName, podName, logDays, imageRegistry)),
@@ -335,14 +349,14 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
     created = true;
 
     await updateTask(node, podName, t(node, 'sr.supportBundle.phaseStartingPod'), PHASE_PROGRESS.startingPod);
-    pod = await waitForPodRunning(node, podId);
+    const pod = await waitForPodRunning(node, url);
     if (!pod) {
       throw new Error(`Pod did not reach Running state in time: ${podId}`);
     }
 
     console.log(`[SR] collecting; waiting for the tarball path in the pod log for node ${nodeName}...`);
     await updateTask(node, podName, t(node, 'sr.supportBundle.phaseCollecting'), PHASE_PROGRESS.collecting);
-    const tarballPath = await waitForTarball(node, pod);
+    const tarballPath = await waitForTarball(node, url, pod);
     if (!tarballPath) {
       throw new Error(`Collector did not report a tarball in time for node ${nodeName}`);
     }
@@ -361,9 +375,8 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
   } finally {
     if (created) {
       try {
-        pod = pod || (await findPod(node, podId));
         console.log('[SR] deleting log collector pod:', podId);
-        await pod.remove();
+        await node.$dispatch('request', { url, method: 'delete' });
       } catch (e) {
         console.error('[SR] failed to delete log collector pod:', podId, e);
       }
