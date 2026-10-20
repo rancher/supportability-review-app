@@ -73,9 +73,25 @@ export default {
 </script>
 
 <template>
-  <div v-clean-tooltip="{ content: tooltip, placement: 'left' }">
+  <div v-clean-tooltip="{ content: tooltip, placement: 'left' }" class="badge-compat">
     <BadgeState v-if="warned" :color="color" :label="label" />
     <BadgeState v-else-if="healthy" color="bg-success" :label="label" />
     <span v-else class="text-muted">{{ t('sr.certExpiry.none') }}</span>
   </div>
 </template>
+
+<style lang="scss" scoped>
+// The bundled BadgeState colors via `--*-badge` / `--on-*-banner`, which only Rancher 2.13+ themes define.
+// Fall back to the older theme variables so the badge is colored on Rancher 2.12 as well.
+.badge-compat {
+  :deep(.badge-state.bg-error) {
+    color: var(--on-error-banner, var(--error-text));
+    background: var(--error-badge, var(--error));
+  }
+
+  :deep(.badge-state.bg-warning) {
+    color: var(--on-warning-banner, var(--warning-text));
+    background: var(--warning-badge, var(--warning));
+  }
+}
+</style>
