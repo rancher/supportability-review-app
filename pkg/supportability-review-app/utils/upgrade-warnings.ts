@@ -5,16 +5,11 @@ import { SETTING } from '@shell/config/settings';
 import { providerFor } from './k8s-eol-column';
 import { mgmtClusterIdFor } from './cert-expiry';
 import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
-import { BUNDLED_HELPER_DATA, helperData, OsMatrix } from './helper-data';
+import { helperData, OsMatrix } from './helper-data';
 
 // Operating systems each Rancher patch release supports, per provider, i.e.
 // `{ rke2: { '2.14.5': { Ubuntu: ['24.04', '22.04'], ... } } }`
 export type OsMatrices = Record<string, OsMatrix>;
-
-const BUNDLED_OS_MATRICES: OsMatrices = {
-  rke2: BUNDLED_HELPER_DATA['rke2-rancher-os-matrix'],
-  k3s: BUNDLED_HELPER_DATA['k3s-rancher-os-matrix']
-};
 
 // The matrices the operator serves, see helperData(). `getters` is the root getters.
 export function osMatrices(getters: any): OsMatrices {
@@ -202,10 +197,10 @@ function osWarnings(nodes: any[], provider: string, rancherTo: string, matrices:
 // about the version it runs now. The nodes are only known when the dialog is
 // opened, so the OS check is skipped for the cluster list.
 export function rancherPlan(
-  version?: string,
-  provider = '',
-  nodes: any[] = [],
-  matrices: OsMatrices = BUNDLED_OS_MATRICES
+  version: string | undefined,
+  provider: string,
+  nodes: any[],
+  matrices: OsMatrices
 ): RancherPlan | undefined {
   const parsed = (version || '').match(/^v?(\d+)\.(\d+)\./);
 
@@ -219,10 +214,10 @@ export function rancherPlan(
 }
 
 export function upgradePlan(
-  versionStr?: string,
-  rancherVersionStr?: string,
-  nodes: any[] = [],
-  matrices: OsMatrices = BUNDLED_OS_MATRICES
+  versionStr: string | undefined,
+  rancherVersionStr: string | undefined,
+  nodes: any[],
+  matrices: OsMatrices
 ): UpgradePlan | undefined {
   const parsed = (versionStr || '').match(/^v?(\d+)\.(\d+)\./);
 

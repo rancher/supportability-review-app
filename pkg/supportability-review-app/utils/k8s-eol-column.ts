@@ -1,5 +1,5 @@
 import { IPlugin, TableColumnLocation } from '@shell/core/types';
-import { BUNDLED_HELPER_DATA, EomEol } from './helper-data';
+import { EomEol } from './helper-data';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -43,10 +43,7 @@ export function providerFor(version: string): string {
 }
 
 // `eomEol` is what the operator serves, see helperData().
-export function kubernetesLifecycle(
-  version?: string,
-  eomEol: EomEol = BUNDLED_HELPER_DATA['eom-eol']
-): KubernetesLifecycle | undefined {
+export function kubernetesLifecycle(version: string | undefined, eomEol: EomEol): KubernetesLifecycle | undefined {
   const parsed = (version || '').match(/^v?(\d+\.\d+)\./);
 
   if (!parsed) {

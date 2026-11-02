@@ -63,7 +63,7 @@ export default {
   },
 
   // Keeps the data read last when the operator cannot serve it any more, so a
-  // failed refresh does not fall back to the older bundled copy.
+  // failed refresh does not drop it.
   async fetchHelperData({ state, commit, dispatch }: any, name: HelperDataName) {
     const existing = state.helperData[name];
     const age = existing?.checkedAt ? Date.now() - Date.parse(existing.checkedAt) : Infinity;
@@ -81,7 +81,7 @@ export default {
     } catch (err: any) {
       const error = err?.message || err?._statusText || String(err);
 
-      console.warn(`[SR] could not read ${name} from the operator, using the bundled copy:`, err);
+      console.warn(`[SR] could not read ${name} from the operator:`, err);
       commit('updateHelperData', {
         name,
         record: { data: existing?.data, checkedAt: new Date().toISOString(), error }
