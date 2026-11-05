@@ -15,26 +15,30 @@ const stsIconMask = `data:image/svg+xml,${encodeURIComponent(stsIconMaskSvg)}`;
 // with an approximate CSS filter (see @rancher/shell IconOrSvg.vue). That filter
 // can't reproduce the exact brand colour, so our icon ends up a slightly off,
 // washed-out green compared to the font-based icons next to it (issue #229).
-// Instead we hide that <img> and redraw the icon with a CSS mask tinted with the
+// Instead we redraw the icon on that same <img> with a CSS mask tinted with the
 // same theme variables the shell uses for the other menu icons, so the colour
-// matches exactly in the light, dark and auto themes. Scoped to our menu entry
-// via its route href ('/sr/c/') so no other extension's icon is affected.
+// matches exactly in the light, dark and auto themes. The <img> itself must stay
+// visible and hoverable: the shell attaches the collapsed-menu tooltip
+// ("Supportability Review") to it, so hiding it would also hide the tooltip.
+// Scoped to our menu entry via its route href ('/sr/c/') so no other extension's
+// icon is affected.
 const iconSelector = `.side-menu .category div a[href*="/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/"]`;
+const iconImg = `${iconSelector} > img.svg-icon`;
 const styleSheet = document.createElement('style');
 styleSheet.setAttribute('data-sr-icon-fix', '');
 styleSheet.textContent = `
-  ${iconSelector} > img.svg-icon {
-    display: none;
-  }
-  ${iconSelector}::before {
-    content: "";
+  ${iconImg} {
     display: block;
     flex-shrink: 0;
     /* 42px-wide box (matching the sibling menu icons) with the 24px icon
        centred via mask-size:contain, so it lines up horizontally with them. */
-    width: 42px;
-    height: 24px;
+    width: 42px !important;
+    height: 24px !important;
     margin-right: 14px;
+    /* Drop the shell's approximate recolouring filter and push the original
+       bitmap out of the content box, leaving only the masked background. */
+    filter: none !important;
+    object-position: -9999px 0;
     background-color: var(--on-tertiary, var(--link));
     -webkit-mask-image: url("${stsIconMask}");
     mask-image: url("${stsIconMask}");
@@ -45,10 +49,10 @@ styleSheet.textContent = `
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
   }
-  ${iconSelector}:hover::before {
+  ${iconSelector}:hover > img.svg-icon {
     background-color: var(--tertiary-hover-app-bar, var(--primary-hover-text));
   }
-  ${iconSelector}.active-menu-link::before {
+  ${iconSelector}.active-menu-link > img.svg-icon {
     background-color: var(--on-active, var(--primary-hover-text));
   }
 `;
