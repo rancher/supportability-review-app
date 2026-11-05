@@ -1,6 +1,6 @@
-# Supportability Review - Rancher Extension
+# Support Assistant - Rancher Extension
 
-The **Supportability Review** (SR) extension helps proactively validate your Rancher managed kubernetes cluster configuration and environment to ensure it's production-ready and support-aligned.
+The **Support Assistant** extension helps proactively validate your Rancher managed kubernetes cluster configuration and environment to ensure it's production-ready and support-aligned.
 
 It provides:
 
@@ -12,7 +12,7 @@ It provides:
 
 ## Installation Guide
 
-Follow the steps below to install the Supportability Review extension inside Rancher UI:
+Follow the steps below to install the Support Assistant extension inside Rancher UI:
 
 ### 1. Open Extensions Menu
 
@@ -26,11 +26,11 @@ Follow the steps below to install the Supportability Review extension inside Ran
 - Click the **three dots** (⋮) on the extensions page.
 - Select **Add Rancher Repositories**.
 - Wait a few seconds while the repository syncs.
-- You will now see the **Supportability Review** extension listed.
+- You will now see the **Support Assistant** extension listed.
 ![Add extension menu](./pkg/supportability-review-app/images/readme/add-extension-repo.png)
 
 #### Rancher Community
-To view the Supportability Review extension in the Extensions list:
+To view the Support Assistant extension in the Extensions list:
 - Click the **three dots** (⋮) on the Extensions page.
 - Select **Manage Repository**.
 - Click the **Create** button.
@@ -41,13 +41,13 @@ To view the Supportability Review extension in the Extensions list:
   - **Branch**: `main`
 - Click **Create**.
 - Wait a few seconds for the repository to sync.
-- The **Supportability Review** extension will now appear in the list.
+- The **Support Assistant** extension will now appear in the list.
 ![Add extension menu](./pkg/supportability-review-app/images/readme/add-repo-community.png)
 
 
 ### 3. Install the Extension
 
-- Click on the **Supportability Review** entry.
+- Click on the **Support Assistant** entry.
 - Click the `Install` button.
 
 Once installed, a new **Cattleman icon** will appear in the side menu.
@@ -58,7 +58,7 @@ Once installed, a new **Cattleman icon** will appear in the side menu.
 
 ### 4. Install the Supportability Review Operator
 
-- Click the **Supportability Review (SR) icon** in the sidebar.
+- Click the **Support Assistant icon** in the sidebar.
 - Press the button: `Add Supportability Review Operator Repository`.
 - Then click `Install Supportability Review Operator`.
 ![Dashboard view to add repo](./pkg/supportability-review-app/images/readme/dashboard-add-operator-repo.png)
@@ -111,7 +111,7 @@ we recommend keeping the default values
 ![Review report visualization](./pkg/supportability-review-app/images/readme/review-visual-report.png)
 
 ###  IMPORTANT:
-> The Supportability Review UI extension is limited to displaying a maximum of five failures or warnings and does not generate a downloadable PDF report. **Prime customers** can obtain the complete supportability review report by opening a Rancher support case and providing the generated review bundle.
+> The Support Assistant UI extension is limited to displaying a maximum of five failures or warnings and does not generate a downloadable PDF report. **Prime customers** can obtain the complete supportability review report by opening a Rancher support case and providing the generated review bundle.
 
 You can also preview what a full report looks like by clicking the **[View Sample Report](https://suse.my.salesforce.com/sfc/p/#1i000000gLOd/a/Tr00000EFJwk/2gpLmKqcybjI6R_YjwtXwx4qNnKFsOSTmf8SNQvQLbQ)** link.
 

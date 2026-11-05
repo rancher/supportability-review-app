@@ -1,3 +1,3 @@
-# Collects and analyses cluster data for supportability assessment
+# Provides tools to help keep Kubernetes clusters running reliably
 
-This application scans Rancher and downstream clusters and detects issues. If you need more information about the scan results, please send the scan results to Rancher Support.
+This extension provides the tools needed to keep Rancher and downstream Kubernetes clusters running reliably, such as scanning clusters to detect potential issues.

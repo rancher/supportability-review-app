@@ -1,6 +1,6 @@
 {
   "name": "supportability-review-app",
-  "description": "Supportability Review UI extension",
+  "description": "Support Assistant UI extension",
   "version": "3.0.6",
   "private": false,
   "engines": {

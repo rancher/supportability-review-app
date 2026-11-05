@@ -19,7 +19,7 @@ const stsIconMask = `data:image/svg+xml,${encodeURIComponent(stsIconMaskSvg)}`;
 // same theme variables the shell uses for the other menu icons, so the colour
 // matches exactly in the light, dark and auto themes. The <img> itself must stay
 // visible and hoverable: the shell attaches the collapsed-menu tooltip
-// ("Supportability Review") to it, so hiding it would also hide the tooltip.
+// ("Support Assistant") to it, so hiding it would also hide the tooltip.
 // Scoped to our menu entry via its route href ('/sr/c/') so no other extension's
 // icon is affected.
 const iconSelector = `.side-menu .category div a[href*="/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/"]`;

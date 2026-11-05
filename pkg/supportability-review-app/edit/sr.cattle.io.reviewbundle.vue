@@ -191,7 +191,7 @@ export default {
       const token = await this.$store.dispatch('rancher/create', {
         type: NORMAN.TOKEN,
         ttl: maxTTLMsec,
-        description: 'Supportability Review'
+        description: 'Support Assistant'
       });
 
       const created = await token.save();

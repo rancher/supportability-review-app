@@ -38,7 +38,7 @@ l0 -298 -112 4 c-62 3 -129 8 -149 12 -23 4 -39 3 -43 -4 -5 -7 -49 -11 -121 -11 l
         </g>
       </svg>
     </div>
-    <h1 class="mb-2">Welcome to Supportability Review</h1>
+    <h1 class="mb-2">Welcome to Support Assistant</h1>
     <p class="text-base mb-30">
       <span>Ensure your system design is stable, scalable, and support-ready.</span>
       <a href="https://www.suse.com/support/kb/doc/?id=000021242" target="_blank" rel="noopener noreferrer nofollow">
@@ -47,7 +47,7 @@ l0 -298 -112 4 c-62 3 -129 8 -149 12 -23 4 -39 3 -43 -4 -5 -7 -49 -11 -121 -11 l
       </a>
     </p>
     <h3 class="text-sm mb-30">
-      Supportability Review offers proactive support and ensures that your system complies with SUSE's best practices.
+      Support Assistant offers proactive support and ensures that your system complies with SUSE's best practices.
     </h3>
     <button v-if="bundleCount < 1" class="btn role-secondary" @click="goToReviewBundle">Get Started</button>
   </div>
