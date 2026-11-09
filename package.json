@@ -22,7 +22,7 @@
     "**/diff2html/diff": "5.2.2",
     "**/simple-update-notifier/semver": "^7.5.2",
     "qs": "^6.17.1",
-    "**/cookie-universal/cookie": "^0.7.2",
+    "**/cookie-universal/cookie": "^2.0.0",
     "**/@vue/component-compiler-utils/postcss": "^8.5.25",
     "**/sockjs/uuid": "^11.1.1",
     "**/frontmatter-markdown-loader/markdown-it": "^14.3.3",
