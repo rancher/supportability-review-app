@@ -19,7 +19,7 @@
   },
   "resolutions": {
     "dompurify": "3.4.17",
-    "**/diff2html/diff": "5.2.2",
+    "**/diff2html/diff": "9.0.0",
     "**/simple-update-notifier/semver": "^7.5.2",
     "qs": "^6.17.1",
     "**/cookie-universal/cookie": "^2.0.0",
