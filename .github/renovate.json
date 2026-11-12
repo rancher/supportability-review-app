@@ -13,6 +13,13 @@
   "prHourlyLimit": 2,
   "packageRules": [
     {
+      "description": "webpack-dev-server v6 uses Express 5, which breaks @rancher/shell's dev server config ('/v1-*' route, webSocketProxies format). Keep v5 until @rancher/shell supports v6.",
+      "matchPackageNames": [
+        "webpack-dev-server"
+      ],
+      "allowedVersions": "<6"
+    },
+    {
       "description": "Apply Rancher 2.15 update constraints to branch release/v2.15. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
       "matchBaseBranches": [
         "release/v2.15"
