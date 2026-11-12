@@ -26,7 +26,7 @@
     "**/@vue/component-compiler-utils/postcss": "^8.5.25",
     "**/sockjs/uuid": "^14.0.0",
     "**/frontmatter-markdown-loader/markdown-it": "^15.0.0",
-    "**/@vue/cli-service/webpack-dev-server": "^5.2.7",
+    "**/@vue/cli-service/webpack-dev-server": "^6.0.0",
     "**/nyc/glob": "^14.0.4",
     "**/rimraf/glob": "^14.0.4",
     "**/test-exclude/glob": "^14.0.4",
