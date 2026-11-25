@@ -59,7 +59,7 @@ function logCollectorPodSpec(nodeName: string, podName: string, days: number, re
   };
 }
 
-async function getConfiguredRegistry(model: any): Promise<string> {
+export async function getConfiguredRegistry(model: any): Promise<string> {
   try {
     const apps = await model.$dispatch(
       'management/findAll',
@@ -328,55 +328,95 @@ async function waitForPodRunning(model: any, url: string, timeoutMs = 120000): P
   return null;
 }
 
-async function runForNode(node: any, logDays: number, imageRegistry: string): Promise<void> {
-  const nodeName = node.metadata?.name || node.id;
+export type BundleProgressState = 'running' | 'success' | 'error';
+
+export interface BundleProgress {
+  state: BundleProgressState;
+  message: string;
+  progress: number;
+  filename?: string;
+}
+
+export interface CollectBundleOptions {
+  // Show progress in the Rancher Notification Center (Rancher 2.12+)
+  notify?: boolean;
+  // Called on every phase change, e.g. to render progress inline on a page
+  // eslint-disable-next-line no-unused-vars
+  onProgress?: (progress: BundleProgress) => void;
+}
+
+// Collects a support bundle from one node of `cluster` (a management.cattle.io.cluster
+// model) and downloads it in the browser. `ctx` is anything with $dispatch and
+// $rootGetters: a resource model, or storeContext() for a page.
+export async function collectNodeBundle(
+  ctx: any,
+  cluster: any,
+  nodeName: string,
+  logDays: number,
+  imageRegistry: string,
+  opts: CollectBundleOptions = {}
+): Promise<void> {
+  const { notify = true, onProgress } = opts;
   const podName = `log-collector-${nodeName}-${Math.random().toString(36).slice(2, 7)}`;
   const podId = `${LOG_COLLECTOR_NAMESPACE}/${podName}`;
-  const title = t(node, 'sr.supportBundle.taskTitle', { node: nodeName });
-  // Captured up front: the current cluster changes if the user navigates away.
-  const currentCluster = node.$rootGetters['currentCluster'];
-  const url = podUrl(currentCluster?.id, podId);
+  const title = t(ctx, 'sr.supportBundle.taskTitle', { node: nodeName });
+  const url = podUrl(cluster?.id, podId);
   let created = false;
 
-  await notifyTask(node, podName, title, t(node, 'sr.supportBundle.phaseStarting'), PHASE_PROGRESS.starting);
+  const report = async (message: string, progress: number, first = false): Promise<void> => {
+    onProgress?.({ state: 'running', message, progress });
+    if (notify) {
+      await (first ? notifyTask(ctx, podName, title, message, progress) : updateTask(ctx, podName, message, progress));
+    }
+  };
+
+  await report(t(ctx, 'sr.supportBundle.phaseStarting'), PHASE_PROGRESS.starting, true);
 
   try {
-    console.log(`[SR] creating log collector pod ${podId} on node ${nodeName} (cluster ${currentCluster?.id})`);
-    await currentCluster.doAction('apply', {
+    console.log(`[SR] creating log collector pod ${podId} on node ${nodeName} (cluster ${cluster?.id})`);
+    await cluster.doAction('apply', {
       yaml: jsyaml.dump(logCollectorPodSpec(nodeName, podName, logDays, imageRegistry)),
       defaultNamespace: LOG_COLLECTOR_NAMESPACE
     });
     created = true;
 
-    await updateTask(node, podName, t(node, 'sr.supportBundle.phaseStartingPod'), PHASE_PROGRESS.startingPod);
-    const pod = await waitForPodRunning(node, url);
+    await report(t(ctx, 'sr.supportBundle.phaseStartingPod'), PHASE_PROGRESS.startingPod);
+    const pod = await waitForPodRunning(ctx, url);
     if (!pod) {
       throw new Error(`Pod did not reach Running state in time: ${podId}`);
     }
 
     console.log(`[SR] collecting; waiting for the tarball path in the pod log for node ${nodeName}...`);
-    await updateTask(node, podName, t(node, 'sr.supportBundle.phaseCollecting'), PHASE_PROGRESS.collecting);
-    const tarballPath = await waitForTarball(node, url, pod);
+    await report(t(ctx, 'sr.supportBundle.phaseCollecting'), PHASE_PROGRESS.collecting);
+    const tarballPath = await waitForTarball(ctx, url, pod);
     if (!tarballPath) {
       throw new Error(`Collector did not report a tarball in time for node ${nodeName}`);
     }
 
     console.log(`[SR] downloading tarball from pod for node ${nodeName}:`, tarballPath);
-    await updateTask(node, podName, t(node, 'sr.supportBundle.phaseDownloading'), PHASE_PROGRESS.downloading);
+    await report(t(ctx, 'sr.supportBundle.phaseDownloading'), PHASE_PROGRESS.downloading);
     const data = await execCollect(pod, ['cat', tarballPath]);
     const filename = buildFilename(tarballPath, nodeName);
     downloadBlob(data, filename);
     console.log(`[SR] downloaded ${filename} (${data.size} bytes)`);
 
-    await completeTask(node, podName, title, t(node, 'sr.supportBundle.completed', { filename }));
+    const message = t(ctx, 'sr.supportBundle.completed', { filename });
+    onProgress?.({ state: 'success', message, progress: 100, filename });
+    if (notify) {
+      await completeTask(ctx, podName, title, message);
+    }
   } catch (err: any) {
     console.error(`[SR] support bundle collection failed for node ${nodeName}:`, err);
-    await failTask(node, podName, title, t(node, 'sr.supportBundle.failed', { error: err?.message || String(err) }));
+    const message = t(ctx, 'sr.supportBundle.failed', { error: err?.message || String(err) });
+    onProgress?.({ state: 'error', message, progress: 100 });
+    if (notify) {
+      await failTask(ctx, podName, title, message);
+    }
   } finally {
     if (created) {
       try {
         console.log('[SR] deleting log collector pod:', podId);
-        await node.$dispatch('request', { url, method: 'delete' });
+        await ctx.$dispatch('request', { url, method: 'delete' });
       } catch (e) {
         console.error('[SR] failed to delete log collector pod:', podId, e);
       }
@@ -384,7 +424,28 @@ async function runForNode(node: any, logDays: number, imageRegistry: string): Pr
   }
 }
 
-function hasNotificationCenter(resource: any): boolean {
+function runForNode(node: any, logDays: number, imageRegistry: string): Promise<void> {
+  // Captured up front: the current cluster changes if the user navigates away.
+  return collectNodeBundle(
+    node,
+    node.$rootGetters['currentCluster'],
+    node.metadata?.name || node.id,
+    logDays,
+    imageRegistry
+  );
+}
+
+// Adapts the root Vuex store to the $dispatch/$rootGetters interface the
+// collector uses on resource models, so pages can call collectNodeBundle().
+export function storeContext(store: any): any {
+  return {
+    $rootGetters: store.getters,
+    $dispatch: (action: string, payload: any, opts?: { root?: boolean }) =>
+      store.dispatch(opts?.root ? action : `management/${action}`, payload)
+  };
+}
+
+export function hasNotificationCenter(resource: any): boolean {
   const parsed = rancherVersion(resource.$rootGetters).match(/^v?(\d+)\.(\d+)/);
 
   if (!parsed) {

@@ -9,7 +9,8 @@ export const SUPPORTABILITY_REVIEW_CRD_IDS = {
 
 export const SR_APP_PAGES = {
   DASHBOARD: 'dashboard',
-  REVIEW_BUNDLE: 'review-bundle'
+  REVIEW_BUNDLE: 'review-bundle',
+  LOG_DOWNLOADS: 'log-downloads'
 };
 
 export const SR_CHARTS = {
