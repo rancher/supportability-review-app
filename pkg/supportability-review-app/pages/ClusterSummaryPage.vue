@@ -29,8 +29,6 @@ export default {
 
   data() {
     return {
-      clusters: [],
-      nodes: [],
       nodesError: false,
       refreshing: false
     };
@@ -43,6 +41,28 @@ export default {
   },
 
   computed: {
+    // Read from the store rather than copied once, so clusters and nodes that are
+    // added or removed while the page is open show up through the websocket watches.
+    clusters() {
+      const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER) || [];
+
+      return [...(filterOnlyKubernetesClusters(all, this.$store) || [])].sort((a, b) => {
+        if (a.isLocal !== b.isLocal) {
+          return a.isLocal ? -1 : 1;
+        }
+
+        return (a.nameDisplay || '').localeCompare(b.nameDisplay || '');
+      });
+    },
+
+    clusterIds() {
+      return this.clusters.map((c) => c.id);
+    },
+
+    nodes() {
+      return this.nodesError ? [] : this.$store.getters['management/all'](MANAGEMENT.NODE) || [];
+    },
+
     rancherVersion() {
       return getVersionInfo(this.$store).displayVersion;
     },
@@ -178,24 +198,32 @@ export default {
     }
   },
 
+  watch: {
+    // A cluster added while the page is open needs its certificate expiry events read.
+    // The first list (empty -> loaded) is covered by loadLifecycleAndCerts() in fetch().
+    clusterIds(ids, oldIds) {
+      if (!oldIds?.length) {
+        return;
+      }
+
+      const known = new Set(oldIds);
+
+      ids
+        .filter((id) => !known.has(id))
+        .forEach((id) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, id));
+    }
+  },
+
   methods: {
+    // findAll also starts the websocket watches that keep the store up to date
     async load() {
-      const clusters = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
-
-      this.clusters = (filterOnlyKubernetesClusters(clusters || [], this.$store) || []).sort((a, b) => {
-        if (a.isLocal !== b.isLocal) {
-          return a.isLocal ? -1 : 1;
-        }
-
-        return (a.nameDisplay || '').localeCompare(b.nameDisplay || '');
-      });
+      await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
 
       try {
-        this.nodes = (await this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE })) || [];
+        await this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
         this.nodesError = false;
       } catch {
         // The user may not be allowed to list management nodes
-        this.nodes = [];
         this.nodesError = true;
       }
     },
