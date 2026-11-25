@@ -24,6 +24,7 @@ sr:
     viewReport: View Report
     titleDashboard: Support Assistant Dashboard
     sr.cattle.io.reviewbundle: Review Bundles
+    clusterSummary: Manager & Cluster Summary
     logDownloads: Log Downloads
     basic: Basic
     advanced: Advanced
@@ -82,6 +83,26 @@ sr:
     phaseDownloading: Downloading bundle
     completed: 'Downloaded { filename }'
     failed: 'Failed: { error }'
+  clusterSummary:
+    title: Manager & Cluster Summary
+    refresh: Refresh
+    inventory: Downstream Cluster Inventory
+    nodesReady: '{ready} / {total} Ready'
+    logs: Logs
+    kpi:
+      manager: Rancher Manager
+      compute: Total Compute
+      nodes: '{count} Nodes'
+      capacity: '{cpu} vCPUs • {memory} RAM total'
+    columns:
+      state: State
+      name: Cluster Name
+      type: Type
+      nodeHealth: Node Health
+      version: K8s Version
+      lifecycle: K8s Lifecycle
+      support: K8s Support
+      certExpiry: Cert Expiry
   logDownloads:
     title: Log Downloads
     banner: Log bundles are collected by a temporary pod on each node and streamed to your browser through the Rancher proxy. Nothing is sent outside your Rancher environment.

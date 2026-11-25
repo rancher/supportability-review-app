@@ -59,7 +59,11 @@ export default {
     const clusters = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
 
     this.clusters = (clusters || []).filter((c) => c.isReady);
-    const initial = this.clusters.find((c) => c.isLocal) || this.clusters[0];
+    const requested = this.$route.query?.cluster;
+    const initial =
+      (requested && this.clusters.find((c) => c.id === requested)) ||
+      this.clusters.find((c) => c.isLocal) ||
+      this.clusters[0];
 
     if (initial) {
       this.selectCluster(initial.id);

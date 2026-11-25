@@ -100,6 +100,15 @@ export function init($extension, store) {
     route: rootRoute()
   });
 
+  // manager & cluster summary page, listed below Dashboard
+  virtualType({
+    labelKey: 'sr.menuLabels.clusterSummary',
+    label: 'Manager & Cluster Summary',
+    name: SR_APP_PAGES.CLUSTER_SUMMARY,
+    weight: 9,
+    route: createRoute(SR_APP_PAGES.CLUSTER_SUMMARY, {})
+  });
+
   // log downloads page, listed below Review Bundles
   virtualType({
     // labelKey is translated when the menu renders; label is the fallback if the
@@ -107,12 +116,12 @@ export function init($extension, store) {
     labelKey: 'sr.menuLabels.logDownloads',
     label: 'Log Downloads',
     name: SR_APP_PAGES.LOG_DOWNLOADS,
-    weight: 8,
+    weight: 7,
     route: createRoute(SR_APP_PAGES.LOG_DOWNLOADS, {})
   });
 
   // defining a k8s resource as page
-  weightType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, 9, true);
+  weightType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, 8, true);
   configureType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, {
     isCreatable: true,
     isEditable: false,
@@ -144,5 +153,10 @@ export function init($extension, store) {
   ]);
 
   // registering the defined pages as side-menu entries
-  basicType([SR_APP_PAGES.DASHBOARD, SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, SR_APP_PAGES.LOG_DOWNLOADS]);
+  basicType([
+    SR_APP_PAGES.DASHBOARD,
+    SR_APP_PAGES.CLUSTER_SUMMARY,
+    SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE,
+    SR_APP_PAGES.LOG_DOWNLOADS
+  ]);
 }
