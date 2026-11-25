@@ -6,12 +6,19 @@ const CERT_EVENTS_TTL_MS = 24 * 60 * 60 * 1000;
 const NODES_TTL_MS = 24 * 60 * 60 * 1000;
 const HELPER_DATA_TTL_MS = 24 * 60 * 60 * 1000;
 
+// The fetch actions take either the bare key, or `{ key, force }` where `force`
+// re-reads the data even though the cached copy has not expired yet.
+type CertEventsPayload = string | { clusterId: string; force?: boolean };
+type HelperDataPayload = HelperDataName | { name: HelperDataName; force?: boolean };
+
 export default {
   updateCreateClusterElements({ commit }: any, val: any) {
     commit('updateCreateClusterElements', val);
   },
 
-  async fetchCertEvents({ state, commit, dispatch }: any, clusterId: string) {
+  async fetchCertEvents({ state, commit, dispatch }: any, payload: CertEventsPayload) {
+    const { clusterId, force = false } = typeof payload === 'string' ? { clusterId: payload } : payload || {};
+
     if (!clusterId) {
       return;
     }
@@ -19,11 +26,12 @@ export default {
     const existing = state.certEvents[clusterId];
     const age = existing?.checkedAt ? Date.now() - Date.parse(existing.checkedAt) : Infinity;
 
-    if (existing?.pending || age < CERT_EVENTS_TTL_MS) {
+    if (existing?.pending || (!force && age < CERT_EVENTS_TTL_MS)) {
       return;
     }
 
-    commit('updateCertEvents', { clusterId, record: { pending: true } });
+    // Keeps showing the previous result while it is being re-read
+    commit('updateCertEvents', { clusterId, record: { ...existing, pending: true } });
 
     try {
       commit('updateCertEvents', { clusterId, record: await fetchCertExpiryEvents(dispatch, clusterId) });
@@ -64,11 +72,12 @@ export default {
 
   // Keeps the data read last when the operator cannot serve it any more, so a
   // failed refresh does not drop it.
-  async fetchHelperData({ state, commit, dispatch }: any, name: HelperDataName) {
+  async fetchHelperData({ state, commit, dispatch }: any, payload: HelperDataPayload) {
+    const { name, force = false } = typeof payload === 'string' ? { name: payload } : payload;
     const existing = state.helperData[name];
     const age = existing?.checkedAt ? Date.now() - Date.parse(existing.checkedAt) : Infinity;
 
-    if (existing?.pending || age < HELPER_DATA_TTL_MS) {
+    if (existing?.pending || (!force && age < HELPER_DATA_TTL_MS)) {
       return;
     }
 
