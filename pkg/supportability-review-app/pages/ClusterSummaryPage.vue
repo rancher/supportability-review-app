@@ -8,7 +8,7 @@ import { getVersionInfo } from '@shell/utils/version';
 import { formatSi, parseSi } from '@shell/utils/units';
 import KubernetesEol from '../components/KubernetesEol.vue';
 import CertificateExpiry from '../components/CertificateExpiry.vue';
-import { SR_APP_PAGES } from '../config/types';
+import { SR_APP_PAGES, SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { createRoute } from '../utils/custom-routing';
 
 // Node conditions that are reported as a problem when their status is True
@@ -31,7 +31,8 @@ export default {
     return {
       clusters: [],
       nodes: [],
-      nodesError: false
+      nodesError: false,
+      refreshing: false
     };
   },
 
@@ -197,8 +198,25 @@ export default {
       }
     },
 
-    refresh() {
-      this.$fetch();
+    // Clusters and nodes are kept up to date by Rancher's websocket watches, so
+    // only the data read over plain HTTP (EOM/EOL dates and the certificate
+    // expiry events) is re-read here, ignoring its 24h cache.
+    async refresh() {
+      if (this.refreshing) {
+        return;
+      }
+
+      this.refreshing = true;
+      try {
+        await Promise.all([
+          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'eom-eol', force: true }),
+          ...this.clusters.map((c) =>
+            this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, { clusterId: c.id, force: true })
+          )
+        ]);
+      } finally {
+        this.refreshing = false;
+      }
     },
 
     explorerLocation(row) {
@@ -217,7 +235,13 @@ export default {
   <div v-else class="sr-cluster-summary">
     <div class="header">
       <h1>{{ t('sr.clusterSummary.title', {}, true) }}</h1>
-      <button type="button" class="btn role-secondary" data-testid="sr-cluster-summary-refresh" @click="refresh">
+      <button
+        type="button"
+        class="btn role-secondary"
+        :disabled="refreshing"
+        data-testid="sr-cluster-summary-refresh"
+        @click="refresh">
+        <i v-if="refreshing" class="icon icon-spinner icon-spin" />
         {{ t('sr.clusterSummary.refresh') }}
       </button>
     </div>
