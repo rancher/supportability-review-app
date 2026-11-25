@@ -24,6 +24,7 @@ sr:
     viewReport: View Report
     titleDashboard: Support Assistant Dashboard
     sr.cattle.io.reviewbundle: Review Bundles
+    logDownloads: Log Downloads
     basic: Basic
     advanced: Advanced
     bundleNameRestriction: Use lowercase letters, numbers, and hyphens (-) only, max 30 characters. Must start and end with a letter or number.
@@ -83,6 +84,31 @@ sr:
     phaseDownloading: Downloading bundle
     completed: 'Downloaded { filename }'
     failed: 'Failed: { error }'
+  logDownloads:
+    title: Log Downloads
+    banner: Log bundles are collected by a temporary pod on each node and streamed to your browser through the Rancher proxy. Nothing is sent outside your Rancher environment.
+    stepCluster: Select Cluster
+    stepNode: Select Node
+    stepDownload: Download Bundle
+    clusterLabel: Select Cluster
+    clusterHint: Choose Rancher Manager (local) or any managed downstream Kubernetes cluster.
+    clusterOption: '{ name } ({ provider } — { version })'
+    nodeLabel: Select Node
+    nodeHint: Target an individual node for focused troubleshooting or collect from all nodes in the cluster.
+    allNodes: 'All Nodes ({ ready }/{ total } Ready)'
+    allNodesShort: All Nodes
+    nodeOption: '{ name } ({ roles } — { status })'
+    nodesLoadFailed: 'Failed to load nodes: { error }'
+    noNodes: No Linux nodes found in this cluster.
+    ready: Ready
+    notReady: NotReady
+    roleControlPlane: Control Plane
+    roleEtcd: etcd
+    roleWorker: Worker
+    target: 'Target: { cluster } / { node }'
+    reset: Reset
+    download: Download
+    noNotificationCenter: Rancher versions before 2.12 have no Notification Center, so progress is only shown on this page. Keep this page open until the download finishes.
 
 typeLabel:
   sr.cattle.io.reviewbundle: Review Bundles

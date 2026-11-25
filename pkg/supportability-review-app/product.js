@@ -100,6 +100,17 @@ export function init($extension, store) {
     route: rootRoute()
   });
 
+  // log downloads page, listed below Review Bundles
+  virtualType({
+    // labelKey is translated when the menu renders; label is the fallback if the
+    // extension's translations aren't loaded yet (otherwise the name is shown)
+    labelKey: 'sr.menuLabels.logDownloads',
+    label: 'Log Downloads',
+    name: SR_APP_PAGES.LOG_DOWNLOADS,
+    weight: 8,
+    route: createRoute(SR_APP_PAGES.LOG_DOWNLOADS, {})
+  });
+
   // defining a k8s resource as page
   weightType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, 9, true);
   configureType(SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, {
@@ -133,5 +144,5 @@ export function init($extension, store) {
   ]);
 
   // registering the defined pages as side-menu entries
-  basicType([SR_APP_PAGES.DASHBOARD, SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE]);
+  basicType([SR_APP_PAGES.DASHBOARD, SUPPORTABILITY_REVIEW_CRD_IDS.REVIEW_BUNDLE, SR_APP_PAGES.LOG_DOWNLOADS]);
 }

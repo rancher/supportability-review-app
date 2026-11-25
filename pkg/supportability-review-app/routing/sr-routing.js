@@ -2,13 +2,25 @@ import ListResource from '../pages/_resource/index.vue';
 import CreateResource from '../pages/_resource/create.vue';
 import ViewResource from '../pages/_resource/_id.vue';
 import Dashboard from '../pages/DashboardPage.vue';
-import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER } from '../config/types';
+import LogDownloads from '../pages/LogDownloadsPage.vue';
+import { SUPPORTABILITY_REVIEW_PRODUCT_NAME, BLANK_CLUSTER, SR_APP_PAGES } from '../config/types';
 
 const routes = [
   {
     name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster`,
     path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/dashboard`,
     component: Dashboard,
+    meta: {
+      product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
+      cluster: BLANK_CLUSTER,
+      pkg: SUPPORTABILITY_REVIEW_PRODUCT_NAME
+    }
+  },
+  // must come before the generic ":resource" routes below
+  {
+    name: `${SUPPORTABILITY_REVIEW_PRODUCT_NAME}-c-cluster-${SR_APP_PAGES.LOG_DOWNLOADS}`,
+    path: `/${SUPPORTABILITY_REVIEW_PRODUCT_NAME}/c/:cluster/${SR_APP_PAGES.LOG_DOWNLOADS}`,
+    component: LogDownloads,
     meta: {
       product: SUPPORTABILITY_REVIEW_PRODUCT_NAME,
       cluster: BLANK_CLUSTER,
