@@ -2,7 +2,7 @@ import { IPlugin, TableColumnLocation } from '@shell/core/types';
 import { getVersionData } from '@shell/config/version';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
-import { providerFor } from './k8s-eol-column';
+import { providerFor } from './k8s-lifecycle';
 import { mgmtClusterIdFor } from './cert-expiry';
 import { SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { helperData, OsMatrix } from './helper-data';

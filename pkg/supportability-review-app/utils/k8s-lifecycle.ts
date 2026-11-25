@@ -1,9 +1,6 @@
-import { IPlugin, TableColumnLocation } from '@shell/core/types';
 import { EomEol } from './helper-data';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-const CLUSTER_LIST = { resource: ['provisioning.cattle.io.cluster'] };
 
 export type KubernetesLifecycle = {
   /** Provider the dates belong to, i.e. `k3s` */
@@ -65,20 +62,4 @@ export function kubernetesLifecycle(version: string | undefined, eomEol: EomEol)
     eol: entry.eol ? isoDate(entry.eol) : undefined,
     daysToEol: entry.eol ? daysUntil(entry.eol) : undefined
   };
-}
-
-export function registerKubernetesEolColumn(plugin: IPlugin): void {
-  plugin.register('formatters', 'KubernetesEol', () => import('../components/KubernetesEol.vue'));
-
-  const column = {
-    name: 'k8s-eol',
-    labelKey: 'tableHeaders.k8sEol',
-    formatter: 'KubernetesEol',
-    search: false,
-    sort: 'statusInfo.kubernetesVersion',
-    width: 130
-  };
-  const paginationColumn = { ...column, sort: 'status.info.kubernetesVersion' };
-
-  plugin.addTableColumn(TableColumnLocation.RESOURCE, CLUSTER_LIST, column, paginationColumn);
 }
