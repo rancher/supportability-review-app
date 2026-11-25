@@ -2,7 +2,6 @@ import { importTypes } from '@rancher/auto-import';
 import { IPlugin } from '@shell/core/types';
 import extensionRouting from './routing/sr-routing';
 import srStore from './store';
-import { registerSupportBundleActions } from './utils/support-bundle';
 import { registerKubernetesEolColumn } from './utils/k8s-eol-column';
 import { registerCertExpiryColumn } from './utils/cert-expiry-column';
 import { registerUpgradeWarningColumn } from './utils/upgrade-warnings';
@@ -23,9 +22,6 @@ export default function (plugin: IPlugin): void {
 
   // Add Vue Routes
   plugin.addRoutes(extensionRouting);
-
-  // Register the support bundle download functionality
-  registerSupportBundleActions(plugin);
 
   // Add the Kubernetes EOL, Certificate Expiry and Upgrade Warning columns to the Cluster Management list.
   registerCertExpiryColumn(plugin);

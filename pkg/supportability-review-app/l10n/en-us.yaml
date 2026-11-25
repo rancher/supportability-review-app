@@ -74,9 +74,7 @@ sr:
     learnMore: Learn more
     rancherKb: 'Please refer to this <a href="{url}" target="_blank" rel="noopener noreferrer nofollow">KB</a> before upgrading Rancher.'
   supportBundle:
-    action: Download Support Bundle
     daysLabel: Collect logs from the last N days
-    collect: Collect
     taskTitle: 'Support Bundle: { node }'
     phaseStarting: Starting collector pod
     phaseStartingPod: Waiting for collector pod to start

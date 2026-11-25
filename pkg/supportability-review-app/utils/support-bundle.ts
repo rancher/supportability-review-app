@@ -1,4 +1,3 @@
-import { ActionLocation, IPlugin } from '@shell/core/types';
 import { CATALOG } from '@shell/config/types';
 import { NotificationLevel } from '@shell/types/notifications';
 import Socket, { EVENT_DISCONNECTED, EVENT_MESSAGE, EVENT_CONNECT_ERROR } from '@shell/utils/socket';
@@ -296,25 +295,6 @@ async function failTask(model: any, id: string, title: string, message: string):
   await removeAddTask(model, false, id, title, message);
 }
 
-function openNotificationCenter(): void {
-  const trigger = document.querySelector<HTMLElement>('[data-testid="notifications-center"]');
-  trigger?.click();
-}
-
-function promptForDays(model: any): Promise<number | null> {
-  return new Promise((resolve) => {
-    model.$dispatch('promptModal', {
-      component: 'SrBundleOptions',
-      componentProps: {
-        onSubmit: (days: number) => resolve(days),
-        onCancel: () => resolve(null)
-      },
-      closeOnClickOutside: true,
-      modalWidth: '450px'
-    });
-  });
-}
-
 async function waitForPodRunning(model: any, url: string, timeoutMs = 120000): Promise<any> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
@@ -424,17 +404,6 @@ export async function collectNodeBundle(
   }
 }
 
-function runForNode(node: any, logDays: number, imageRegistry: string): Promise<void> {
-  // Captured up front: the current cluster changes if the user navigates away.
-  return collectNodeBundle(
-    node,
-    node.$rootGetters['currentCluster'],
-    node.metadata?.name || node.id,
-    logDays,
-    imageRegistry
-  );
-}
-
 // Adapts the root Vuex store to the $dispatch/$rootGetters interface the
 // collector uses on resource models, so pages can call collectNodeBundle().
 export function storeContext(store: any): any {
@@ -455,34 +424,4 @@ export function hasNotificationCenter(resource: any): boolean {
   const [major, minor] = parsed.slice(1).map(Number);
 
   return major > 2 || (major === 2 && minor >= 12);
-}
-
-const collectAction: any = {
-  labelKey: 'sr.supportBundle.action',
-  icon: 'icon-download',
-  enabled: hasNotificationCenter,
-  multiple: true,
-  weight: -11,
-  async invoke(_opts: any, resources: any[]): Promise<void> {
-    const days = await promptForDays(resources[0]);
-    if (days === null) {
-      return;
-    }
-
-    const registry = await getConfiguredRegistry(resources[0]);
-
-    openNotificationCenter();
-
-    // Fire-and-forget: the action menu doesn't await invoke(), so collection runs
-    // in the background and progress is tracked per node in the Notification Center.
-    Promise.all(resources.map((node) => runForNode(node, days, registry))).catch((err) => {
-      console.error('[SR] bulk collection outer error:', err);
-    });
-  }
-};
-
-export function registerSupportBundleActions(plugin: IPlugin): void {
-  plugin.register('dialog', 'SrBundleOptions', () => import('../components/SrBundleOptions.vue'));
-  const nodeLocation = { resource: ['node'] };
-  plugin.addAction(ActionLocation.TABLE, nodeLocation, collectAction);
 }
