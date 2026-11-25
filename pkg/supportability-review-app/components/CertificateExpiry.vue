@@ -65,9 +65,6 @@ export default {
 
       return this.t('sr.certExpiry.unmonitoredTooltip');
     }
-  },
-  created() {
-    this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, this.clusterId);
   }
 };
 </script>

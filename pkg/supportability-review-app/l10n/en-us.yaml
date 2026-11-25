@@ -139,8 +139,6 @@ tableHeaders:
   pass: Passed Checks
   clusterCount: Clusters
   bundleSize: Bundle Size
-  k8sEol: K8s EOL
-  certExpiry: Cert Expiry
   k8sUpgradeWarning: Pre-upgrade Warnings
 
 asyncButton:

@@ -2,13 +2,11 @@ import { fetchCertExpiryEvents } from '../utils/cert-expiry';
 import { fetchClusterNodes } from '../utils/upgrade-warnings';
 import { fetchHelperData, HelperDataName } from '../utils/helper-data';
 
-const CERT_EVENTS_TTL_MS = 24 * 60 * 60 * 1000;
 const NODES_TTL_MS = 24 * 60 * 60 * 1000;
 const HELPER_DATA_TTL_MS = 24 * 60 * 60 * 1000;
 
-// The fetch actions take either the bare key, or `{ key, force }` where `force`
+// fetchHelperData takes either the bare name, or `{ name, force }` where `force`
 // re-reads the data even though the cached copy has not expired yet.
-type CertEventsPayload = string | { clusterId: string; force?: boolean };
 type HelperDataPayload = HelperDataName | { name: HelperDataName; force?: boolean };
 
 export default {
@@ -16,17 +14,16 @@ export default {
     commit('updateCreateClusterElements', val);
   },
 
-  async fetchCertEvents({ state, commit, dispatch }: any, payload: CertEventsPayload) {
-    const { clusterId, force = false } = typeof payload === 'string' ? { clusterId: payload } : payload || {};
-
+  // Not cached: the Manager & Cluster Summary page re-reads the events every
+  // time it is opened and on Refresh.
+  async fetchCertEvents({ state, commit, dispatch }: any, clusterId: string) {
     if (!clusterId) {
       return;
     }
 
     const existing = state.certEvents[clusterId];
-    const age = existing?.checkedAt ? Date.now() - Date.parse(existing.checkedAt) : Infinity;
 
-    if (existing?.pending || (!force && age < CERT_EVENTS_TTL_MS)) {
+    if (existing?.pending) {
       return;
     }
 

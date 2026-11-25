@@ -38,6 +38,8 @@ export default {
 
   async fetch() {
     await this.load();
+    // Not awaited: the table shows right away and the cells fill in as the data arrives
+    this.loadLifecycleAndCerts();
   },
 
   computed: {
@@ -198,9 +200,17 @@ export default {
       }
     },
 
-    // Clusters and nodes are kept up to date by Rancher's websocket watches, so
-    // only the data read over plain HTTP (EOM/EOL dates and the certificate
-    // expiry events) is re-read here, ignoring its 24h cache.
+    // Reads the EOM/EOL dates and the certificate expiry events of every cluster.
+    // Clusters and nodes are kept up to date by Rancher's websocket watches, but
+    // these are read over plain HTTP, so they are re-read on every page open and
+    // on Refresh.
+    loadLifecycleAndCerts() {
+      return Promise.all([
+        this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'eom-eol', force: true }),
+        ...this.clusters.map((c) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, c.id))
+      ]);
+    },
+
     async refresh() {
       if (this.refreshing) {
         return;
@@ -208,12 +218,7 @@ export default {
 
       this.refreshing = true;
       try {
-        await Promise.all([
-          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'eom-eol', force: true }),
-          ...this.clusters.map((c) =>
-            this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, { clusterId: c.id, force: true })
-          )
-        ]);
+        await this.loadLifecycleAndCerts();
       } finally {
         this.refreshing = false;
       }
