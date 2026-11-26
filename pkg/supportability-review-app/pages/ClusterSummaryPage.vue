@@ -9,6 +9,7 @@ import { formatSi, parseSi } from '@shell/utils/units';
 import DateFormatter from '@shell/components/formatter/Date';
 import KubernetesEol from '../components/KubernetesEol.vue';
 import CertificateExpiry from '../components/CertificateExpiry.vue';
+import KubernetesSupport from '../components/KubernetesSupport.vue';
 import { SR_APP_PAGES, SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { createRoute } from '../utils/custom-routing';
 import { loadProductRegistrations, productRegistration } from '../utils/product-registration';
@@ -33,7 +34,15 @@ function isNodeReady(node) {
 export default {
   name: 'ClusterSummaryPage',
 
-  components: { Loading, SortableTable, BadgeState, DateFormatter, KubernetesEol, CertificateExpiry },
+  components: {
+    Loading,
+    SortableTable,
+    BadgeState,
+    DateFormatter,
+    KubernetesEol,
+    KubernetesSupport,
+    CertificateExpiry
+  },
 
   data() {
     return {
@@ -47,7 +56,7 @@ export default {
   async fetch() {
     await this.load();
     // Not awaited: the table shows right away and the cells fill in as the data arrives
-    this.loadLifecycleAndCerts();
+    this.loadSupportData();
     loadProductRegistrations(this.$store).then((readable) => {
       this.registrationReadable = readable;
     });
@@ -238,7 +247,7 @@ export default {
 
   watch: {
     // A cluster added while the page is open needs its certificate expiry events read.
-    // The first list (empty -> loaded) is covered by loadLifecycleAndCerts() in fetch().
+    // The first list (empty -> loaded) is covered by loadSupportData() in fetch().
     clusterIds(ids, oldIds) {
       if (!oldIds?.length) {
         return;
@@ -266,13 +275,15 @@ export default {
       }
     },
 
-    // Reads the EOM/EOL dates and the certificate expiry events of every cluster.
+    // Reads the EOM/EOL dates, the Kubernetes support matrix and the certificate
+    // expiry events of every cluster.
     // Clusters and nodes are kept up to date by Rancher's websocket watches, but
     // these are read over plain HTTP, so they are re-read on every page open and
     // on Refresh.
-    loadLifecycleAndCerts() {
+    loadSupportData() {
       return Promise.all([
         this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'eom-eol', force: true }),
+        this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'rancher2k8s', force: true }),
         ...this.clusters.map((c) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, c.id))
       ]);
     },
@@ -284,7 +295,7 @@ export default {
 
       this.refreshing = true;
       try {
-        await this.loadLifecycleAndCerts();
+        await this.loadSupportData();
       } finally {
         this.refreshing = false;
       }
@@ -392,8 +403,8 @@ export default {
       </template>
 
       <!-- K8s Support: intentionally left blank for now -->
-      <template #cell:support>
-        <span />
+      <template #cell:support="{ row }">
+        <KubernetesSupport :row="row.cluster" />
       </template>
 
       <template #cell:certExpiry="{ row }">

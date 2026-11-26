@@ -8,10 +8,16 @@ export type EomEol = Record<string, Record<string, { eom: string | null; eol: st
 // `{ '2.14.5': { Ubuntu: ['24.04', '22.04'], ... } }`
 export type OsMatrix = Record<string, Record<string, string[]>>;
 
+// Kubernetes versions each Rancher patch release supports, per provider, plus the
+// stable Rancher version, i.e.
+// `{ '2.13.3': { rke2: { min: '1.31', max: '1.34' }, ..., recommended: true }, stable: '2.13.3' }`
+export type Rancher2K8s = Record<string, any>;
+
 export type HelperData = {
   'eom-eol': EomEol;
   'rke2-rancher-os-matrix': OsMatrix;
   'k3s-rancher-os-matrix': OsMatrix;
+  rancher2k8s: Rancher2K8s;
 };
 
 export type HelperDataName = keyof HelperData;
@@ -36,11 +42,16 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
-// Both kinds of helper data are objects of objects, i.e. provider -> version for
-// eom-eol and Rancher version -> OS for the matrices. Anything else would break
-// the columns, so it is rejected.
+// All helper data are objects of objects, i.e. provider -> version for eom-eol and
+// Rancher version -> OS or provider for the matrices. The only exception is the
+// `stable` Rancher version string of rancher2k8s. Anything else would break the
+// columns, so it is rejected.
 function isHelperData(data: unknown): boolean {
-  return isObject(data) && Object.keys(data).length > 0 && Object.values(data).every(isObject);
+  return (
+    isObject(data) &&
+    Object.keys(data).length > 0 &&
+    Object.entries(data).every(([key, value]) => isObject(value) || (key === 'stable' && typeof value === 'string'))
+  );
 }
 
 export async function fetchHelperData(dispatch: any, name: HelperDataName): Promise<any> {

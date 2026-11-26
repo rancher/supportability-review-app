@@ -56,6 +56,15 @@ sr:
     tooltip: '{provider} {minor} — EOM {eom}, EOL {eol}'
     unknownTooltip: No EOM/EOL dates are known
     noDataTooltip: No Kubernetes version reported yet
+  k8sSupport:
+    supported: Supported
+    unsupported: Unsupported
+    unknown: Unknown
+    tooltip: 'Rancher {rancher} supports {provider} {min} to {max}'
+    noRancherTooltip: 'No support matrix for Rancher {rancher}'
+    noProviderTooltip: No support matrix for this kind of cluster - only RKE2, K3s, RKE, AKS, EKS and GKE are covered
+    noVersionTooltip: No Kubernetes version reported yet
+    noDataTooltip: The support matrix could not be read from the Supportability Review operator
   certExpiry:
     days: '{days} days'
     moreThan: '{days}+ days'
