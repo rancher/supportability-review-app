@@ -123,6 +123,7 @@ sr:
       lifecycle: K8s Lifecycle
       support: K8s Support
       certExpiry: Cert Expiry
+      upgradeWarning: Pre-upgrade Warnings
   logDownloads:
     title: Log Downloads
     banner: Log bundles are collected by a temporary pod on each node and streamed to your browser through the Rancher proxy. Nothing is sent outside your Rancher environment.

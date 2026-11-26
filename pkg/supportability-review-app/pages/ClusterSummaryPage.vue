@@ -9,6 +9,7 @@ import { formatSi, parseSi } from '@shell/utils/units';
 import DateFormatter from '@shell/components/formatter/Date';
 import KubernetesEol from '../components/KubernetesEol.vue';
 import CertificateExpiry from '../components/CertificateExpiry.vue';
+import KubernetesUpgradeWarning from '../components/KubernetesUpgradeWarning.vue';
 import KubernetesSupport from '../components/KubernetesSupport.vue';
 import { SR_APP_PAGES, SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { createRoute } from '../utils/custom-routing';
@@ -43,7 +44,8 @@ export default {
     DateFormatter,
     KubernetesEol,
     KubernetesSupport,
-    CertificateExpiry
+    CertificateExpiry,
+    KubernetesUpgradeWarning
   },
 
   data() {
@@ -237,6 +239,14 @@ export default {
           width: 130
         },
         {
+          name: 'upgradeWarning',
+          labelKey: 'sr.clusterSummary.columns.upgradeWarning',
+          value: 'id',
+          sort: false,
+          search: false,
+          width: 130
+        },
+        {
           name: 'actions',
           label: ' ',
           value: 'id',
@@ -268,7 +278,8 @@ export default {
   },
 
   watch: {
-    // A cluster added while the page is open needs its certificate expiry events read.
+    // A cluster added while the page is open needs its certificate expiry events and
+    // nodes (for the Pre-upgrade Warnings) read.
     // The first list (empty -> loaded) is covered by loadSupportData() in fetch().
     clusterIds(ids, oldIds) {
       if (!oldIds?.length) {
@@ -279,7 +290,10 @@ export default {
 
       ids
         .filter((id) => !known.has(id))
-        .forEach((id) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, id));
+        .forEach((id) => {
+          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, id);
+          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchNodes`, { clusterId: id, force: true });
+        });
     }
   },
 
@@ -297,8 +311,8 @@ export default {
       }
     },
 
-    // Reads the EOM/EOL dates, the Kubernetes support matrix and the certificate
-    // expiry events of every cluster.
+    // Reads the EOM/EOL dates, the Kubernetes support matrix, the OS support
+    // matrices, and the certificate expiry events and nodes of every cluster.
     // Clusters and nodes are kept up to date by Rancher's websocket watches, but
     // these are read over plain HTTP, so they are re-read on every page open and
     // on Refresh.
@@ -306,7 +320,13 @@ export default {
       return Promise.all([
         this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'eom-eol', force: true }),
         this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name: 'rancher2k8s', force: true }),
-        ...this.clusters.map((c) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, c.id))
+        ...['rke2-rancher-os-matrix', 'k3s-rancher-os-matrix'].map((name) =>
+          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchHelperData`, { name, force: true })
+        ),
+        ...this.clusters.map((c) => this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchCertEvents`, c.id)),
+        ...this.clusters.map((c) =>
+          this.$store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchNodes`, { clusterId: c.id, force: true })
+        )
       ]);
     },
 
@@ -438,13 +458,16 @@ export default {
         <KubernetesEol :row="row.cluster" />
       </template>
 
-      <!-- K8s Support: intentionally left blank for now -->
       <template #cell:support="{ row }">
         <KubernetesSupport :row="row.cluster" />
       </template>
 
       <template #cell:certExpiry="{ row }">
         <CertificateExpiry :row="row.cluster" />
+      </template>
+
+      <template #cell:upgradeWarning="{ row }">
+        <KubernetesUpgradeWarning :row="row.cluster" />
       </template>
 
       <!--
