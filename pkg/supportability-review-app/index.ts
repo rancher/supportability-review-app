@@ -2,7 +2,7 @@ import { importTypes } from '@rancher/auto-import';
 import { IPlugin } from '@shell/core/types';
 import extensionRouting from './routing/sr-routing';
 import srStore from './store';
-import { registerUpgradeWarningColumn } from './utils/upgrade-warnings';
+import { registerUpgradeWarningDialog } from './utils/upgrade-warnings';
 
 // Init the package
 export default function (plugin: IPlugin): void {
@@ -21,6 +21,6 @@ export default function (plugin: IPlugin): void {
   // Add Vue Routes
   plugin.addRoutes(extensionRouting);
 
-  // Add the Upgrade Warning column to the Cluster Management list.
-  registerUpgradeWarningColumn(plugin);
+  // Add the dialog the Pre-upgrade Warnings column opens.
+  registerUpgradeWarningDialog(plugin);
 }

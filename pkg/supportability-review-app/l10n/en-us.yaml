@@ -160,7 +160,6 @@ tableHeaders:
   pass: Passed Checks
   clusterCount: Clusters
   bundleSize: Bundle Size
-  k8sUpgradeWarning: Pre-upgrade Warnings
 
 asyncButton:
   srRepository:

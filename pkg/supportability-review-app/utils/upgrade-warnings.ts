@@ -1,4 +1,4 @@
-import { IPlugin, TableColumnLocation } from '@shell/core/types';
+import { IPlugin } from '@shell/core/types';
 import { getVersionData } from '@shell/config/version';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
@@ -27,8 +27,6 @@ export type UpgradeWarning = {
   description: string;
   url?: string;
 };
-
-const CLUSTER_LIST = { resource: ['provisioning.cattle.io.cluster'] };
 
 // One comparable number per version, i.e. `v1.32.10+rke2r1` -> 1321001, built as
 // major, minor, patch and provider revision of two digits each. The provider revision
@@ -195,7 +193,7 @@ function osWarnings(nodes: any[], provider: string, rancherTo: string, matrices:
 
 // Rancher is upgraded one minor version at a time as well, so the warnings are
 // about the version it runs now. The nodes are only known when the dialog is
-// opened, so the OS check is skipped for the cluster list.
+// opened, so the OS check is skipped until they are read.
 export function rancherPlan(
   version: string | undefined,
   provider: string,
@@ -286,7 +284,7 @@ export function clusterVersion(cluster: any): string | undefined {
   return cluster?.kubernetesVersionRaw || cluster?.kubernetesVersion;
 }
 
-// `store` is the root store, the same one the cluster list reads the cached nodes
+// `store` is the root store, the same one the Summary page reads the cached nodes
 // from. Reading them through the cluster model's $rootGetters instead fails when
 // Rancher still holds an older build of this extension's store module.
 export async function showUpgradeWarnings(cluster: any, store: any): Promise<void> {
@@ -294,7 +292,7 @@ export async function showUpgradeWarnings(cluster: any, store: any): Promise<voi
   let nodes: any[] = [];
 
   if (clusterId) {
-    // Usually already cached by the cluster list, this only waits when it is not
+    // Usually already cached by the Summary page, this only waits when it is not
     await store.dispatch(`${SUPPORTABILITY_REVIEW_STORE}/fetchNodes`, clusterId);
 
     const cached = store.getters[`${SUPPORTABILITY_REVIEW_STORE}/nodes`]?.(clusterId);
@@ -313,18 +311,7 @@ export async function showUpgradeWarnings(cluster: any, store: any): Promise<voi
   });
 }
 
-export function registerUpgradeWarningColumn(plugin: IPlugin): void {
+// The dialog the Pre-upgrade Warnings column of the Manager & Cluster Summary opens
+export function registerUpgradeWarningDialog(plugin: IPlugin): void {
   plugin.register('dialog', 'SrUpgradeWarnings', () => import('../components/SrUpgradeWarnings.vue'));
-  plugin.register('formatters', 'KubernetesUpgradeWarning', () => import('../components/KubernetesUpgradeWarning.vue'));
-
-  const column = {
-    name: 'k8s-upgrade-warning',
-    labelKey: 'tableHeaders.k8sUpgradeWarning',
-    formatter: 'KubernetesUpgradeWarning',
-    search: false,
-    sort: false,
-    width: 130
-  };
-
-  plugin.addTableColumn(TableColumnLocation.RESOURCE, CLUSTER_LIST, column, column);
 }
