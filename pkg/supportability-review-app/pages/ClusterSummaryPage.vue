@@ -336,9 +336,14 @@ export default {
         <CertificateExpiry :row="row.cluster" />
       </template>
 
+      <!--
+        Always renders an element: a slot that renders nothing (only the v-if comment)
+        makes SortableTable fall back to showing the column value, the cluster id.
+      -->
       <template #cell:actions="{ row }">
+        <span v-if="!row.isReady" />
         <router-link
-          v-if="row.isReady"
+          v-else
           :to="logsLocation(row)"
           class="btn btn-sm role-secondary"
           data-testid="sr-cluster-summary-logs">
