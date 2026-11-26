@@ -9,6 +9,9 @@ const HELPER_DATA_TTL_MS = 24 * 60 * 60 * 1000;
 // re-reads the data even though the cached copy has not expired yet.
 type HelperDataPayload = HelperDataName | { name: HelperDataName; force?: boolean };
 
+// fetchNodes takes either the bare cluster id, or `{ clusterId, force }`
+type NodesPayload = string | { clusterId: string; force?: boolean };
+
 export default {
   updateCreateClusterElements({ commit }: any, val: any) {
     commit('updateCreateClusterElements', val);
@@ -40,7 +43,9 @@ export default {
       });
     }
   },
-  async fetchNodes({ state, commit, dispatch }: any, clusterId: string) {
+  async fetchNodes({ state, commit, dispatch }: any, payload: NodesPayload) {
+    const { clusterId, force = false } = typeof payload === 'string' ? { clusterId: payload } : payload;
+
     if (!clusterId) {
       return;
     }
@@ -48,7 +53,7 @@ export default {
     const existing = state.nodes[clusterId];
     const age = existing?.checkedAt ? Date.now() - Date.parse(existing.checkedAt) : Infinity;
 
-    if (existing?.pending || age < NODES_TTL_MS) {
+    if (existing?.pending || (!force && age < NODES_TTL_MS)) {
       return;
     }
 
