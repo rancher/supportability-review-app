@@ -6,10 +6,18 @@ import { BadgeState } from '@components/BadgeState';
 import { filterOnlyKubernetesClusters } from '@shell/utils/cluster';
 import { getVersionInfo } from '@shell/utils/version';
 import { formatSi, parseSi } from '@shell/utils/units';
+import DateFormatter from '@shell/components/formatter/Date';
 import KubernetesEol from '../components/KubernetesEol.vue';
 import CertificateExpiry from '../components/CertificateExpiry.vue';
 import { SR_APP_PAGES, SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { createRoute } from '../utils/custom-routing';
+import { loadProductRegistrations, productRegistration } from '../utils/product-registration';
+
+const REGISTRATION_COLORS = {
+  registered: 'bg-success',
+  notRegistered: 'bg-error',
+  unknown: 'bg-darker'
+};
 
 // Node conditions that are reported as a problem when their status is True
 const PRESSURE_CONDITIONS = ['MemoryPressure', 'DiskPressure', 'PIDPressure', 'NetworkUnavailable'];
@@ -25,11 +33,13 @@ function isNodeReady(node) {
 export default {
   name: 'ClusterSummaryPage',
 
-  components: { Loading, SortableTable, BadgeState, KubernetesEol, CertificateExpiry },
+  components: { Loading, SortableTable, BadgeState, DateFormatter, KubernetesEol, CertificateExpiry },
 
   data() {
     return {
       nodesError: false,
+      // null while loading, false when the registrations can't be read
+      registrationReadable: null,
       refreshing: false
     };
   },
@@ -38,6 +48,9 @@ export default {
     await this.load();
     // Not awaited: the table shows right away and the cells fill in as the data arrives
     this.loadLifecycleAndCerts();
+    loadProductRegistrations(this.$store).then((readable) => {
+      this.registrationReadable = readable;
+    });
   },
 
   computed: {
@@ -61,6 +74,31 @@ export default {
 
     nodes() {
       return this.nodesError ? [] : this.$store.getters['management/all'](MANAGEMENT.NODE) || [];
+    },
+
+    // Read from the store, so a registration made in another tab shows up through the websocket watch
+    registration() {
+      if (this.registrationReadable === null) {
+        return null;
+      }
+
+      return this.registrationReadable ? productRegistration(this.$store) : { state: 'unknown' };
+    },
+
+    registrationColor() {
+      return REGISTRATION_COLORS[this.registration?.state];
+    },
+
+    registrationExpired() {
+      const expiresAt = this.registration?.expiresAt;
+
+      return !!expiresAt && Date.parse(expiresAt) < Date.now();
+    },
+
+    // Global Settings -> Registration, provided by Rancher (2.12+) itself. Its route
+    // isn't part of @rancher/shell, so it is linked by path.
+    registrationLocation() {
+      return { path: '/c/_/settings/registration' };
     },
 
     rancherVersion() {
@@ -291,6 +329,32 @@ export default {
           {{ t('sr.clusterSummary.kpi.capacity', { cpu: totalCpu, memory: totalMemoryDisplay }) }}
         </div>
       </div>
+      <div
+        class="kpi-card"
+        :class="{ alert: registration && registration.state !== 'registered' }"
+        data-testid="sr-cluster-summary-registration">
+        <div class="kpi-title">{{ t('sr.clusterSummary.kpi.registration') }}</div>
+        <div class="kpi-value">
+          <i v-if="!registration" class="icon icon-spinner icon-spin" />
+          <BadgeState
+            v-else
+            class="badge-compat"
+            :color="registrationColor"
+            :label="t(`sr.clusterSummary.registration.${registration.state}`)" />
+        </div>
+        <div v-if="registration" class="kpi-subtext">
+          <div v-if="registration.expiresAt" :class="{ 'text-error': registrationExpired }">
+            {{ t('sr.clusterSummary.registration.expiresAt') }}
+            <DateFormatter :value="registration.expiresAt" :show-time="false" />
+            <span v-if="registrationExpired">({{ t('sr.clusterSummary.registration.expired') }})</span>
+          </div>
+          <div v-if="registration.state === 'unknown'">{{ t('sr.clusterSummary.registration.unknownHelp') }}</div>
+          <router-link :to="registrationLocation" class="settings-link">
+            {{ t('sr.clusterSummary.registration.link') }}
+            <i class="icon icon-external-link" />
+          </router-link>
+        </div>
+      </div>
     </div>
 
     <h2 class="section-title">{{ t('sr.clusterSummary.inventory') }}</h2>
@@ -379,6 +443,28 @@ export default {
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
     background-color: var(--box-bg);
+  }
+
+  // Not registered (or unknown): tint the card like the mockup does
+  .kpi-card.alert {
+    border-color: var(--error);
+  }
+
+  .settings-link {
+    display: inline-block;
+    margin-top: 4px;
+    font-weight: bold;
+  }
+
+  // The badge sits in .kpi-value, so it would otherwise inherit its 24px font size
+  .badge-compat {
+    font-size: 14px;
+  }
+
+  // The bundled BadgeState colors via `--*-badge` / `--on-*-banner`, which only Rancher 2.13+ themes define.
+  .badge-compat.bg-error {
+    color: var(--on-error-banner, var(--error-text));
+    background: var(--error-badge, var(--error));
   }
 
   .kpi-title {
