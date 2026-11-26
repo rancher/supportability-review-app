@@ -94,6 +94,15 @@ sr:
       compute: Total Compute
       nodes: '{count} Nodes'
       capacity: '{cpu} vCPUs • {memory} RAM total'
+      registration: Product Registration
+    registration:
+      registered: Registered
+      notRegistered: Unregistered
+      unknown: Unknown
+      expiresAt: 'Expires:'
+      expired: expired
+      unknownHelp: The registration status could not be read. Rancher 2.12 or later and permission to view registrations.scc.cattle.io are required.
+      link: Product Registration
     columns:
       state: State
       name: Cluster Name
