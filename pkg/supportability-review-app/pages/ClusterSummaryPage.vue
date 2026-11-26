@@ -302,7 +302,7 @@ export default {
       :table-actions="false"
       :row-actions="false"
       key-field="id"
-      default-sort-by="state"
+      default-sort-by="name"
       data-testid="sr-cluster-summary-table">
       <template #cell:state="{ row }">
         <BadgeState :value="row.cluster" />
