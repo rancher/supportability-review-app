@@ -13,6 +13,8 @@ import KubernetesSupport from '../components/KubernetesSupport.vue';
 import { SR_APP_PAGES, SUPPORTABILITY_REVIEW_STORE } from '../config/types';
 import { createRoute } from '../utils/custom-routing';
 import { loadProductRegistrations, productRegistration } from '../utils/product-registration';
+import { helperData } from '../utils/helper-data';
+import { kubernetesSupport } from '../utils/k8s-support';
 
 const REGISTRATION_COLORS = {
   registered: 'bg-success',
@@ -108,6 +110,26 @@ export default {
     // isn't part of @rancher/shell, so it is linked by path.
     registrationLocation() {
       return { path: '/c/_/settings/registration' };
+    },
+
+    // Same judgement as the K8s Support column. null until the support matrix has been read
+    // once, so the card doesn't flash "0 / N" while it loads.
+    supportSummary() {
+      const record = this.$store.getters[`${SUPPORTABILITY_REVIEW_STORE}/helperData`]?.('rancher2k8s');
+
+      if (!record || (record.pending && !record.data)) {
+        return null;
+      }
+      // The operator couldn't serve it: nothing to count, rather than "0 / N"
+      if (!record.data) {
+        return { unavailable: true };
+      }
+
+      const matrix = helperData(this.$store.getters, 'rancher2k8s');
+      const rancher = getVersionInfo(this.$store).fullVersion;
+      const supported = this.clusters.filter((c) => kubernetesSupport(c, rancher, matrix).state === 'supported').length;
+
+      return { supported, total: this.clusters.length };
     },
 
     rancherVersion() {
@@ -340,6 +362,20 @@ export default {
           {{ t('sr.clusterSummary.kpi.capacity', { cpu: totalCpu, memory: totalMemoryDisplay }) }}
         </div>
       </div>
+      <div class="kpi-card" data-testid="sr-cluster-summary-k8s-support">
+        <div class="kpi-title">{{ t('sr.clusterSummary.kpi.support') }}</div>
+        <div class="kpi-value">
+          <i v-if="!supportSummary" class="icon icon-spinner icon-spin" />
+          <span v-else-if="supportSummary.unavailable" class="text-muted">—</span>
+          <template v-else>{{ supportSummary.supported }} / {{ supportSummary.total }}</template>
+        </div>
+        <div v-if="supportSummary && supportSummary.unavailable" class="kpi-subtext">
+          {{ t('sr.k8sSupport.noDataTooltip') }}
+        </div>
+        <div v-else-if="supportSummary && supportSummary.total > supportSummary.supported" class="kpi-subtext">
+          <BadgeState class="badge-compat" color="bg-error" :label="t('sr.clusterSummary.kpi.actionRequired')" />
+        </div>
+      </div>
       <div
         class="kpi-card"
         :class="{ alert: registration && registration.state !== 'registered' }"
@@ -468,7 +504,7 @@ export default {
   }
 
   // The badge sits in .kpi-value, so it would otherwise inherit its 24px font size
-  .badge-compat {
+  .kpi-value .badge-compat {
     font-size: 14px;
   }
 
